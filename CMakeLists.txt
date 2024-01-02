@@ -9,5 +9,6 @@ target_include_directories(SolitareAI PUBLIC src/)
 
 add_subdirectory(Depends/glfw/)
 add_subdirectory(Depends/glad/)
+add_subdirectory(Depends/cglm/)
 
-target_link_libraries(${PROJECT_NAME} GLFW GLAD GLU GL dl X11 m)
+target_link_libraries(${PROJECT_NAME} CGLM GLFW GLAD GLU GL dl X11 m)
