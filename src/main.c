@@ -4,22 +4,12 @@
 
 
 int main(int argc, char** argv) {
-    init_window();
+    init_windows();
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Solitare AI", NULL, NULL);
-    if (!window) {
-        printf("GLFW window creation failed\n");
-        glfwTerminate();
-        return -1;
-    }
+    window_data main_window_data = { 1280, 720, "Solitare AI\0" };
+    window main_window = create_window(main_window_data);
 
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        printf("GLAD initilization failed\n");
-        return -1;
-    }
+    init_opengl();
 
     float card_mesh_positions[6] = {
         -0.5f, -0.5f,
@@ -30,16 +20,17 @@ int main(int argc, char** argv) {
     mesh_data card_mesh_data = { card_mesh_positions, 6 };
     mesh card_mesh = create_mesh(card_mesh_data);
 
-    while (!glfwWindowShouldClose(window)) {
-        glClearColor(38 / 255.0f, 162 / 255.0f, 105 / 255.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+    color window_color = { 38.0f, 162.0f, 105.0f, 1.0f };
+
+    while (isOpen(&main_window)) {  
+        clear_window(&main_window, window_color);
 
         draw_mesh(&card_mesh);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        draw_window(&main_window);
+        
+        update_windows();
     }
 
-    close_window();
+    close_windows();
     return 0;
 }
