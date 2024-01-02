@@ -19,7 +19,6 @@ mesh create_mesh(mesh_data data) {
 }
 
 void draw_mesh(mesh* data) {
-    printf("RendererID: %i\n", data->rendererID);
     glBindBuffer(GL_ARRAY_BUFFER, data->rendererID);
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
