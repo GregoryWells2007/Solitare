@@ -97,6 +97,9 @@ int main(int argc, char** argv) {
     mesh card_mesh = create_mesh(card_mesh_data);
     color window_color = { 38.0f, 162.0f, 105.0f, 1.0f };
 
+    shader_data data = load_shader_data_from_file("../res/shaders/card_shader/card_shader_vertex.glsl", "../res/shaders/card_shader/card_shader_fragment.glsl");
+    shader card_shader = create_shader(data);
+
     while (isOpen(&main_window)) {  
         clear_window(&main_window, window_color);
 
