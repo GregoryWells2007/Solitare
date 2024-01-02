@@ -3,6 +3,7 @@
 
 mesh create_mesh(mesh_data data) {
     unsigned int rendererID;
+    unsigned int indexBufferID;
 
     glCreateBuffers(1, &rendererID);
     glBindBuffer(GL_ARRAY_BUFFER, rendererID);
@@ -13,13 +14,23 @@ mesh create_mesh(mesh_data data) {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    glCreateBuffers(1, &indexBufferID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * data.triangle_count, data.triangles, GL_STATIC_DRAW);
+
     mesh created_mesh = {};
     created_mesh.rendererID = rendererID;
+    created_mesh.indexBufferID = indexBufferID;
+    created_mesh.triangle_count = data.triangle_count;
     return created_mesh;
 }
 
 void draw_mesh(mesh* data) {
     glBindBuffer(GL_ARRAY_BUFFER, data->rendererID);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->indexBufferID);
+    
+    glDrawElements(GL_TRIANGLES, data->triangle_count, GL_UNSIGNED_INT, NULL);
+    
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
