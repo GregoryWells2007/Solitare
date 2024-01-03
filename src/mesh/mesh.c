@@ -9,8 +9,11 @@ mesh create_mesh(mesh_data data) {
     glBindBuffer(GL_ARRAY_BUFFER, rendererID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.vertex_count, data.vertex_positions, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (const void*)0);
     glEnableVertexAttribArray(0);  
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (const void*)(sizeof(float) * 2));
+    glEnableVertexAttribArray(1);  
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
