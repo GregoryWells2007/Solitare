@@ -48,6 +48,10 @@ image load_image_from_file(char* path) {
 }
 
 void bind_image(image* image) {
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0 + image->slot);
     glBindTexture(GL_TEXTURE_2D, image->rendererID);
+}
+
+void set_bind_slot(image* image, int slot) {
+    image->slot = slot;
 }
