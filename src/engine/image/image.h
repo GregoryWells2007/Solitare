@@ -5,3 +5,4 @@ typedef struct image {
 } image;
 
 image load_image_from_file(char* path);
+void bind_image(image* image);

@@ -42,5 +42,12 @@ image load_image_from_file(char* path) {
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, data.width, data.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.pixels);
 
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     return (image){rendererID};
+}
+
+void bind_image(image* image) {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, image->rendererID);
 }
