@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
     // create transform for card
 
-    card new_card = { (card_data){ five, hearts }, (vector2){ 0.0f, 0.0f }, 1.0f };
+    card new_card = { (card_data){ five, hearts }, (vector2){ 0.0f, 0.0f }, 40.0f };
 
     while (isOpen(&main_window)) {  
         clear_window(&main_window, (color){ 38.0f, 162.0f, 105.0f, 1.0f });

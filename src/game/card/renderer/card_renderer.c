@@ -85,7 +85,7 @@ void card_renderer_create_shader(card_renderer* renderer) {
 
 void card_renderer_create_camera(card_renderer* renderer) {
     camera game_camera;
-    set_camera_bounds(&game_camera, -16.0f, 16.0f, 9.0f, -9.0f);
+    set_camera_bounds(&game_camera, -640.0f, 640.0f, 360.0f, -360.0f);
     set_camera_position(&game_camera, (vector2){0.0f, 0.0f});
     set_camera_rotation(&game_camera, 0.0f);
     renderer->card_camera = game_camera; 
