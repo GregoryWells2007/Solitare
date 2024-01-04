@@ -16,8 +16,10 @@ ivec2 calc_from_1d_index(int index) {
 }
 
 void main(void) {
-    ivec2 card_index = calc_from_1d_index(26);
-
-    vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, (v_uv.y + card_index.y) / card_texture_size.y);
+    ivec2 card_index = calc_from_1d_index(20);
+    
+    vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, ((v_uv.y - 1) - card_index.y) / card_texture_size.y);
     color = texture(texure, uv);
+    if (v_uv.y > 1.0)
+        color = vec4(1.0, 0.0, 0.0, 1.0);
 } 
