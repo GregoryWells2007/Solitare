@@ -7,8 +7,10 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_include_directories(SolitareAI PUBLIC src/)
 
+# depends
 add_subdirectory(Depends/glfw/)
 add_subdirectory(Depends/glad/)
 add_subdirectory(Depends/cglm/)
+target_include_directories(SolitareAI PUBLIC Depends/)
 
 target_link_libraries(${PROJECT_NAME} CGLM GLFW GLAD GLU GL dl X11 m)

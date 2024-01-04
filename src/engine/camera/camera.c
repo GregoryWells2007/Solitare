@@ -20,5 +20,5 @@ void set_camera_rotation(camera* cam, float rotation) {
 
 void gen_cam_matrix(camera* cam) {
     //cam->cameraMatrix = glms_mat4_identity();
-    cam->cameraMatrix = glms_ortho(cam->left, cam->right, cam->bottom, cam->top, -0.1f, 1000.0f);
+    cam->cameraMatrix = glms_ortho(cam->left, cam->right, cam->top, cam->bottom, -0.1f, 1000.0f);
 }

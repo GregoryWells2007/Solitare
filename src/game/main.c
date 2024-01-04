@@ -87,19 +87,21 @@ int main(int argc, char** argv) {
     set_transform_pos(&card_transform, (vector2){ 0.0f, 0.0f });
     set_transform_rot(&card_transform, 0.0f);
     set_transform_scl(&card_transform, (vector2){ 1.0f, 1.0f });
-    shader_uniform card_transform_uniform = { &card_transform.matrix, matrix4, "transformMatrix\0" };
+    shader_uniform card_transform_uniform = { &card_transform.matrix, matrix4, "transform_matrix\0" };
 
     // create camera
     camera game_camera;
     set_camera_bounds(&game_camera, -16.0f, 16.0f, 9.0f, -9.0f);
     set_camera_position(&game_camera, (vector2){0.0f, 0.0f});
     set_camera_rotation(&game_camera, 0.0f);
-    shader_uniform game_camera_uniform = { &game_camera.cameraMatrix, matrix4, "cameraMatrix\0" };
+    shader_uniform game_camera_uniform = { &game_camera.cameraMatrix, matrix4, "camera_matrix\0" };
 
     color window_color = { 38.0f, 162.0f, 105.0f, 1.0f };
 
     shader_data data = load_shader_data_from_file("../res/shaders/card_shader/card_shader_vertex.glsl", "../res/shaders/card_shader/card_shader_fragment.glsl");
     shader card_shader = create_shader(data);
+
+    image img = load_image_from_file("../res/images/Cards.png");
 
     while (isOpen(&main_window)) {  
         clear_window(&main_window, window_color);
