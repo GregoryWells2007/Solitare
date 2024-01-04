@@ -4,6 +4,7 @@
 #include "string.h"
 #include <unistd.h>
 #include "glad/glad.h"
+#include "cglm/struct.h"
 
 char* load_data_from_file(char* path) {
     FILE *fptr = fopen(path,"r");
@@ -110,3 +111,19 @@ shader create_shader(shader_data data) {
     new_shader.programID = program;
     return new_shader;
 }
+
+void bind_shader(shader* shader) {
+    glUseProgram(shader->programID);
+}
+
+// shader uniform set functions
+
+void set_shader_uniform(shader* shader, shader_uniform* uniform) {
+    int uniformID = glGetUniformLocation(shader->programID, uniform->name);
+    mat4s value = *((mat4s*)uniform->data);
+    glUniformMatrix4fv(uniformID, 1, GL_FALSE, (const GLfloat *) &value.raw);
+
+    // switch (uniform->type) {
+    // case matrix4: glUniform4fv(uniformID, 1, GL_FALSE, ) return;
+    // }
+}   

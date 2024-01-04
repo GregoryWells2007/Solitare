@@ -29,8 +29,6 @@ mesh create_mesh(mesh_data data) {
 }
 
 void draw_mesh(mesh* data) {
-    glUseProgram(1);
-
     glBindBuffer(GL_ARRAY_BUFFER, data->rendererID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data->indexBufferID);
     
