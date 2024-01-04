@@ -1,8 +1,5 @@
 #include "stdio.h"
-#include "mesh/mesh.h"
-#include "window/window.h"
-#include "shader/shader.h"
-#include "transform/transform.h"
+#include "engine.h"
 
 int main(int argc, char** argv) {
     init_windows();
@@ -11,18 +8,6 @@ int main(int argc, char** argv) {
     window main_window = create_window(main_window_data);
 
     init_opengl();
-
-
-    // float card_mesh_positions[size] = {
-    //     -1.0f, 1.75f,
-    //      1.0f, 1.75f,
-    //      1.0f, 1.625f,
-         
-    //      1.0f, 1.625f,
-    //     -1.0f, 1.625f,
-    //     -1.0f, 1.75f, 
-    // };
-
 
     float card_mesh_positions[] = {
         // Vertex            // UV cords
@@ -95,21 +80,22 @@ int main(int argc, char** argv) {
         card_mesh_positions, 96,
         card_index_positions, 60
     };
-    transform card_transform;
-    vector2 card_position = { 0.0f, 0.0f };
-    float card_rotation = 0.0f;
-    vector2 card_scale = { 0.0f, 1.0f };
-    set_transform_pos(&card_transform, card_position);
-    set_transform_rot(&card_transform, card_rotation);
-    set_transform_scl(&card_transform, card_scale);
-
     mesh card_mesh = create_mesh(card_mesh_data);
+
+    // create transform for card
+    transform card_transform;
+    set_transform_pos(&card_transform, (vector2){ 0.0f, 0.0f });
+    set_transform_rot(&card_transform, 0.0f);
+    set_transform_scl(&card_transform, (vector2){ 1.0f, 1.0f });
+    shader_uniform card_transform_uniform = { &card_transform.matrix, matrix4, "transformMatrix\0" };
+
     color window_color = { 38.0f, 162.0f, 105.0f, 1.0f };
 
     shader_data data = load_shader_data_from_file("../res/shaders/card_shader/card_shader_vertex.glsl", "../res/shaders/card_shader/card_shader_fragment.glsl");
     shader card_shader = create_shader(data);
 
-    shader_uniform card_transform_uniform = { &card_transform.matrix, matrix4, "transformMatrix\0" };
+
+
 
     while (isOpen(&main_window)) {  
         clear_window(&main_window, window_color);

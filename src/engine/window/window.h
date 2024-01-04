@@ -1,6 +1,6 @@
 #pragma once
 #include "GLFW/glfw3.h"
-#include "types/multi4.h"
+#include "engine/types/multi4.h"
 
 typedef struct window_data {
     int sizeX;

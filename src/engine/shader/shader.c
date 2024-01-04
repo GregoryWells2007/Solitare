@@ -76,8 +76,6 @@ shader create_shader(shader_data data) {
         glGetShaderInfoLog(vertexShader, length, &length, message);
         printf("Failed to compile vertex shader\n");
         printf("Reason: {%s}", message);
-    } else {
-        printf("Vertex Shader compiled\n");
     }
 
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -92,8 +90,6 @@ shader create_shader(shader_data data) {
         glGetShaderInfoLog(fragmentShader, length, &length, message);
         printf("Failed to compile fragment shader\n");
         printf("Reason: {%s}", message);
-    } else {
-        printf("Fragment Shader compiled\n");
     }
 
     glAttachShader(program, vertexShader);
@@ -104,8 +100,6 @@ shader create_shader(shader_data data) {
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-
-    printf("Vertex ID%i\n", program);
 
     shader new_shader = {};
     new_shader.programID = program;
