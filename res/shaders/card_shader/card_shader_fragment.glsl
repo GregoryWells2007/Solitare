@@ -20,6 +20,4 @@ void main(void) {
     
     vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, ((v_uv.y - 1) - card_index.y) / card_texture_size.y);
     color = texture(texure, uv);
-    if (v_uv.y > 1.0)
-        color = vec4(1.0, 0.0, 0.0, 1.0);
 } 
