@@ -10,5 +10,5 @@ out vec2 vUV;
 
 void main(void) {
     vUV = uv;
-    gl_Position = cameraMatrix * transformMatrix * vec4(position, 1.0, 1.0);
+    gl_Position = cameraMatrix * transformMatrix * vec4(position, 0.0, 1.0);
 }
