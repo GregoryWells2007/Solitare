@@ -1,4 +1,5 @@
 #pragma once
+#include "engine/types/multi2.h"
 
 typedef enum card_face {
     clubs = 0, spades = 1, hearts = 2, diamonds = 3
@@ -13,5 +14,11 @@ typedef struct card_data {
     card_value value;
     card_type type;
 } card_data;
+
+typedef struct card {
+    card_data data;
+    vector2 position;
+    int scale;
+} card;
 
 int card_data_to_number(card_data data);

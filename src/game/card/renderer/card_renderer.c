@@ -91,8 +91,34 @@ void card_renderer_create_camera(card_renderer* renderer) {
     renderer->card_camera = game_camera; 
 }
 
+void card_renderer_create_image(card_renderer* renderer) {
+    image img = load_image_from_file("../res/images/Cards.png");
+    renderer->card_image = img;
+}
+
 void init_card_renderer(card_renderer* renderer) {
     card_renderer_create_mesh(renderer);
     card_renderer_create_shader(renderer);
     card_renderer_create_camera(renderer);
+    card_renderer_create_image(renderer);
+}
+
+void start_card_renderer_frame(card_renderer* renderer) {
+    shader_uniform game_camera_uniform = { &renderer->card_camera.cameraMatrix, matrix4, "camera_matrix\0" };
+    set_shader_uniform(&renderer->card_shader, &game_camera_uniform);
+}
+
+
+void draw_card(card_renderer* renderer, card value) {
+    bind_image(&renderer->card_image);
+
+    transform card_transform;
+    set_transform_pos(&card_transform, (vector2){ value.position.x, value.position.y });
+    set_transform_scl(&card_transform, (vector2){ value.scale, value.scale });
+    shader_uniform card_transform_uniform = { &card_transform.matrix, matrix4, "transform_matrix\0" };
+    
+    set_shader_uniform(&renderer->card_shader, &card_transform_uniform);
+    
+    bind_shader(&renderer->card_shader);
+    draw_mesh(&renderer->card_mesh);
 }
