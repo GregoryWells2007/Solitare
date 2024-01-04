@@ -16,7 +16,10 @@ void set_transform_scl(transform* trans, vector2 new_scl) {
 }
 
 void calculate_transform_mat(transform* trans) {
-    trans->matrix = glms_translate(glms_mat4_identity(), (vec3s){trans->position.x, trans->position.y, 0.0f});
-    trans->matrix = glms_rotate(trans->matrix, glm_rad(trans->rotation), (vec3s){0.0f, 0.0f, 1.0f});
-    trans->matrix = glms_scale(trans->matrix, (vec3s){trans->scale.x, trans->scale.y, 1.0f});
+    mat4s pos_matrix = glms_translate(glms_mat4_identity(), (vec3s){trans->position.x, trans->position.y, 0.0f});
+    mat4s rot_matrix = glms_rotate(glms_mat4_identity(), glm_rad(trans->rotation), (vec3s){0.0f, 0.0f, 1.0f});
+    mat4s scl_matrix = glms_scale(glms_mat4_identity(), (vec3s){trans->scale.x, trans->scale.y, 1.0f});
+
+    mat4s transform_matrix = glms_mat4_mul(glms_mat4_mul(pos_matrix, rot_matrix), scl_matrix);
+    trans->matrix = transform_matrix;
 }
