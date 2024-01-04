@@ -1,6 +1,8 @@
 #include "stdio.h"
 #include "engine.h"
 
+#include "card/card.h"
+
 int main(int argc, char** argv) {
     init_windows();
 
@@ -8,6 +10,10 @@ int main(int argc, char** argv) {
     window main_window = create_window(main_window_data);
 
     init_opengl();
+
+    // create test card
+    card_data test_card_data = { five, hearts };
+    printf("Card index: %i\n", card_data_to_number(test_card_data));
 
     float card_mesh_positions[] = {
         // Vertex            // UV cords
