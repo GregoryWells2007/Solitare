@@ -70,7 +70,7 @@ void card_renderer_create_mesh(card_renderer* renderer) {
 
     mesh_data card_mesh_data = { 
         card_mesh_positions, 96,
-        card_index_positions, 60
+        card_index_positions, 66
     };
     mesh card_mesh = create_mesh(card_mesh_data);
 
