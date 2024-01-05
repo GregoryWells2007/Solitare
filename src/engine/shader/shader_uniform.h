@@ -1,7 +1,7 @@
 #pragma once
 
 typedef enum shader_uniform_type {
-    matrix4
+    matrix4, int1, int2, int3, int4
 } shader_uniform_type;
 
 typedef struct shader_uniform {
