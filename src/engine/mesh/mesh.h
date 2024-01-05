@@ -11,8 +11,10 @@ typedef struct mesh_data {
 
 typedef struct mesh {
     unsigned int rendererID;
-
+    
+    unsigned int meshPositionsID;
     unsigned int indexBufferID;
+
     int triangle_count;
 } mesh;
 
