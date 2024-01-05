@@ -3,6 +3,8 @@
 
 #include "card/card.h"
 #include "card/renderer/card_renderer.h"
+#include "board/board.h"
+#include "board/board_renderer/board_renderer.h"
 
 int main(int argc, char** argv) {
     init_windows();
@@ -10,8 +12,17 @@ int main(int argc, char** argv) {
     window main_window = create_window(main_window_data);
     init_opengl();
 
-    card_renderer renderer = {};
-    init_card_renderer(&renderer);
+    // create card renderer
+
+    card_renderer card_renderer = {};
+    init_card_renderer(&card_renderer);
+
+    // create background
+    board game_board = {  };
+    create_background(&game_board, "../res/images/Background.png\0");
+    
+    board_renderer board_renderer = {};
+    init_board_renderer(&board_renderer);
 
     // create transform for card
 
@@ -20,8 +31,10 @@ int main(int argc, char** argv) {
     while (isOpen(&main_window)) {  
         clear_window(&main_window, (color){ 38.0f, 162.0f, 105.0f, 1.0f });
 
-        start_card_renderer_frame(&renderer);
-        draw_card(&renderer, new_card);
+        draw_board(&board_renderer, &game_board);
+
+        start_card_renderer_frame(&card_renderer);
+        draw_card(&card_renderer, new_card);
 
         draw_window(&main_window);
         update_windows();

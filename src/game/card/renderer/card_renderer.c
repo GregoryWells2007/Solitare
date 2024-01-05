@@ -104,6 +104,7 @@ void init_card_renderer(card_renderer* renderer) {
 }
 
 void start_card_renderer_frame(card_renderer* renderer) {
+    bind_shader(&renderer->card_shader);
     shader_uniform game_camera_uniform = { &renderer->card_camera.cameraMatrix, matrix4, "camera_matrix\0" };
     set_shader_uniform(&renderer->card_shader, &game_camera_uniform);
 }
