@@ -19,7 +19,7 @@ ivec2 calc_from_1d_index(int index) {
 
 vec3 base_color = vec3(1.0, 1.0, 1.0);
 vec3 hover_color = vec3(0.75, 0.75, 0.75);
-vec3 clicked_color = vec3(0.0, 0.0, 1.0);
+vec3 clicked_color = vec3(0.6, 0.6, 0.6);
 
 vec4 get_color_multiplier() {
     ivec3 colors_to_use = ivec3(
