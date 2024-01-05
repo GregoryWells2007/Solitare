@@ -11,4 +11,4 @@ typedef struct card_renderer {
 
 void init_card_renderer(card_renderer* renderer);
 void start_card_renderer_frame(card_renderer* renderer);
-void draw_card(card_renderer* renderer, card value);
+void draw_card(card_renderer* renderer, card* value);
