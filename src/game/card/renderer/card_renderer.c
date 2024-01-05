@@ -121,6 +121,10 @@ void draw_card(card_renderer* renderer, card value) {
     
     set_shader_uniform(&renderer->card_shader, &card_transform_uniform);
     
+    int card_index_value = 10;
+    shader_uniform card_type_uniform = { &card_index_value, int1, "u_card_index" };
+    set_shader_uniform(&renderer->card_shader, &card_type_uniform);
+
     bind_shader(&renderer->card_shader);
     draw_mesh(&renderer->card_mesh);
 }
