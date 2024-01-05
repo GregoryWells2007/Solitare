@@ -1,5 +1,6 @@
 #pragma once
-#include "engine/types/multi2.h"
+#include "engine.h"
+#include <stdbool.h>
 
 typedef enum card_face {
     clubs = 0, spades = 1, hearts = 2, diamonds = 3
@@ -20,7 +21,7 @@ typedef struct card {
     vector2 position;
     int scale;
 
-    bool is_hoverd;
+    bool mouse_over;
 } card;
 
 int card_data_to_number(card_data data);
