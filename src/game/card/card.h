@@ -19,6 +19,8 @@ typedef struct card {
     card_data data;
     vector2 position;
     int scale;
+
+    bool is_hoverd;
 } card;
 
 int card_data_to_number(card_data data);

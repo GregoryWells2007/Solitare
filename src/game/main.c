@@ -3,6 +3,7 @@
 
 #include "card/card.h"
 #include "card/renderer/card_renderer.h"
+#include "card/hover/card_hover.h"
 #include "board/board.h"
 #include "board/board_renderer/board_renderer.h"
 
@@ -11,6 +12,9 @@ int main(int argc, char** argv) {
     window_data main_window_data = { 1280, 720, "Solitare AI\0" };
     window main_window = create_window(main_window_data);
     init_opengl();
+
+    // create card hover class
+    card_hover hover = { main_window.input };
 
     // create card renderer
 
@@ -34,7 +38,8 @@ int main(int argc, char** argv) {
         draw_board(&board_renderer, &game_board);
 
         start_card_renderer_frame(&card_renderer);
-        draw_card(&card_renderer, new_card);
+        test_card_hover(&hover, &new_card);
+        draw_card(&card_renderer, &new_card);
 
         draw_window(&main_window);
         update_windows();
