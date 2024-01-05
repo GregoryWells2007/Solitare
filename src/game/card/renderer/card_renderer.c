@@ -123,6 +123,8 @@ void draw_card(card_renderer* renderer, card* value) {
     set_shader_uniform(&renderer->card_shader, &card_transform_uniform);
     
     int card_index_value = card_data_to_number(value->data);
+    if (value->flipped)
+        card_index_value = 52;
     shader_uniform card_type_uniform = { &card_index_value, int1, "u_card_index" };
     set_shader_uniform(&renderer->card_shader, &card_type_uniform);
 

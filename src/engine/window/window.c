@@ -30,6 +30,12 @@ static void mouse_clicked_callback(GLFWwindow* win, int button, int action, int 
         input->mouse_down = true;
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
         input->mouse_down = false;
+
+
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+        input->right_mouse_down = true;
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
+        input->right_mouse_down = false;
 }
 
 

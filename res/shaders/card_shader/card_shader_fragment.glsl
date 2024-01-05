@@ -9,7 +9,7 @@ uniform int u_card_index;
 uniform int mouse_over;
 uniform int card_held;
 
-ivec2 card_texture_size = ivec2(13, 4);
+ivec2 card_texture_size = ivec2(13, 5);
 ivec2 calc_from_1d_index(int index) {
     ivec2 return_value = ivec2(0);
     return_value.x = int(mod(index, card_texture_size.x));

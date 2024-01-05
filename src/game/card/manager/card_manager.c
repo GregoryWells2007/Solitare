@@ -18,7 +18,8 @@ void create_cards(card_manager* manager) {
             new_card->scale = 40.0f;
             new_card->mouse_over = 0;
             new_card->held = 0;
-            
+            new_card->flipped = false;
+
             manager->cards[index] = new_card;
             index++;
         }

@@ -21,6 +21,8 @@ typedef struct card {
     vector2 position;
     int scale;
 
+    bool flipped;
+
     bool held;
     bool mouse_over;
 } card;
