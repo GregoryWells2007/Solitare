@@ -111,13 +111,22 @@ void bind_shader(shader* shader) {
 }
 
 // shader uniform set functions
+void set_mat4(unsigned int uniformID, void* data) {
+    mat4s value = *((mat4s*)data);
+    glUniformMatrix4fv(uniformID, 1, GL_FALSE, (const GLfloat *) &value.raw);
+}
+
+
+void set_int1(unsigned int uniformID, void* data) {
+    int value = *((int*)data);
+    glUniform1i(uniformID, value);
+}
 
 void set_shader_uniform(shader* shader, shader_uniform* uniform) {
     int uniformID = glGetUniformLocation(shader->programID, uniform->name);
-    mat4s value = *((mat4s*)uniform->data);
-    glUniformMatrix4fv(uniformID, 1, GL_FALSE, (const GLfloat *) &value.raw);
 
-    // switch (uniform->type) {
-    // case matrix4: glUniform4fv(uniformID, 1, GL_FALSE, ) return;
-    // }
+    switch (uniform->type) {
+        case matrix4: set_mat4(uniformID, uniform->data); return;
+        case int1: set_int1(uniformID, uniform->data);
+    }
 }   
