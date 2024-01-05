@@ -5,7 +5,8 @@
 #include "game/card/renderer/card_renderer.h"
 
 typedef struct card_manager {
-    linked_list cards;
+    card* cards;
+    
     card_hover* hover;
     card_renderer* renderer;
 
