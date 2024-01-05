@@ -1,6 +1,7 @@
 #pragma once
 #include "GLFW/glfw3.h"
 #include "engine/types/multi4.h"
+#include "engine/input_manager/input_manager.h"
 
 typedef struct window_data {
     int sizeX;
@@ -10,6 +11,7 @@ typedef struct window_data {
 
 typedef struct window {
     GLFWwindow* window;
+    input_manager* input;
 } window;
 
 void init_windows();

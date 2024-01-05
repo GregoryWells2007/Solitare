@@ -1,6 +1,7 @@
 #include "glad/glad.h"
 #include "window.h"
 #include "stdio.h"
+#include "stdlib.h"
 
 void init_windows() {
     if (!glfwInit())
@@ -18,6 +19,11 @@ void init_opengl() {
         printf("GLAD initilization failed\n");
 }
 
+static void cursor_position_callback(GLFWwindow* win, double xpos, double ypos) {
+    input_manager* input = glfwGetWindowUserPointer(win);
+    set_mouse_pos(input, (vector2){xpos, ypos});
+}
+
 window create_window(window_data data) {
     GLFWwindow* glfw_window = glfwCreateWindow(1280, 720, "Solitare AI", NULL, NULL);
     if (!glfw_window) {
@@ -27,8 +33,17 @@ window create_window(window_data data) {
 
     glfwMakeContextCurrent(glfw_window);
 
+    glfwSetCursorPosCallback(glfw_window, cursor_position_callback);
+
+
     window new_window = {};
     new_window.window = glfw_window;
+    new_window.input = malloc(sizeof(input_manager));
+    new_window.input->mouse_position.x = 10;
+    new_window.input->mouse_position.y = 100;
+
+    glfwSetWindowUserPointer(glfw_window, (void*)new_window.input);
+
     return new_window;
 }
 
@@ -43,4 +58,8 @@ void draw_window(window* window) {
 }
 int isOpen(window* window) {
     return !glfwWindowShouldClose(window->window);
+}
+
+input_manager* get_input_manager(window* window) {
+    return window->input;
 }
