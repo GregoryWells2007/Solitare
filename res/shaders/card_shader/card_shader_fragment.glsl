@@ -7,7 +7,7 @@ uniform sampler2D texure;
 uniform int u_card_index;
 
 uniform int mouse_over;
-uniform int is_clicked;
+uniform int card_held;
 
 ivec2 card_texture_size = ivec2(13, 4);
 ivec2 calc_from_1d_index(int index) {
@@ -23,9 +23,9 @@ vec3 clicked_color = vec3(0.6, 0.6, 0.6);
 
 vec4 get_color_multiplier() {
     ivec3 colors_to_use = ivec3(
-        (1 - is_clicked) * (1 - mouse_over),
-        mouse_over - is_clicked,
-        is_clicked
+        (1 - card_held) * (1 - mouse_over),
+        mouse_over - card_held,
+        card_held
     );
 
     vec3 finalColor = (base_color * colors_to_use.x) + (hover_color * colors_to_use.y) + (clicked_color * colors_to_use.z);

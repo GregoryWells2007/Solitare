@@ -24,6 +24,15 @@ static void cursor_position_callback(GLFWwindow* win, double xpos, double ypos) 
     set_mouse_pos(input, (vector2){xpos, ypos});
 }
 
+static void mouse_clicked_callback(GLFWwindow* win, int button, int action, int mods) {
+    input_manager* input = glfwGetWindowUserPointer(win);
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        input->mouse_down = true;
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+        input->mouse_down = false;
+}
+
+
 window create_window(window_data data) {
     GLFWwindow* glfw_window = glfwCreateWindow(1280, 720, "Solitare AI", NULL, NULL);
     if (!glfw_window) {
@@ -34,6 +43,7 @@ window create_window(window_data data) {
     glfwMakeContextCurrent(glfw_window);
 
     glfwSetCursorPosCallback(glfw_window, cursor_position_callback);
+    glfwSetMouseButtonCallback(glfw_window, mouse_clicked_callback);
 
 
     window new_window = {};

@@ -133,5 +133,12 @@ void draw_card(card_renderer* renderer, card* value) {
     shader_uniform card_hovered_uniform = { &value_for_mouse_over, int1, "mouse_over" };
     set_shader_uniform(&renderer->card_shader, &card_hovered_uniform);
 
+    int value_for_card_held = 0;
+    if (value->held == true)
+        value_for_card_held = 1;
+
+    shader_uniform card_held_uniform = { &value_for_card_held, int1, "card_held" };
+    set_shader_uniform(&renderer->card_shader, &card_held_uniform);
+
     draw_mesh(&renderer->card_mesh);
 }

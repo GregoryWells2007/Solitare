@@ -8,6 +8,8 @@ typedef struct card_manager {
     linked_list cards;
     card_hover* hover;
     card_renderer* renderer;
+
+    bool card_is_currently_held;
 } card_manager;
 
 void init_card_manager(card_manager* manager);

@@ -13,6 +13,7 @@ void create_cards(card_manager* manager) {
             new_card->position = (vector2){ (y * 95.0f) - 550.0f, (x * -145.0f) + 240.0f };
             new_card->scale = 40.0f;
             new_card->mouse_over = 0;
+            new_card->held = 0;
             linked_list_add(&manager->cards, (void*)(new_card));
         }
     }
@@ -23,6 +24,25 @@ void update_card_manager(card_manager* manager) {
         card* current_card = linked_list_get(&manager->cards, i);
         current_card->mouse_over = 0;
         test_card_hover(manager->hover, current_card);
+        if (!manager->card_is_currently_held) {
+            current_card->held = 0;
+            if (current_card->mouse_over && manager->hover->input_manager->mouse_down) {
+                current_card->held = 1;
+                manager->card_is_currently_held = true;
+            }
+        } else if (current_card->held) {
+            if (!(current_card->mouse_over && manager->hover->input_manager->mouse_down))
+                current_card->held = 0;
+            else {
+                float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
+                float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+
+                current_card->position.x = real_mouse_x;
+                current_card->position.y = real_mouse_y;
+            }
+        } else if (!manager->hover->input_manager->mouse_down) {
+            manager->card_is_currently_held = false;
+        }
         draw_card(manager->renderer, current_card);
     }
 }
