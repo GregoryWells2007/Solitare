@@ -115,6 +115,7 @@ void draw_card(card_renderer* renderer, card value) {
 
     transform card_transform;
     set_transform_pos(&card_transform, (vector2){ value.position.x, value.position.y });
+    set_transform_rot(&card_transform, 0.0f);
     set_transform_scl(&card_transform, (vector2){ value.scale, value.scale });
     shader_uniform card_transform_uniform = { &card_transform.matrix, matrix4, "transform_matrix\0" };
     
