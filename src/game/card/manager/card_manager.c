@@ -19,38 +19,61 @@ void create_cards(card_manager* manager) {
             new_card->mouse_over = 0;
             new_card->held = 0;
             
-            manager->cards[index] = *new_card;
+            manager->cards[index] = new_card;
             index++;
         }
     }
 }
 
+void move_card_to_top(card_manager* manager, int index) {
+    if (index == 0)
+        return;
+
+    card* card_to_copy = manager->cards[index];
+
+    printf("card_to_copy_index: %i\n", card_to_copy);
+
+    for (int i = index; i >= 0; i--)
+        manager->cards[i] = manager->cards[i - 1];
+
+    manager->cards[0] = card_to_copy;
+}   
+
 void update_card_manager(card_manager* manager) {
+    bool card_already_hovered = false;
+
     for (int i = 0; i < 52; i++) {
-        card* current_card = &manager->cards[i];
+        card* current_card = manager->cards[i];
         current_card->mouse_over = 0;
-        test_card_hover(manager->hover, current_card);
+        if (!card_already_hovered) {
+            test_card_hover(manager->hover, current_card);
+            if (current_card->mouse_over)
+                card_already_hovered = true;
+        }
 
-    
+        if (!manager->card_is_currently_held) {
+            current_card->held = 0;
+            if (current_card->mouse_over && manager->hover->input_manager->mouse_down) {
+                current_card->held = 1;
+                manager->card_is_currently_held = true;
 
-        // if (!manager->card_is_currently_held) {
-        //     current_card->held = 0;
-        //     if (current_card->mouse_over && manager->hover->input_manager->mouse_down) {
-        //         current_card->held = 1;
-        //         manager->card_is_currently_held = true;
-        //     }
-        // } else if (current_card->held) {
-        //     if (manager->hover->input_manager->mouse_down) {
-        //         float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
-        //         float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+                move_card_to_top(manager, i);
+            }
+        } else if (current_card->held) {
+            if (manager->hover->input_manager->mouse_down) {
+                float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
+                float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
 
-        //         current_card->position.x = real_mouse_x;
-        //         current_card->position.y = real_mouse_y;
-        //     } else {
-        //         current_card->held = 0;
-        //         manager->card_is_currently_held = false;
-        //     }
-        // }
-        draw_card(manager->renderer, current_card);
+                current_card->position.x = real_mouse_x;
+                current_card->position.y = real_mouse_y;
+            } else {
+                current_card->held = 0;
+                manager->card_is_currently_held = false;
+            }
+        }
+    }
+
+    for (int i = 51; i >= 0; i--) {
+        draw_card(manager->renderer, manager->cards[i]);
     }
 }

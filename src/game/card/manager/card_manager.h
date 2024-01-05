@@ -5,7 +5,7 @@
 #include "game/card/renderer/card_renderer.h"
 
 typedef struct card_manager {
-    card* cards;
+    card** cards;
     
     card_hover* hover;
     card_renderer* renderer;
