@@ -31,8 +31,6 @@ void move_card_to_top(card_manager* manager, int index) {
 
     card* card_to_copy = manager->cards[index];
 
-    printf("card_to_copy_index: %i\n", card_to_copy);
-
     for (int i = index; i >= 0; i--)
         manager->cards[i] = manager->cards[i - 1];
 
@@ -45,7 +43,7 @@ void update_card_manager(card_manager* manager) {
     for (int i = 0; i < 52; i++) {
         card* current_card = manager->cards[i];
         current_card->mouse_over = 0;
-        if (!card_already_hovered) {
+        if (!card_already_hovered && !manager->card_is_currently_held) {
             test_card_hover(manager->hover, current_card);
             if (current_card->mouse_over)
                 card_already_hovered = true;
@@ -57,12 +55,22 @@ void update_card_manager(card_manager* manager) {
                 current_card->held = 1;
                 manager->card_is_currently_held = true;
 
+                float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
+                float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+
+                manager->card_held_offset.x = real_mouse_x - current_card->position.x;
+                manager->card_held_offset.y = real_mouse_y - current_card->position.y;
+
                 move_card_to_top(manager, i);
             }
         } else if (current_card->held) {
+            //current_card->mouse_over = 1;
             if (manager->hover->input_manager->mouse_down) {
                 float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
                 float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+
+                real_mouse_x -= manager->card_held_offset.x;
+                real_mouse_y -= manager->card_held_offset.y;
 
                 current_card->position.x = real_mouse_x;
                 current_card->position.y = real_mouse_y;

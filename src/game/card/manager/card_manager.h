@@ -10,6 +10,7 @@ typedef struct card_manager {
     card_hover* hover;
     card_renderer* renderer;
 
+    vector2 card_held_offset;
     bool card_is_currently_held;
 } card_manager;
 

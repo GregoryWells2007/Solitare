@@ -24,7 +24,7 @@ vec3 clicked_color = vec3(0.6, 0.6, 0.6);
 vec4 get_color_multiplier() {
     ivec3 colors_to_use = ivec3(
         (1 - card_held) * (1 - mouse_over),
-        mouse_over - card_held,
+        mouse_over * (1 - card_held),
         card_held
     );
 
