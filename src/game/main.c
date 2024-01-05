@@ -8,6 +8,23 @@
 #include "board/board.h"
 #include "board/board_renderer/board_renderer.h"
 
+void set_board_positions(board* board_to_set) {
+    board_to_set->board_spades_position = (vector2){ -1000, -1000 };
+    board_to_set->board_clubs_position = (vector2){ -1000, -1000 };
+    board_to_set->board_hearts_position = (vector2){ -1000, -1000 };
+    board_to_set->board_diamonds_position = (vector2){ -1000, -1000 };
+
+    board_to_set->board_cards_position_1 = (vector2){ -565, 50 };
+    board_to_set->board_cards_position_2 = (vector2){ -430, 50 };
+    board_to_set->board_cards_position_3 = (vector2){ -289, 50 };
+    board_to_set->board_cards_position_4 = (vector2){ -150, 50 };
+    board_to_set->board_cards_position_5 = (vector2){  -15, 50 };
+    board_to_set->board_cards_position_6 = (vector2){  125, 50 };
+    board_to_set->board_cards_position_7 = (vector2){  265, 50 };
+
+    board_to_set->card_stack_position = (vector2){ 565, 260 };
+}
+
 int main(int argc, char** argv) {
     init_windows();
     window_data main_window_data = { 1280, 720, "Solitare AI\0" };
@@ -23,13 +40,16 @@ int main(int argc, char** argv) {
     card_manager manager = {};
     manager.hover = &hover;
     manager.renderer = &card_renderer;
-    create_cards(&manager);
 
 
     // create background
     board game_board = {  };
     create_background(&game_board, "../res/images/Background.png\0");
-    
+    set_board_positions(&game_board);
+
+    manager.loaded_board = &game_board;
+    create_cards(&manager);
+
     board_renderer board_renderer = {};
     init_board_renderer(&board_renderer);
 
@@ -42,8 +62,6 @@ int main(int argc, char** argv) {
 
         start_card_renderer_frame(&card_renderer);
         update_card_manager(&manager);
-        // test_card_hover(&hover, &new_card);
-        // draw_card(&card_renderer, &new_card);
 
         draw_window(&main_window);
         update_windows();
