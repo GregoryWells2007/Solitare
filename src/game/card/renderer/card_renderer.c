@@ -111,6 +111,7 @@ void start_card_renderer_frame(card_renderer* renderer) {
 
 
 void draw_card(card_renderer* renderer, card* value) {
+    bind_shader(&renderer->card_shader);
     bind_image(&renderer->card_image);
 
     transform card_transform;
@@ -121,13 +122,16 @@ void draw_card(card_renderer* renderer, card* value) {
     
     set_shader_uniform(&renderer->card_shader, &card_transform_uniform);
     
-    int card_index_value = 10;
+    int card_index_value = card_data_to_number(value->data);
     shader_uniform card_type_uniform = { &card_index_value, int1, "u_card_index" };
     set_shader_uniform(&renderer->card_shader, &card_type_uniform);
 
-    shader_uniform card_hovered_uniform = { &value->mouse_over, int1, "mouse_over" };
+    int value_for_mouse_over = 0;
+    if (value->mouse_over == true)
+        value_for_mouse_over = 1;
+
+    shader_uniform card_hovered_uniform = { &value_for_mouse_over, int1, "mouse_over" };
     set_shader_uniform(&renderer->card_shader, &card_hovered_uniform);
 
-    bind_shader(&renderer->card_shader);
     draw_mesh(&renderer->card_mesh);
 }

@@ -4,6 +4,7 @@
 #include "card/card.h"
 #include "card/renderer/card_renderer.h"
 #include "card/hover/card_hover.h"
+#include "card/manager/card_manager.h"
 #include "board/board.h"
 #include "board/board_renderer/board_renderer.h"
 
@@ -13,13 +14,17 @@ int main(int argc, char** argv) {
     window main_window = create_window(main_window_data);
     init_opengl();
 
-    // create card hover class
-    card_hover hover = { main_window.input };
-
     // create card renderer
-
     card_renderer card_renderer = {};
     init_card_renderer(&card_renderer);
+
+    // create card manager
+    card_hover hover = { main_window.input };
+    card_manager manager = {};
+    manager.hover = &hover;
+    manager.renderer = &card_renderer;
+    create_cards(&manager);
+
 
     // create background
     board game_board = {  };
@@ -30,16 +35,15 @@ int main(int argc, char** argv) {
 
     // create transform for card
 
-    card new_card = { (card_data){ five, hearts }, (vector2){ 0.0f, 0.0f }, 40.0f };
-
     while (isOpen(&main_window)) {  
         clear_window(&main_window, (color){ 38.0f, 162.0f, 105.0f, 1.0f });
 
         draw_board(&board_renderer, &game_board);
 
         start_card_renderer_frame(&card_renderer);
-        test_card_hover(&hover, &new_card);
-        draw_card(&card_renderer, &new_card);
+        update_card_manager(&manager);
+        // test_card_hover(&hover, &new_card);
+        // draw_card(&card_renderer, &new_card);
 
         draw_window(&main_window);
         update_windows();
