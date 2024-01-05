@@ -33,8 +33,12 @@ void init_board_renderer(board_renderer* renderer) {
 }
 
 void draw_board(board_renderer* renderer, board* board) {
+    bind_shader(&renderer->board_shader);
     bind_image(&board->board_image);
 
-    bind_shader(&renderer->board_shader);
+    int numBound = board->board_image.slot;
+    shader_uniform board_image_uniform = { &numBound, int1, "texure" };
+    set_shader_uniform(&renderer->board_shader, &board_image_uniform);
+
     draw_mesh(&renderer->board_mesh);
 }
