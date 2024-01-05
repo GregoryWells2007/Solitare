@@ -4,8 +4,8 @@ out vec4 color;
 in vec2 v_uv;
 
 uniform sampler2D texure;
+uniform int u_card_index;
 
-// data i need from shades
 ivec2 card_texture_size = ivec2(13, 4);
 
 ivec2 calc_from_1d_index(int index) {
@@ -16,7 +16,7 @@ ivec2 calc_from_1d_index(int index) {
 }
 
 void main(void) {
-    ivec2 card_index = calc_from_1d_index(20);
+    ivec2 card_index = calc_from_1d_index(u_card_index);
     
     vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, ((v_uv.y - 1) - card_index.y) / card_texture_size.y);
     color = texture(texure, uv);
