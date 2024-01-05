@@ -5,5 +5,6 @@
 #include "engine/transform/transform.h"
 #include "engine/camera/camera.h"
 #include "engine/image/image.h"
+#include "engine/types/linked_list.h"
 #include "engine/types/multi2.h"
 #include "engine/types/multi4.h"
