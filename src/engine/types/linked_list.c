@@ -39,7 +39,9 @@ int linked_list_size(linked_list* list) {
     if (list->data != NULL)
         count++;
 
-    while (list->next != NULL) {
+    list = list->next;
+
+    while (list->data != NULL) {
         count++;
         list = list->next;
     }
