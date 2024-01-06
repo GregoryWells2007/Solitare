@@ -79,3 +79,7 @@ int isOpen(window* window) {
 input_manager* get_input_manager(window* window) {
     return window->input;
 }
+
+float get_time() {
+    return glfwGetTime();
+}

@@ -22,6 +22,8 @@ void init_opengl();
 
 window create_window(window_data data);
 
+float get_time();
+
 void draw_window(window* window);
 void clear_window(window* window, color window_color);
 int isOpen(window* window);
