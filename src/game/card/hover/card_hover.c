@@ -69,6 +69,8 @@ bool test_card_in_area(card_hover* hover, card* card_to_test, vector2 board_area
 }
 
 bool test_card_collision(card_hover* hover, card* card1, card* card2) {
+    return test_card_in_area(hover, card1, card2->position);
+
     // float card_size_x = 2.25f * 40.0f;
     // float card_size_y = 3.5f * 40.0f;
 
