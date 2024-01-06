@@ -1,4 +1,7 @@
 #include "card_manager.h"
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <time.h> 
 
 void move_card_to_top(card_manager* manager, card* card_to_top) {
     int index = 0;
@@ -21,9 +24,22 @@ void move_card_to_top(card_manager* manager, card* card_to_top) {
 }   
 
 void assign_cards_to_rows(card_manager* manager) {
-    int* numbers_to_use_list = malloc(sizeof(int) * 52);
+    int* numbersLeft = malloc(sizeof(int) * 52);
     for (int k = 0; k < 52; k++)
-        numbers_to_use_list[k] = k;
+        numbersLeft[k] = k;
+
+    int* numbers_to_use_list = malloc(sizeof(int) * 52);
+    for (int k = 0; k < 52; k++) {
+        srand((time(NULL))); 
+        int value = rand() % (52 - k); 
+        numbers_to_use_list[k] = numbersLeft[value];
+
+        numbersLeft[value] = -1;
+        for (int g = value; g < 51; g++) {
+            numbersLeft[g] = numbersLeft[g + 1]; 
+        }
+    }
+    free(numbersLeft);
 
     manager->row_1_cards = malloc(sizeof(card) * 13);
     for (int k = 1; k < 13; k++)
