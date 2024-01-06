@@ -43,3 +43,49 @@ bool in_board_area(card_hover* hover, vector2 board_area) {
 
     return mouse_inside;   
 }
+
+bool test_card_in_area(card_hover* hover, card* card_to_test, vector2 board_area) {
+    float card_size_x = 2.25f * 40.0f;
+    float card_size_y = 3.5f * 40.0f;
+
+
+    float card1_bounds_left = card_to_test->position.x - (card_size_x / 2.0f);
+    float card1_bounds_right = card_to_test->position.x + (card_size_x / 2.0f);
+    float card1_bounds_top = card_to_test->position.y + (card_size_y / 2.0f);
+    float card1_bounds_bottom = card_to_test->position.y - (card_size_y / 2.0f);
+
+    float card2_bounds_left = board_area.x - (card_size_x / 2.0f);
+    float card2_bounds_right = board_area.x + (card_size_x / 2.0f);
+    float card2_bounds_top = board_area.y + (card_size_y / 2.0f);
+    float card2_bounds_bottom = board_area.y - (card_size_y / 2.0f);
+
+    bool colliding = false;
+
+    if (card1_bounds_left < card2_bounds_right && card1_bounds_right > card2_bounds_left &&
+        card1_bounds_bottom < card2_bounds_top && card1_bounds_top > card2_bounds_bottom)
+        colliding = true;
+
+    return colliding;
+}
+
+bool test_card_collision(card_hover* hover, card* card1, card* card2) {
+    // float card_size_x = 2.25f * 40.0f;
+    // float card_size_y = 3.5f * 40.0f;
+
+
+    // float card1_bounds_left = card1->position.x - (card_size_x / 2.0f);
+    // float card1_bounds_right = card1->position.x + (card_size_x / 2.0f);
+    // float card1_bounds_top = card1->position.y + (card_size_y / 2.0f);
+    // float card1_bounds_bottom = card1->position.y - (card_size_y / 2.0f);
+
+    // float card2_bounds_left = card2->position.x - (card_size_x / 2.0f);
+    // float card2_bounds_right = card2->position.x + (card_size_x / 2.0f);
+    // float card2_bounds_top = card2->position.y + (card_size_y / 2.0f);
+    // float card2_bounds_bottom = card2->position.y - (card_size_y / 2.0f);
+
+    // bool colliding = false;
+    // if ()
+    //     colliding = true;
+
+    // return colliding;
+}

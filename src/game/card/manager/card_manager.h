@@ -30,6 +30,10 @@ typedef struct card_manager {
     card* card_stack_show_2;
     card** rest_of_cards;
     int cards_in_third_stack;
+
+    // card* spades_stack;
+    // card* clubs_stack;
+
 } card_manager;
 
 void init_card_manager(card_manager* manager);

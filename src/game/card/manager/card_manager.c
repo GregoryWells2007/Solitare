@@ -2,6 +2,7 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <time.h> 
+#include "math.h"
 
 void move_card_to_top(card_manager* manager, card* card_to_top) {
     int index = 0;
@@ -282,15 +283,76 @@ void position_card_stacks(card_manager* manager) {
 
     if (manager->card_stack_show_1 != NULL) {
         manager->card_stack_show_1->position.x = (manager->loaded_board->card_stack_position.x - 100.0f);
+        manager->card_stack_show_1->is_moveable = true;
     }
 
     if (manager->card_stack_show_2 != NULL) {
         manager->card_stack_show_2->position.x = (manager->loaded_board->card_stack_position.x - 150.0f);
+        manager->card_stack_show_2->is_moveable = false;
     }
 
     for (int k = 0; k < manager->cards_in_third_stack; k++) {
         manager->rest_of_cards[k]->position.x = (manager->loaded_board->card_stack_position.x - 200.0f);
+        manager->rest_of_cards[k]->is_moveable = false;
     }
+}
+
+int lowest_distance(float* distances) {
+    float lowest_recorded_distance = INT32_MAX;
+    int index = 0;
+
+    for (int x = 0; x < 4; x++) {
+        if (distances[x] < lowest_recorded_distance) {
+            lowest_recorded_distance = distances[x];
+            index = x;
+        }
+    }
+    return index;
+}
+
+void check_first_card_dropped(card_manager* manager) {
+    if (manager->card_stack_show_1 == NULL)
+        return;
+
+    card* held_card = manager->card_stack_show_1;
+    if (!held_card->held)
+        return;
+
+    float distances[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; 
+    distances[0] = get_distance(held_card->position, manager->loaded_board->board_spades_position); 
+    distances[1] = get_distance(held_card->position, manager->loaded_board->board_clubs_position); 
+    distances[2] = get_distance(held_card->position, manager->loaded_board->board_hearts_position); 
+    distances[3] = get_distance(held_card->position, manager->loaded_board->board_diamonds_position); 
+
+    int lowest_index = lowest_distance(distances);
+
+    // printf("distance between items: {%f, %f, %f, %f}\n", distances[0], distances[1], distances[2], distances[3]);
+    // printf("lowest distance: %i\n\n", lowest_index);
+
+    // if (lowest_index == 0) {
+    //     if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_spades_position)) {
+    //         printf("droping on spades\n");
+    //     }
+    // }
+
+    // if (lowest_index == 1) {
+    //     if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_clubs_position)) {
+    //         printf("droping on clubs\n");
+    //     }
+    // }
+
+    // if (lowest_index == 2) {
+    //     if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_hearts_position)) {
+    //         printf("droping on hearts\n");
+    //     }
+    // }
+
+    // if (lowest_index == 3) {
+    //     if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_diamonds_position)) {
+    //         printf("droping on diamonds\n");
+    //     }
+    // }
+
 }
 
 void update_card_manager(card_manager* manager) {
@@ -340,6 +402,8 @@ void update_card_manager(card_manager* manager) {
             }
         }
     }
+
+    check_first_card_dropped(manager);
 
     for (int i = 51; i >= 0; i--) {
         draw_card(manager->renderer, manager->cards[i]);
