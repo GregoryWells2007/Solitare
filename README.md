@@ -1,1 +1,2 @@
-In progress solitare AI that i can show off as a project to colleges
+A solitare game that i wrote in plain C and OpenGL
+I mainly wrote this project so that I could make an AI for it as I want to learn more about that stuff with the rise of the most popular AI models like Google's bard and Grok from musk
