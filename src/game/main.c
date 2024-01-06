@@ -55,7 +55,18 @@ int main(int argc, char** argv) {
 
     // create transform for card
 
-    while (isOpen(&main_window)) {  
+    bool mouse_can_be_clicked = false;
+
+    while (isOpen(&main_window)) {
+        main_window.input->mouse_clicked = false;  
+        update_windows();
+        if (main_window.input->mouse_down && mouse_can_be_clicked) {
+            main_window.input->mouse_clicked = true;  
+            mouse_can_be_clicked = false;
+        }
+        if (!main_window.input->mouse_down)
+            mouse_can_be_clicked = true;
+
         clear_window(&main_window, (color){ 38.0f, 162.0f, 105.0f, 1.0f });
 
         draw_board(&board_renderer, &game_board);
@@ -64,7 +75,6 @@ int main(int argc, char** argv) {
         update_card_manager(&manager);
 
         draw_window(&main_window);
-        update_windows();
     }
 
     close_windows();
