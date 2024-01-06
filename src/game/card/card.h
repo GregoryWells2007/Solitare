@@ -21,6 +21,8 @@ typedef struct card {
     vector2 position;
     int scale;
 
+    bool is_moveable;
+
     bool flipped;
 
     bool held;

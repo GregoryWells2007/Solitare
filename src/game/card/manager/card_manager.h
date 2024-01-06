@@ -25,6 +25,11 @@ typedef struct card_manager {
     card** row_7_cards;
 
     card** card_stack_cards;
+
+    card* card_stack_show_1;
+    card* card_stack_show_2;
+    card** rest_of_cards;
+    int cards_in_third_stack;
 } card_manager;
 
 void init_card_manager(card_manager* manager);

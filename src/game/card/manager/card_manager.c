@@ -1,5 +1,25 @@
 #include "card_manager.h"
 
+void move_card_to_top(card_manager* manager, card* card_to_top) {
+    int index = 0;
+    for (int i = 0; i < 52; i++) {
+        if (card_data_to_number(manager->cards[i]->data) == card_data_to_number(card_to_top->data)) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == 0)
+        return;
+
+    card* card_to_copy = manager->cards[index];
+
+    for (int i = index; i >= 0; i--)
+        manager->cards[i] = manager->cards[i - 1];
+
+    manager->cards[0] = card_to_copy;
+}   
+
 void assign_cards_to_rows(card_manager* manager) {
     int* numbers_to_use_list = malloc(sizeof(int) * 52);
     for (int k = 0; k < 52; k++)
@@ -63,9 +83,11 @@ void assign_cards_to_rows(card_manager* manager) {
     manager->row_7_cards[6] = manager->cards[numbers_to_use_list[27]];
 
     // assign stuff to the stack
-    manager->card_stack_cards = malloc(sizeof(card) * 25);
-    for (int i = 0; i < 25; i++) {
-        manager->card_stack_cards[i] = manager->cards[numbers_to_use_list[i + 27]];
+    manager->cards_in_third_stack = 0;
+    manager->rest_of_cards = malloc(sizeof(card) * 22);
+    manager->card_stack_cards = malloc(sizeof(card) * 24);
+    for (int i = 0; i < 24; i++) {
+        manager->card_stack_cards[i] = manager->cards[numbers_to_use_list[i + 28]];
     }
 
     free(numbers_to_use_list);
@@ -73,25 +95,88 @@ void assign_cards_to_rows(card_manager* manager) {
 
 void set_card_row_positions(card_manager* manager) {
     for (int i = 0; i < 13; i++) {
-        if (manager->row_1_cards[i] != NULL)
+        if (manager->row_1_cards[i] != NULL) {
             manager->row_1_cards[i]->position = manager->loaded_board->board_cards_position_1;
-        if (manager->row_2_cards[i] != NULL)
+            manager->row_1_cards[i]->position.y -= (i * 20);
+
+            if (manager->row_1_cards[i + 1] == NULL)
+                manager->row_1_cards[i]->flipped = false;
+            else
+                manager->row_1_cards[i]->flipped = true;
+            move_card_to_top(manager, manager->row_1_cards[i]);
+        }
+        if (manager->row_2_cards[i] != NULL) {
             manager->row_2_cards[i]->position = manager->loaded_board->board_cards_position_2;
-        if (manager->row_3_cards[i] != NULL)
+            manager->row_2_cards[i]->position.y -= (i * 20);
+
+            if (manager->row_2_cards[i + 1] == NULL)
+                manager->row_2_cards[i]->flipped = false;
+            else
+                manager->row_2_cards[i]->flipped = true;
+
+            move_card_to_top(manager, manager->row_2_cards[i]);
+        }
+        if (manager->row_3_cards[i] != NULL) {
             manager->row_3_cards[i]->position = manager->loaded_board->board_cards_position_3;
-        if (manager->row_4_cards[i] != NULL)
+            manager->row_3_cards[i]->position.y -= (i * 20);
+
+            if (manager->row_3_cards[i + 1] == NULL)
+                manager->row_3_cards[i]->flipped = false;
+            else
+                manager->row_3_cards[i]->flipped = true;
+            
+            move_card_to_top(manager, manager->row_3_cards[i]);
+        }
+        if (manager->row_4_cards[i] != NULL) {
             manager->row_4_cards[i]->position = manager->loaded_board->board_cards_position_4;
-        if (manager->row_5_cards[i] != NULL)
+            manager->row_4_cards[i]->position.y -= (i * 20);
+
+            if (manager->row_4_cards[i + 1] == NULL)
+                manager->row_4_cards[i]->flipped = false;
+            else
+                manager->row_4_cards[i]->flipped = true;
+
+            move_card_to_top(manager, manager->row_4_cards[i]);
+        }
+        if (manager->row_5_cards[i] != NULL) {
             manager->row_5_cards[i]->position = manager->loaded_board->board_cards_position_5;
-        if (manager->row_6_cards[i] != NULL)
+            manager->row_5_cards[i]->position.y -= (i * 20);
+
+            if (manager->row_5_cards[i + 1] == NULL)
+                manager->row_5_cards[i]->flipped = false;
+            else
+                manager->row_5_cards[i]->flipped = true;
+
+            move_card_to_top(manager, manager->row_5_cards[i]);
+        }
+        if (manager->row_6_cards[i] != NULL) {
             manager->row_6_cards[i]->position = manager->loaded_board->board_cards_position_6;
-        if (manager->row_7_cards[i] != NULL)
+            manager->row_6_cards[i]->position.y -= (i * 20);
+
+            if (manager->row_6_cards[i + 1] == NULL)
+                manager->row_6_cards[i]->flipped = false;
+            else
+                manager->row_6_cards[i]->flipped = true;
+
+            move_card_to_top(manager, manager->row_6_cards[i]);
+        }
+        if (manager->row_7_cards[i] != NULL) {
             manager->row_7_cards[i]->position = manager->loaded_board->board_cards_position_7;
-        printf("\n");
+            manager->row_7_cards[i]->position.y -= (i * 20);
+
+            if (manager->row_7_cards[i + 1] == NULL)
+                manager->row_7_cards[i]->flipped = false;
+            else
+                manager->row_7_cards[i]->flipped = true;
+
+           move_card_to_top(manager, manager->row_7_cards[i]);
+        }
     }   
 
-    for (int i = 0; i < 25; i++) {
+    for (int i = 23; i >= 0; i--) {
         manager->card_stack_cards[i]->position = manager->loaded_board->card_stack_position;
+        manager->card_stack_cards[i]->flipped = true;
+        move_card_to_top(manager, manager->card_stack_cards[i]);
     }
 }
 
@@ -114,6 +199,7 @@ void create_cards(card_manager* manager) {
             new_card->mouse_over = 0;
             new_card->held = 0;
             new_card->flipped = false;
+            new_card->is_moveable = false;
 
             manager->cards[index] = new_card;
             index++;
@@ -124,20 +210,78 @@ void create_cards(card_manager* manager) {
     set_card_row_positions(manager);
 }
 
-void move_card_to_top(card_manager* manager, int index) {
-    if (index == 0)
-        return;
+void rotate_stack_array(card_manager* manager) {
+    card* last_card = manager->card_stack_cards[0];
+    for (int i = 0; i < 23; i++) {
+        manager->card_stack_cards[i] = manager->card_stack_cards[i + 1];
+    }
+    manager->card_stack_cards[23] = last_card;
+}
 
-    card* card_to_copy = manager->cards[index];
+void check_stack_clicked (card_manager* manager) {
+    card* first_card = manager->card_stack_cards[0];
+    test_card_hover(manager->hover, first_card);
 
-    for (int i = index; i >= 0; i--)
-        manager->cards[i] = manager->cards[i - 1];
+    if ((manager->hover->input_manager->mouse_clicked && first_card->mouse_over)) {
+        if (manager->card_stack_show_1 == NULL) {
+            manager->card_stack_show_1 = first_card;
+        } else if (manager->card_stack_show_2 == NULL) {
+            manager->card_stack_show_2 = manager->card_stack_show_1;
+            manager->card_stack_show_1 = first_card;
+        } else {
+            manager->rest_of_cards[manager->cards_in_third_stack] = manager->card_stack_show_2;
+            manager->card_stack_show_2 = manager->card_stack_show_1;
+            manager->card_stack_show_1 = first_card;
+            manager->cards_in_third_stack++;
 
-    manager->cards[0] = card_to_copy;
-}   
+        }
+
+        first_card->flipped = false;
+        move_card_to_top(manager, first_card);
+        rotate_stack_array(manager);
+    } else {
+        if (manager->cards_in_third_stack == 22) {
+            if (in_board_area(manager->hover, manager->loaded_board->card_stack_position) && manager->hover->input_manager->mouse_clicked) {    
+                printf("resetting board\n");
+                manager->card_stack_show_1 = NULL;
+                manager->card_stack_show_2 = NULL;
+                for (int k = 0; k < manager->cards_in_third_stack; k++) {
+                    manager->rest_of_cards[k] = NULL;
+                }
+                manager->cards_in_third_stack = 0;
+                for (int i = 0; i < 24; i++) {
+                    manager->card_stack_cards[i]->flipped = true;
+                }
+            }
+        }
+    }
+
+    first_card->mouse_over = false;
+}
+
+void position_card_stacks(card_manager* manager) {
+    for (int i = 0; i < 24; i++) {
+        manager->card_stack_cards[i]->position = manager->loaded_board->card_stack_position;
+    }
+
+    if (manager->card_stack_show_1 != NULL) {
+        manager->card_stack_show_1->position.x = (manager->loaded_board->card_stack_position.x - 100.0f);
+    }
+
+    if (manager->card_stack_show_2 != NULL) {
+        manager->card_stack_show_2->position.x = (manager->loaded_board->card_stack_position.x - 150.0f);
+    }
+
+    for (int k = 0; k < manager->cards_in_third_stack; k++) {
+        manager->rest_of_cards[k]->position.x = (manager->loaded_board->card_stack_position.x - 200.0f);
+    }
+}
 
 void update_card_manager(card_manager* manager) {
     bool card_already_hovered = false;
+
+    check_stack_clicked(manager);
+    position_card_stacks(manager);
 
     for (int i = 0; i < 52; i++) {
         card* current_card = manager->cards[i];
@@ -148,33 +292,35 @@ void update_card_manager(card_manager* manager) {
                 card_already_hovered = true;
         }
 
-        if (!manager->card_is_currently_held) {
-            current_card->held = 0;
-            if (current_card->mouse_over && manager->hover->input_manager->mouse_down) {
-                current_card->held = 1;
-                manager->card_is_currently_held = true;
-
-                float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
-                float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
-
-                manager->card_held_offset.x = real_mouse_x - current_card->position.x;
-                manager->card_held_offset.y = real_mouse_y - current_card->position.y;
-
-                move_card_to_top(manager, i);
-            }
-        } else if (current_card->held) {
-            if (manager->hover->input_manager->mouse_down) {
-                float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
-                float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
-
-                real_mouse_x -= manager->card_held_offset.x;
-                real_mouse_y -= manager->card_held_offset.y;
-
-                current_card->position.x = real_mouse_x;
-                current_card->position.y = real_mouse_y;
-            } else {
+        if (current_card->is_moveable && !current_card->flipped) {
+            if (!manager->card_is_currently_held) {
                 current_card->held = 0;
-                manager->card_is_currently_held = false;
+                if (current_card->mouse_over && manager->hover->input_manager->mouse_down) {
+                    current_card->held = 1;
+                    manager->card_is_currently_held = true;
+
+                    float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
+                    float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+
+                    manager->card_held_offset.x = real_mouse_x - current_card->position.x;
+                    manager->card_held_offset.y = real_mouse_y - current_card->position.y;
+
+                    move_card_to_top(manager, current_card);
+                }
+            } else if (current_card->held) {
+                if (manager->hover->input_manager->mouse_down) {
+                    float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
+                    float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+
+                    real_mouse_x -= manager->card_held_offset.x;
+                    real_mouse_y -= manager->card_held_offset.y;
+
+                    current_card->position.x = real_mouse_x;
+                    current_card->position.y = real_mouse_y;
+                } else {
+                    current_card->held = 0;
+                    manager->card_is_currently_held = false;
+                }
             }
         }
     }

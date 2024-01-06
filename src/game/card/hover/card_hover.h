@@ -7,3 +7,4 @@ typedef struct card_hover {
 } card_hover;
 
 bool test_card_hover(card_hover* hover, card* card_to_test);
+bool in_board_area(card_hover* hover, vector2 board_area);
