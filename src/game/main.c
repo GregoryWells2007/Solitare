@@ -8,11 +8,14 @@
 #include "board/board.h"
 #include "board/board_renderer/board_renderer.h"
 
+// if i ever want to print FPS
+// #define PRINT_FPS 
+
 void set_board_positions(board* board_to_set) {
-    board_to_set->board_spades_position = (vector2){ -1000, -1000 };
-    board_to_set->board_clubs_position = (vector2){ -1000, -1000 };
-    board_to_set->board_hearts_position = (vector2){ -1000, -1000 };
-    board_to_set->board_diamonds_position = (vector2){ -1000, -1000 };
+    board_to_set->board_spades_position = (vector2){ -565, 260 };
+    board_to_set->board_clubs_position = (vector2){ -466, 260 };
+    board_to_set->board_hearts_position = (vector2){ -365, 260 };
+    board_to_set->board_diamonds_position = (vector2){ -265, 260 };
 
     board_to_set->board_cards_position_1 = (vector2){ -565, 50 };
     board_to_set->board_cards_position_2 = (vector2){ -430, 50 };
@@ -57,7 +60,12 @@ int main(int argc, char** argv) {
 
     bool mouse_can_be_clicked = false;
 
+    float startTime = 0.0f, endTime = 0.0f, totalTime = 0.0f;
+    int frameCount = 0;
+
     while (isOpen(&main_window)) {
+        startTime = get_time();
+
         main_window.input->mouse_clicked = false;  
         update_windows();
         if (main_window.input->mouse_down && mouse_can_be_clicked) {
@@ -75,6 +83,17 @@ int main(int argc, char** argv) {
         update_card_manager(&manager);
 
         draw_window(&main_window);
+
+        endTime = get_time();
+        totalTime += (endTime - startTime);
+        frameCount++;
+        if (totalTime >= 1.0f) {
+            #ifdef PRINT_FPS
+            printf("FPS: %i\n", frameCount);
+            #endif
+            frameCount = 0;
+            totalTime = 0;
+        }
     }
 
     close_windows();
