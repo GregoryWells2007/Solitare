@@ -34,7 +34,8 @@ typedef struct card_manager {
     card* card_stack_show_2;
     card** rest_of_cards;
     int cards_in_third_stack;
-    int max_cards_in_third_stack;
+    int max_cards_in_stack;
+    int cards_in_stack;
 
     card_pile clubs_pile;
     card_pile spades_pile;

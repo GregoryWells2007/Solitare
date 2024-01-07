@@ -66,6 +66,8 @@ int main(int argc, char** argv) {
     int frameCount = 0;
 
     while (isOpen(&main_window)) {
+        printf("----------\n");
+
         startTime = get_time();
 
         main_window.input->mouse_clicked = false;  

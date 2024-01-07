@@ -83,6 +83,9 @@ void assign_cards_to_rows(card_manager* manager) {
             numbersLeft[g] = numbersLeft[g + 1]; 
         }
     }
+    for (int g = 0; g < 52; g++) {
+        printf("%i\n", numbers_to_use_list[g]);
+    }
     free(numbersLeft);
 
     manager->row_1 = malloc(sizeof(card_row));
@@ -176,7 +179,8 @@ void assign_cards_to_rows(card_manager* manager) {
     manager->cards_in_third_stack = 0;
     manager->rest_of_cards = malloc(sizeof(card) * 22);
     manager->card_stack_cards = malloc(sizeof(card) * 24);
-    manager->max_cards_in_third_stack = 24;
+    manager->max_cards_in_stack = 24;
+    manager->cards_in_stack = 24;
     for (int i = 0; i < 24; i++) {
         manager->card_stack_cards[i] = manager->cards[numbers_to_use_list[i + 28]];
     }
@@ -265,10 +269,18 @@ void rotate_stack_array(card_manager* manager) {
 }
 
 void check_stack_clicked (card_manager* manager) {
+    for (int i = manager->max_cards_in_stack - 1; i >= 0; i--) {
+        if (manager->card_stack_cards[i] == NULL)
+            continue;
+
+        move_card_to_top(manager, manager->card_stack_cards[i]);
+    }
+
     card* first_card = NULL;
     for (int k = 0; k < 24; k++) {
-        if (manager->card_stack_cards[k] == NULL)
+        if (manager->card_stack_cards[k] == NULL) {
             continue;
+        }
         
         first_card = manager->card_stack_cards[k];
         break;
@@ -288,7 +300,14 @@ void check_stack_clicked (card_manager* manager) {
 
     test_card_hover(manager->hover, first_card);
 
+    test_card_hover(manager->hover, last_card);
+    if (first_card->mouse_over) {
+        move_card_to_top(manager, first_card);
+    }
+
     if ((manager->hover->input_manager->mouse_clicked && first_card->mouse_over)) {
+
+
         if (manager->card_stack_show_1 == NULL) {
             manager->card_stack_show_1 = first_card;
         } else if (manager->card_stack_show_2 == NULL) {
@@ -309,7 +328,7 @@ void check_stack_clicked (card_manager* manager) {
             rotate_stack_array(manager);
     } else {
 
-        if ((manager->cards_in_third_stack + 2) == manager->max_cards_in_third_stack) {
+        if ((manager->cards_in_third_stack + 2) == manager->cards_in_stack) {
             if (in_board_area(manager->hover, manager->loaded_board->card_stack_position) && manager->hover->input_manager->mouse_clicked) { 
                 manager->card_stack_show_1 = NULL;
                 manager->card_stack_show_2 = NULL;
@@ -329,26 +348,34 @@ void check_stack_clicked (card_manager* manager) {
     first_card->mouse_over = false;
 }
 void position_card_stacks(card_manager* manager) {
+    if (manager->cards_in_stack == 0)
+        return;
+
     for (int i = 0; i < 24; i++) {
         if (manager->card_stack_cards[i] == NULL)
             continue;
         manager->card_stack_cards[i]->position = manager->loaded_board->card_stack_position;
     }
 
-    if (manager->card_stack_show_1 != NULL) {
-        manager->card_stack_show_1->position.x = (manager->loaded_board->card_stack_position.x - 100.0f);
-        manager->card_stack_show_1->is_moveable = true;
+    for (int k = 0; k < manager->cards_in_third_stack; k++) {
+        manager->rest_of_cards[k]->position.x = (manager->loaded_board->card_stack_position.x - 200.0f);
+        manager->rest_of_cards[k]->is_moveable = false;
+        move_card_to_top(manager, manager->rest_of_cards[k]);
     }
 
     if (manager->card_stack_show_2 != NULL) {
         manager->card_stack_show_2->position.x = (manager->loaded_board->card_stack_position.x - 150.0f);
         manager->card_stack_show_2->is_moveable = false;
+        move_card_to_top(manager, manager->card_stack_show_2);
     }
 
-    for (int k = 0; k < manager->cards_in_third_stack; k++) {
-        manager->rest_of_cards[k]->position.x = (manager->loaded_board->card_stack_position.x - 200.0f);
-        manager->rest_of_cards[k]->is_moveable = false;
+    if (manager->card_stack_show_1 != NULL) {
+        manager->card_stack_show_1->position.x = (manager->loaded_board->card_stack_position.x - 100.0f);
+        manager->card_stack_show_1->is_moveable = true;
+        move_card_to_top(manager, manager->card_stack_show_1);
     }
+
+
 }
 
 int lowest_distance(float* distances, int count) {
@@ -408,38 +435,75 @@ bool is_opposite_color(int type1, int type2) {
 
 void remove_card_from_stack(card_manager* manager) {
     int last_card_index = 0;
-    for (int i = 23; i >= 0; i--)
+    for (int i = 23; i >= 0; i--) {
         if (manager->card_stack_cards[i] == NULL)
             continue;
         else {
             last_card_index = i;
             break;
         }
-
-    manager->card_stack_cards[last_card_index] = NULL;
-    manager->max_cards_in_third_stack--;
-
-    manager->card_stack_show_1 = NULL;
-    if (manager->card_stack_show_2 == NULL) 
-        return;
-
-    manager->card_stack_show_1 = manager->card_stack_show_2;
-    manager->card_stack_show_2 = NULL;
-    
-    if (manager->cards_in_third_stack == 0)
-        return;
-        
-    manager->card_stack_show_2 = manager->rest_of_cards[0];
-    if (manager->cards_in_third_stack > 1) {
-        for (int i = 0; i < manager->cards_in_third_stack; i++) {
-            manager->rest_of_cards[i] = manager->rest_of_cards[i + 1];
-        }
     }
 
-    move_card_to_top(manager, manager->card_stack_show_2);
-    move_card_to_top(manager, manager->card_stack_show_1);
+    manager->card_stack_cards[last_card_index] = NULL;
+    manager->cards_in_stack--;
 
-    manager->cards_in_third_stack--;
+    if (manager->card_stack_show_2 == NULL) {
+        manager->card_stack_show_1 = NULL;
+    } else if (manager->cards_in_third_stack == 0) {
+        manager->card_stack_show_1 = manager->card_stack_show_2;
+        manager->card_stack_show_2 = NULL;
+
+        move_card_to_top(manager, manager->card_stack_show_1);
+    } else {
+        if (manager->cards_in_third_stack == 1) {
+            manager->cards_in_third_stack = 0;
+
+            manager->card_stack_show_1 = manager->card_stack_show_2;
+            manager->card_stack_show_2 = manager->rest_of_cards[0];
+            manager->rest_of_cards[0] = NULL;
+
+            move_card_to_top(manager, manager->card_stack_show_2);
+            move_card_to_top(manager, manager->card_stack_show_1);
+        } else {
+
+            manager->card_stack_show_1 = manager->card_stack_show_2;
+
+            int nextValidIndex = 0;
+            for (int q = 0; q < manager->cards_in_third_stack; q++) {
+                if (manager->rest_of_cards[q] != NULL) {
+                    nextValidIndex = q;
+                    break;
+                } 
+            }
+
+            manager->card_stack_show_2 = manager->rest_of_cards[nextValidIndex];
+
+            for (int i = 0; i < manager->cards_in_third_stack - 1; i++) {
+                manager->rest_of_cards[i] = manager->rest_of_cards[i + 1];
+            }
+            manager->cards_in_third_stack--;
+            //manager->rest_of_cards[manager->cards_in_third_stack - 1] = NULL;
+
+            move_card_to_top(manager, manager->card_stack_show_2);
+            move_card_to_top(manager, manager->card_stack_show_1);
+
+        }
+    }
+    
+    // if (manager->cards_in_third_stack == 0)
+    //     return;
+        
+    // manager->card_stack_show_2 = manager->rest_of_cards[0];
+    // if (manager->cards_in_third_stack > 1) {
+    //     for (int i = 0; i < manager->cards_in_third_stack; i++) {
+    //         manager->rest_of_cards[i] = manager->rest_of_cards[i + 1];
+    //     }
+    // }
+
+    // move_card_to_top(manager, manager->card_stack_show_2);
+    // move_card_to_top(manager, manager->card_stack_show_1);
+
+    // manager->cards_in_third_stack--;
 }
 
 void remove_card_from_row(card_manager* manager, card_row* row) {
@@ -658,8 +722,11 @@ void update_held_card(card_manager* manager) {
     if (manager->held_card->held_card == NULL)
         return;
 
+    printf("started updating the held card\n");
+
     float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
     float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+
     real_mouse_x -= manager->held_card->card_held_offset.x;
     real_mouse_y -= manager->held_card->card_held_offset.y;
     manager->held_card->held_card->position = (vector2){ real_mouse_x, real_mouse_y };
@@ -673,6 +740,8 @@ void update_held_card(card_manager* manager) {
         move_card_to_top(manager, manager->held_card->other_held_cards[i]);
     }
     
+    printf("held cards count: %i\n", manager->held_card->other_held_cards_count);
+
     if (manager->held_card->other_held_cards_count == 0)
         see_if_held_card_can_be_dropped_in_pile(manager);
 
@@ -682,6 +751,8 @@ void update_held_card(card_manager* manager) {
     if (!manager->hover->input_manager->mouse_down) {
         manager->held_card->held_card = NULL;
     }
+
+    printf("Finised updating the held card\n");
 }
 
 void get_cards_below_grabbed_card(card_manager* manager) {
@@ -733,6 +804,9 @@ void get_cards_below_grabbed_card(card_manager* manager) {
 void update_card_manager(card_manager* manager) {
     bool card_already_hovered = false;
 
+    check_stack_clicked(manager);
+    position_card_stacks(manager);
+
     for (int i = 0; i < 52; i++) {
         card* current_card = manager->cards[i];
         current_card->mouse_over = 0;
@@ -764,8 +838,6 @@ void update_card_manager(card_manager* manager) {
          }
     }
 
-    check_stack_clicked(manager);
-    position_card_stacks(manager);
     set_card_row_positions(manager);
 
     update_card_piles(manager);
