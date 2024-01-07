@@ -5,6 +5,15 @@
 #include "game/card/renderer/card_renderer.h"
 #include "game/board/board.h"
 
+typedef enum card_area {
+    stack, row1, row2, row3, row4, row5, row6, row7
+} card_area;
+
+typedef struct held_card_data {
+    card_area held_card_area;
+    card* held_card;
+} held_card_data;
+
 typedef struct card_manager {
     card** cards;
     
@@ -35,6 +44,8 @@ typedef struct card_manager {
     // card* clubs_stack;
 
 } card_manager;
+
+void hold_card(card* manager);
 
 void init_card_manager(card_manager* manager);
 void create_cards(card_manager* manager);

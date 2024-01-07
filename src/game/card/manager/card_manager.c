@@ -383,6 +383,22 @@ card** get_top_row_cards(card_manager* manager) {
     return new_cards;
 }
 
+bool is_opposite_color(int type1, int type2) {
+    int type_1 = -1, type_2 = -1;
+
+    if (type1 == 0 || type1 == 1)
+        type_1 = 0;
+    else if (type1 == 2 || type1 == 3)
+        type_1 = 1;
+
+    if (type2 == 0 || type2 == 1)
+        type_2 = 0;
+    else if (type2 == 2 || type2 == 3)
+        type_2 = 1;
+
+    return type_1 != type_2;
+}
+
 void update_card_manager(card_manager* manager) {
     bool card_already_hovered = false;
 
@@ -450,7 +466,7 @@ void update_card_manager(card_manager* manager) {
             if (cards_to_collide_with[q] == current_card)
                 distances[q] = INT32_MAX;
 
-            if (cards_to_collide_with[q]->data.type == current_card->data.type)
+            if (!is_opposite_color(cards_to_collide_with[q]->data.type, current_card->data.type))
                 distances[q] = INT32_MAX;
 
             if (cards_to_collide_with[q]->data.value != (current_card->data.value + 1))
@@ -462,9 +478,9 @@ void update_card_manager(card_manager* manager) {
 
         int lowest_distance_index = lowest_distance(distances, 7);
         if (test_card_collision(manager->hover, current_card, cards_to_collide_with[lowest_distance_index])) {
-            
+            printf("we can drop it here boys\n");
         }
-        
+
     }
 
     for (int i = 51; i >= 0; i--) {
