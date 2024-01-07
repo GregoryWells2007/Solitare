@@ -1,5 +1,7 @@
 #include "card_renderer.h"
 
+#define RENDER_FLIPPED_CARDS
+
 void card_renderer_create_mesh(card_renderer* renderer) {
     float card_mesh_positions[] = {
         // Vertex            // UV cords
@@ -123,8 +125,10 @@ void draw_card(card_renderer* renderer, card* value) {
     set_shader_uniform(&renderer->card_shader, &card_transform_uniform);
     
     int card_index_value = card_data_to_number(value->data);
+    #ifdef RENDER_FLIPPED_CARDS
     if (value->flipped)
         card_index_value = 52;
+    #endif
     shader_uniform card_type_uniform = { &card_index_value, int1, "u_card_index" };
     set_shader_uniform(&renderer->card_shader, &card_type_uniform);
 
@@ -134,7 +138,7 @@ void draw_card(card_renderer* renderer, card* value) {
 
     shader_uniform card_hovered_uniform = { &value_for_mouse_over, int1, "mouse_over" };
     set_shader_uniform(&renderer->card_shader, &card_hovered_uniform);
-
+    
     int value_for_card_held = 0;
     if (value->held == true)
         value_for_card_held = 1;
