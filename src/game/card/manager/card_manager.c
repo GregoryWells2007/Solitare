@@ -4,6 +4,27 @@
 #include <time.h> 
 #include "math.h"
 
+void init_card_manager(card_manager* manager) {
+    manager->held_card = malloc(sizeof(held_card_data));
+    manager->held_card->held_card = NULL;
+    manager->held_card->held_card_area = no_area;
+    manager->held_card->card_held_offset = (vector2){ 0, 0 };
+}
+
+void create_piles(card_manager* manager) {
+    manager->clubs_pile = (card_pile){};
+    manager->clubs_pile.cards = malloc(sizeof(card) * 13);
+    for (int i = 0; i < 13; i++)
+        manager->clubs_pile.cards[i] = NULL;
+    manager->clubs_pile.face = clubs;
+    manager->clubs_pile.area = manager->loaded_board->board_clubs_position;
+
+    // i need to setup the other boards later
+    // manager->spades_pile = {};
+    // manager->hearts_pile = {};
+    // manager->diamonds_pile = {};
+}
+
 void move_card_to_top(card_manager* manager, card* card_to_top) {
     int index = 0;
     for (int i = 0; i < 52; i++) {
@@ -318,12 +339,10 @@ int lowest_distance(float* distances, int count) {
 }
 
 void check_first_card_dropped(card_manager* manager) {
-    if (manager->card_stack_show_1 == NULL)
+    if (manager->held_card->held_card_area != stack)
         return;
 
-    card* held_card = manager->card_stack_show_1;
-    if (!held_card->held)
-        return;
+    card* held_card = manager->held_card->held_card;
 
     move_card_to_top(manager, held_card);
 
@@ -334,9 +353,6 @@ void check_first_card_dropped(card_manager* manager) {
     distances[3] = get_distance(held_card->position, manager->loaded_board->board_diamonds_position); 
 
     int lowest_index = lowest_distance(distances, 4);
-
-    // printf("distance between items: {%f, %f, %f, %f}\n", distances[0], distances[1], distances[2], distances[3]);
-    // printf("lowest distance: %i\n\n", lowest_index);
 
     if (lowest_index == 0) {
         if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_spades_position)) {
@@ -399,6 +415,22 @@ bool is_opposite_color(int type1, int type2) {
     return type_1 != type_2;
 }
 
+void update_held_card(card_manager* manager) {
+    if (manager->held_card->held_card == NULL)
+        return;
+
+    float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
+    float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+    manager->held_card->held_card->position = (vector2){ real_mouse_x, real_mouse_y };
+    manager->held_card->held_card->held = 1;
+
+    move_card_to_top(manager, manager->held_card->held_card);
+
+    if (!manager->hover->input_manager->mouse_down) {
+        manager->held_card->held_card = NULL;
+    }
+}
+
 void update_card_manager(card_manager* manager) {
     bool card_already_hovered = false;
 
@@ -409,79 +441,69 @@ void update_card_manager(card_manager* manager) {
     for (int i = 0; i < 52; i++) {
         card* current_card = manager->cards[i];
         current_card->mouse_over = 0;
-        if (!card_already_hovered && !manager->card_is_currently_held) {
+        current_card->held = 0;
+        if (!card_already_hovered && manager->held_card->held_card == NULL) {
             test_card_hover(manager->hover, current_card);
             if (current_card->mouse_over)
                 card_already_hovered = true;
         }
 
-        if (current_card->is_moveable && !current_card->flipped) {
-            if (!manager->card_is_currently_held) {
-                current_card->held = 0;
-                if (current_card->mouse_over && manager->hover->input_manager->mouse_clicked) {
-                    current_card->held = 1;
-                    manager->card_is_currently_held = true;
+        if (!current_card->is_moveable)
+            continue;
+        if (current_card->flipped)
+            continue;
+        if (manager->held_card->held_card != NULL)
+            continue;
 
-                    float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
-                    float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+         if (current_card->mouse_over && manager->hover->input_manager->mouse_clicked) {
+            manager->held_card->held_card = current_card;
+            // figure out card area later;
 
-                    manager->card_held_offset.x = real_mouse_x - current_card->position.x;
-                    manager->card_held_offset.y = real_mouse_y - current_card->position.y;
+            float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
+            float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
 
-                    move_card_to_top(manager, current_card);
-                }
-            } else if (current_card->held) {
-                if (manager->hover->input_manager->mouse_down) {
-                    float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
-                    float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+            float card_held_offset_x = real_mouse_x - current_card->position.x;
+            float card_held_offset_y = real_mouse_y - current_card->position.y;
+        
 
-                    real_mouse_x -= manager->card_held_offset.x;
-                    real_mouse_y -= manager->card_held_offset.y;
-
-                    current_card->position.x = real_mouse_x;
-                    current_card->position.y = real_mouse_y;
-                } else {
-                    current_card->held = 0;
-                    manager->card_is_currently_held = false;
-                }
-            }
-        }
+            manager->held_card->card_held_offset = (vector2){ card_held_offset_x, card_held_offset_y };
+         }
     }
 
     check_first_card_dropped(manager);
+    update_held_card(manager);
 
-    for (int k = 0; k < 52; k++) {
-        if (!manager->cards[k]->held)
-            continue;
+    // for (int k = 0; k < 52; k++) {
+    //     if (!manager->cards[k]->held)
+    //         continue;
 
-        card* current_card = manager->cards[k];
-        move_card_to_top(manager, current_card);
+    //     card* current_card = manager->cards[k];
+    //     move_card_to_top(manager, current_card);
 
+    //     card** cards_to_collide_with = get_top_row_cards(manager);
+    //     float distances[7] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+    //     for (int q = 0; q < 7; q++) {
+    //         distances[q] = get_distance(current_card->position, cards_to_collide_with[q]->position);
 
-        card** cards_to_collide_with = get_top_row_cards(manager);
-        float distances[7] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-        for (int q = 0; q < 7; q++) {
-            distances[q] = get_distance(current_card->position, cards_to_collide_with[q]->position);
+    //         if (cards_to_collide_with[q] == current_card)
+    //             distances[q] = INT32_MAX;
 
-            if (cards_to_collide_with[q] == current_card)
-                distances[q] = INT32_MAX;
+    //         if (!is_opposite_color(cards_to_collide_with[q]->data.type, current_card->data.type))
+    //             distances[q] = INT32_MAX;
 
-            if (!is_opposite_color(cards_to_collide_with[q]->data.type, current_card->data.type))
-                distances[q] = INT32_MAX;
+    //         if (cards_to_collide_with[q]->data.value != (current_card->data.value + 1))
+    //             distances[q] = INT32_MAX;
+    //     }
 
-            if (cards_to_collide_with[q]->data.value != (current_card->data.value + 1))
-                distances[q] = INT32_MAX;
-        }
+    //     printf("Distances: {%f, %f, %f, %f, %f, %f, %f}\n", 
+    //         distances[0], distances[1], distances[2], distances[3], distances[4], distances[5], distances[6]);
 
-        printf("Distances: {%f, %f, %f, %f, %f, %f, %f}\n", 
-            distances[0], distances[1], distances[2], distances[3], distances[4], distances[5], distances[6]);
+    //     int lowest_distance_index = lowest_distance(distances, 7);
+    //     if (test_card_collision(manager->hover, current_card, cards_to_collide_with[lowest_distance_index])) {
+    //         printf("we can drop it here boys\n");
+    //     }
 
-        int lowest_distance_index = lowest_distance(distances, 7);
-        if (test_card_collision(manager->hover, current_card, cards_to_collide_with[lowest_distance_index])) {
-            printf("we can drop it here boys\n");
-        }
-
-    }
+    // }
 
     for (int i = 51; i >= 0; i--) {
         draw_card(manager->renderer, manager->cards[i]);

@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
     card_manager manager = {};
     manager.hover = &hover;
     manager.renderer = &card_renderer;
+    init_card_manager(&manager);
 
 
     // create background

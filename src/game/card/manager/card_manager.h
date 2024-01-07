@@ -5,14 +5,8 @@
 #include "game/card/renderer/card_renderer.h"
 #include "game/board/board.h"
 
-typedef enum card_area {
-    stack, row1, row2, row3, row4, row5, row6, row7
-} card_area;
-
-typedef struct held_card_data {
-    card_area held_card_area;
-    card* held_card;
-} held_card_data;
+#include "held_card.h"
+#include "card_pile.h"
 
 typedef struct card_manager {
     card** cards;
@@ -20,8 +14,7 @@ typedef struct card_manager {
     card_hover* hover;
     card_renderer* renderer;
 
-    vector2 card_held_offset;
-    bool card_is_currently_held;
+    held_card_data* held_card;
 
     board* loaded_board;
 
@@ -40,12 +33,16 @@ typedef struct card_manager {
     card** rest_of_cards;
     int cards_in_third_stack;
 
-    // card* spades_stack;
-    // card* clubs_stack;
+    card_pile clubs_pile;
+    card_pile spades_pile;
+    card_pile hearts_pile;
+    card_pile diamonds_pile;
 
 } card_manager;
 
 void hold_card(card* manager);
+
+void create_piles(card_manager* manager);
 
 void init_card_manager(card_manager* manager);
 void create_cards(card_manager* manager);
