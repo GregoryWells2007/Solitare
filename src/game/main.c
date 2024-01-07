@@ -12,8 +12,8 @@
 // #define PRINT_FPS 
 
 void set_board_positions(board* board_to_set) {
-    board_to_set->board_spades_position = (vector2){ -565, 260 };
-    board_to_set->board_clubs_position = (vector2){ -466, 260 };
+    board_to_set->board_clubs_position = (vector2){ -565, 260 };
+    board_to_set->board_spades_position = (vector2){ -466, 260 };
     board_to_set->board_hearts_position = (vector2){ -365, 260 };
     board_to_set->board_diamonds_position = (vector2){ -265, 260 };
 
@@ -53,6 +53,7 @@ int main(int argc, char** argv) {
 
     manager.loaded_board = &game_board;
     create_cards(&manager);
+    create_piles(&manager);
 
     board_renderer board_renderer = {};
     init_board_renderer(&board_renderer);
