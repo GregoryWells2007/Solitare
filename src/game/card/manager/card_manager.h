@@ -8,6 +8,8 @@
 #include "held_card.h"
 #include "card_pile.h"
 
+#include "card_row.h"
+
 typedef struct card_manager {
     card** cards;
     
@@ -18,13 +20,13 @@ typedef struct card_manager {
 
     board* loaded_board;
 
-    card** row_1_cards;
-    card** row_2_cards;
-    card** row_3_cards;
-    card** row_4_cards;
-    card** row_5_cards;
-    card** row_6_cards;
-    card** row_7_cards;
+    card_row* row_1;
+    card_row* row_2;
+    card_row* row_3;
+    card_row* row_4;
+    card_row* row_5;
+    card_row* row_6;
+    card_row* row_7;
 
     card** card_stack_cards;
 

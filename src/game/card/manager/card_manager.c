@@ -10,7 +10,6 @@ void init_card_manager(card_manager* manager) {
     manager->held_card->held_card_area = no_area;
     manager->held_card->card_held_offset = (vector2){ 0, 0 };
 }
-
 void create_piles(card_manager* manager) {
     manager->clubs_pile = (card_pile){};
     manager->clubs_pile.cards = malloc(sizeof(card) * 13);
@@ -47,7 +46,6 @@ void create_piles(card_manager* manager) {
     manager->diamonds_pile.count = 0;
     manager->diamonds_pile.area = manager->loaded_board->board_diamonds_position;
 }
-
 void move_card_to_top(card_manager* manager, card* card_to_top) {
     int index = 0;
     for (int i = 0; i < 52; i++) {
@@ -67,7 +65,6 @@ void move_card_to_top(card_manager* manager, card* card_to_top) {
 
     manager->cards[0] = card_to_copy;
 }   
-
 void assign_cards_to_rows(card_manager* manager) {
     int* numbersLeft = malloc(sizeof(int) * 52);
     for (int k = 0; k < 52; k++)
@@ -86,62 +83,92 @@ void assign_cards_to_rows(card_manager* manager) {
     }
     free(numbersLeft);
 
-    manager->row_1_cards = malloc(sizeof(card) * 13);
-    for (int k = 1; k < 13; k++)
-        manager->row_1_cards[k] = NULL;
-    manager->row_1_cards[0] = manager->cards[numbers_to_use_list[0]];
+    manager->row_1 = malloc(sizeof(card_row));
+    manager->row_2 = malloc(sizeof(card_row));
+    manager->row_3 = malloc(sizeof(card_row));
+    manager->row_4 = malloc(sizeof(card_row));
+    manager->row_5 = malloc(sizeof(card_row));
+    manager->row_6 = malloc(sizeof(card_row));
+    manager->row_7 = malloc(sizeof(card_row));
+
+    manager->row_1->cards = malloc(sizeof(card) * 13);
+    manager->row_1->card_count = 1;
+    manager->row_1->first_card_shown = 0;
+    manager->row_1->area_id = row1;
+    for (int k = 0; k < 13; k++)
+        manager->row_1->cards[k] = NULL;
+    manager->row_1->cards[0] = manager->cards[numbers_to_use_list[0]];
 
 
-    manager->row_2_cards = malloc(sizeof(card) * 13);
-    for (int k = 2; k < 13; k++)
-        manager->row_2_cards[k] = NULL;
-    manager->row_2_cards[0] = manager->cards[numbers_to_use_list[1]];
-    manager->row_2_cards[1] = manager->cards[numbers_to_use_list[2]];
+    manager->row_2->cards = malloc(sizeof(card) * 13);
+    manager->row_2->card_count = 2;
+    manager->row_2->first_card_shown = 1;
+    manager->row_2->area_id = row2;
+    for (int k = 0; k < 13; k++)
+        manager->row_2->cards[k] = NULL;
+    manager->row_2->cards[0] = manager->cards[numbers_to_use_list[1]];
+    manager->row_2->cards[1] = manager->cards[numbers_to_use_list[2]];
 
-    manager->row_3_cards = malloc(sizeof(card) * 13);
-    for (int k = 3; k < 13; k++)
-        manager->row_3_cards[k] = NULL;
-    manager->row_3_cards[0] = manager->cards[numbers_to_use_list[3]];
-    manager->row_3_cards[1] = manager->cards[numbers_to_use_list[4]];
-    manager->row_3_cards[2] = manager->cards[numbers_to_use_list[5]];
+    manager->row_3->cards = malloc(sizeof(card) * 13);
+    manager->row_3->card_count = 3;
+    manager->row_3->first_card_shown = 2;
+    manager->row_3->area_id = row3;
+    for (int k = 0; k < 13; k++)
+        manager->row_3->cards[k] = NULL;
+    manager->row_3->cards[0] = manager->cards[numbers_to_use_list[3]];
+    manager->row_3->cards[1] = manager->cards[numbers_to_use_list[4]];
+    manager->row_3->cards[2] = manager->cards[numbers_to_use_list[5]];
 
-    manager->row_4_cards = malloc(sizeof(card) * 13);
-    for (int k = 4; k < 13; k++)
-        manager->row_4_cards[k] = NULL;
-    manager->row_4_cards[0] = manager->cards[numbers_to_use_list[6]];
-    manager->row_4_cards[1] = manager->cards[numbers_to_use_list[7]];
-    manager->row_4_cards[2] = manager->cards[numbers_to_use_list[8]];
-    manager->row_4_cards[3] = manager->cards[numbers_to_use_list[9]];
+    manager->row_4->cards = malloc(sizeof(card) * 13);
+    manager->row_4->card_count = 4;
+    manager->row_4->first_card_shown = 3;
+    manager->row_4->area_id = row4;
+    for (int k = 0; k < 13; k++)
+        manager->row_4->cards[k] = NULL;
+    manager->row_4->cards[0] = manager->cards[numbers_to_use_list[6]];
+    manager->row_4->cards[1] = manager->cards[numbers_to_use_list[7]];
+    manager->row_4->cards[2] = manager->cards[numbers_to_use_list[8]];
+    manager->row_4->cards[3] = manager->cards[numbers_to_use_list[9]];
 
-    manager->row_5_cards = malloc(sizeof(card) * 13);
-    for (int k = 5; k < 13; k++)
-        manager->row_5_cards[k] = NULL;
-    manager->row_5_cards[0] = manager->cards[numbers_to_use_list[10]];
-    manager->row_5_cards[1] = manager->cards[numbers_to_use_list[11]];
-    manager->row_5_cards[2] = manager->cards[numbers_to_use_list[12]];
-    manager->row_5_cards[3] = manager->cards[numbers_to_use_list[13]];
-    manager->row_5_cards[4] = manager->cards[numbers_to_use_list[14]];
+    manager->row_5->cards = malloc(sizeof(card) * 13);
+    manager->row_5->card_count = 5;
+    manager->row_5->first_card_shown = 4;
+    manager->row_5->area_id = row5;
+    for (int k = 0; k < 13; k++)
+        manager->row_5->cards[k] = NULL;
+    manager->row_5->cards[0] = manager->cards[numbers_to_use_list[10]];
+    manager->row_5->cards[1] = manager->cards[numbers_to_use_list[11]];
+    manager->row_5->cards[2] = manager->cards[numbers_to_use_list[12]];
+    manager->row_5->cards[3] = manager->cards[numbers_to_use_list[13]];
+    manager->row_5->cards[4] = manager->cards[numbers_to_use_list[14]];
 
-    manager->row_6_cards = malloc(sizeof(card) * 13);
-    for (int k = 6; k < 13; k++)
-        manager->row_6_cards[k] = NULL;
-    manager->row_6_cards[0] = manager->cards[numbers_to_use_list[15]];
-    manager->row_6_cards[1] = manager->cards[numbers_to_use_list[16]];
-    manager->row_6_cards[2] = manager->cards[numbers_to_use_list[17]];
-    manager->row_6_cards[3] = manager->cards[numbers_to_use_list[18]];
-    manager->row_6_cards[4] = manager->cards[numbers_to_use_list[19]];
-    manager->row_6_cards[5] = manager->cards[numbers_to_use_list[20]];
+    manager->row_6->cards = malloc(sizeof(card) * 13);
+    manager->row_6->card_count = 6;
+    manager->row_6->first_card_shown = 5;
+    manager->row_6->area_id = row6;
+    for (int k = 0; k < 13; k++)
+        manager->row_6->cards[k] = NULL;
+    manager->row_6->cards[0] = manager->cards[numbers_to_use_list[15]];
+    manager->row_6->cards[1] = manager->cards[numbers_to_use_list[16]];
+    manager->row_6->cards[2] = manager->cards[numbers_to_use_list[17]];
+    manager->row_6->cards[3] = manager->cards[numbers_to_use_list[18]];
+    manager->row_6->cards[4] = manager->cards[numbers_to_use_list[19]];
+    manager->row_6->cards[5] = manager->cards[numbers_to_use_list[20]];
 
-    manager->row_7_cards = malloc(sizeof(card) * 13);
-    for (int k = 7; k < 13; k++)
-        manager->row_7_cards[k] = NULL;
-    manager->row_7_cards[0] = manager->cards[numbers_to_use_list[21]];
-    manager->row_7_cards[1] = manager->cards[numbers_to_use_list[22]];
-    manager->row_7_cards[2] = manager->cards[numbers_to_use_list[23]];
-    manager->row_7_cards[3] = manager->cards[numbers_to_use_list[24]];
-    manager->row_7_cards[4] = manager->cards[numbers_to_use_list[25]];
-    manager->row_7_cards[5] = manager->cards[numbers_to_use_list[26]];
-    manager->row_7_cards[6] = manager->cards[numbers_to_use_list[27]];
+    manager->row_7->cards = malloc(sizeof(card) * 13);
+    manager->row_7->card_count = 7;
+    manager->row_7->first_card_shown = 6;
+    manager->row_7->area_id = row7;
+    for (int k = 0; k < 13; k++)
+        manager->row_7->cards[k] = NULL;
+    manager->row_7->cards[0] = manager->cards[numbers_to_use_list[21]];
+    manager->row_7->cards[1] = manager->cards[numbers_to_use_list[22]];
+    manager->row_7->cards[2] = manager->cards[numbers_to_use_list[23]];
+    manager->row_7->cards[3] = manager->cards[numbers_to_use_list[24]];
+    manager->row_7->cards[4] = manager->cards[numbers_to_use_list[25]];
+    manager->row_7->cards[5] = manager->cards[numbers_to_use_list[26]];
+    manager->row_7->cards[6] = manager->cards[numbers_to_use_list[27]];
+
 
     // assign stuff to the stack
     manager->cards_in_third_stack = 0;
@@ -154,128 +181,46 @@ void assign_cards_to_rows(card_manager* manager) {
     free(numbers_to_use_list);
 }
 
+void update_row(card_manager* manager, card_row* row) {
+    vector2 row_position = { 0, 0 };
+    switch (row->area_id) {
+    case row1: row_position = manager->loaded_board->board_cards_position_1; break;
+    case row2: row_position = manager->loaded_board->board_cards_position_2; break;
+    case row3: row_position = manager->loaded_board->board_cards_position_3; break;
+    case row4: row_position = manager->loaded_board->board_cards_position_4; break;
+    case row5: row_position = manager->loaded_board->board_cards_position_5; break;
+    case row6: row_position = manager->loaded_board->board_cards_position_6; break;
+    case row7: row_position = manager->loaded_board->board_cards_position_7; break;
+    }
+
+    for (int i = 0; i < row->card_count; i++) {
+        row->cards[i]->position = row_position;
+        row->cards[i]->position.y -= (i * 20);
+
+        if (i == row->first_card_shown) {
+            row->cards[i]->flipped = false;
+            row->cards[i]->is_moveable = true;
+        }
+        else
+            row->cards[i]->flipped = true;
+
+        move_card_to_top(manager, row->cards[i]);
+
+        if (manager->held_card->held_card != NULL)
+            if (manager->held_card->held_card == row->cards[i])
+                manager->held_card->held_card_area = row->area_id;
+    }
+}
+
 void set_card_row_positions(card_manager* manager) {
-    for (int i = 0; i < 13; i++) {
-        if (manager->row_1_cards[i] != NULL) {
-            manager->row_1_cards[i]->position = manager->loaded_board->board_cards_position_1;
-            manager->row_1_cards[i]->position.y -= (i * 20);
+   update_row(manager, manager->row_1);
+   update_row(manager, manager->row_2);
+   update_row(manager, manager->row_3);
+   update_row(manager, manager->row_4);
+   update_row(manager, manager->row_5);
+   update_row(manager, manager->row_6);
+   update_row(manager, manager->row_7);
 
-            if (manager->row_1_cards[i + 1] == NULL) {
-                manager->row_1_cards[i]->flipped = false;
-                manager->row_1_cards[i]->is_moveable = true;
-            }
-            else
-                manager->row_1_cards[i]->flipped = true;
-            move_card_to_top(manager, manager->row_1_cards[i]);
-
-
-            if (manager->held_card->held_card != NULL)
-                if (manager->held_card->held_card == manager->row_1_cards[i])
-                    manager->held_card->held_card_area = row1;
-        }
-        if (manager->row_2_cards[i] != NULL) {
-            manager->row_2_cards[i]->position = manager->loaded_board->board_cards_position_2;
-            manager->row_2_cards[i]->position.y -= (i * 20);
-
-            if (manager->row_2_cards[i + 1] == NULL) {
-                manager->row_2_cards[i]->flipped = false;
-                manager->row_2_cards[i]->is_moveable = true;
-            }
-            else
-                manager->row_2_cards[i]->flipped = true;
-
-            move_card_to_top(manager, manager->row_2_cards[i]);
-
-            if (manager->held_card->held_card != NULL)
-                if (manager->held_card->held_card == manager->row_2_cards[i])
-                    manager->held_card->held_card_area = row2;
-        }
-        if (manager->row_3_cards[i] != NULL) {
-            manager->row_3_cards[i]->position = manager->loaded_board->board_cards_position_3;
-            manager->row_3_cards[i]->position.y -= (i * 20);
-
-            if (manager->row_3_cards[i + 1] == NULL) {
-                manager->row_3_cards[i]->flipped = false;
-                manager->row_3_cards[i]->is_moveable = true;
-            }
-            else
-                manager->row_3_cards[i]->flipped = true;
-            
-            move_card_to_top(manager, manager->row_3_cards[i]);
-
-            if (manager->held_card->held_card != NULL)
-                if (manager->held_card->held_card == manager->row_3_cards[i])
-                    manager->held_card->held_card_area = row3;
-        }
-        if (manager->row_4_cards[i] != NULL) {
-            manager->row_4_cards[i]->position = manager->loaded_board->board_cards_position_4;
-            manager->row_4_cards[i]->position.y -= (i * 20);
-
-            if (manager->row_4_cards[i + 1] == NULL) {
-                manager->row_4_cards[i]->flipped = false;
-                manager->row_4_cards[i]->is_moveable = true;
-            }
-            else
-                manager->row_4_cards[i]->flipped = true;
-
-            move_card_to_top(manager, manager->row_4_cards[i]);
-
-            if (manager->held_card->held_card != NULL)
-                if (manager->held_card->held_card == manager->row_4_cards[i])
-                    manager->held_card->held_card_area = row4;
-        }
-        if (manager->row_5_cards[i] != NULL) {
-            manager->row_5_cards[i]->position = manager->loaded_board->board_cards_position_5;
-            manager->row_5_cards[i]->position.y -= (i * 20);
-
-            if (manager->row_5_cards[i + 1] == NULL) {
-                manager->row_5_cards[i]->flipped = false;
-                manager->row_5_cards[i]->is_moveable = true;
-            }
-            else
-                manager->row_5_cards[i]->flipped = true;
-
-            move_card_to_top(manager, manager->row_5_cards[i]);
-
-            if (manager->held_card->held_card != NULL)
-                if (manager->held_card->held_card == manager->row_5_cards[i])
-                    manager->held_card->held_card_area = row5;
-        }
-        if (manager->row_6_cards[i] != NULL) {
-            manager->row_6_cards[i]->position = manager->loaded_board->board_cards_position_6;
-            manager->row_6_cards[i]->position.y -= (i * 20);
-
-            if (manager->row_6_cards[i + 1] == NULL) {
-                manager->row_6_cards[i]->flipped = false;
-                manager->row_6_cards[i]->is_moveable = true;
-            }
-            else
-                manager->row_6_cards[i]->flipped = true;
-
-            move_card_to_top(manager, manager->row_6_cards[i]);
-
-            if (manager->held_card->held_card != NULL)
-                if (manager->held_card->held_card == manager->row_6_cards[i])
-                    manager->held_card->held_card_area = row6;
-        }
-        if (manager->row_7_cards[i] != NULL) {
-            manager->row_7_cards[i]->position = manager->loaded_board->board_cards_position_7;
-            manager->row_7_cards[i]->position.y -= (i * 20);
-
-            if (manager->row_7_cards[i + 1] == NULL) {
-                manager->row_7_cards[i]->flipped = false;
-                manager->row_7_cards[i]->is_moveable = true;
-            }
-            else
-                manager->row_7_cards[i]->flipped = true;
-
-           move_card_to_top(manager, manager->row_7_cards[i]);
-
-           if (manager->held_card->held_card != NULL)
-                if (manager->held_card->held_card == manager->row_7_cards[i])
-                    manager->held_card->held_card_area = row7;
-        }
-    }   
 }
 
 void create_cards(card_manager* manager) {
@@ -446,13 +391,13 @@ int get_last_index(card** cards) {
 
 card** get_top_row_cards(card_manager* manager) {
     card** new_cards = malloc(sizeof(card) * 7);
-    new_cards[0] = manager->row_1_cards[get_last_index(manager->row_1_cards)];
-    new_cards[1] = manager->row_2_cards[get_last_index(manager->row_2_cards)];
-    new_cards[2] = manager->row_3_cards[get_last_index(manager->row_3_cards)];
-    new_cards[3] = manager->row_4_cards[get_last_index(manager->row_4_cards)];
-    new_cards[4] = manager->row_5_cards[get_last_index(manager->row_5_cards)];
-    new_cards[5] = manager->row_6_cards[get_last_index(manager->row_6_cards)];
-    new_cards[6] = manager->row_7_cards[get_last_index(manager->row_7_cards)];
+    new_cards[0] = manager->row_1->cards[get_last_index(manager->row_1->cards)];
+    new_cards[1] = manager->row_2->cards[get_last_index(manager->row_2->cards)];
+    new_cards[2] = manager->row_3->cards[get_last_index(manager->row_3->cards)];
+    new_cards[3] = manager->row_4->cards[get_last_index(manager->row_4->cards)];
+    new_cards[4] = manager->row_5->cards[get_last_index(manager->row_5->cards)];
+    new_cards[5] = manager->row_6->cards[get_last_index(manager->row_6->cards)];
+    new_cards[6] = manager->row_7->cards[get_last_index(manager->row_7->cards)];
     return new_cards;
 }
 
