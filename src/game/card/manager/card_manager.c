@@ -310,8 +310,7 @@ void check_stack_clicked (card_manager* manager) {
     } else {
 
         if ((manager->cards_in_third_stack + 2) == manager->max_cards_in_third_stack) {
-            if (in_board_area(manager->hover, manager->loaded_board->card_stack_position) && manager->hover->input_manager->mouse_clicked) {    
-                printf("resetting board\n");
+            if (in_board_area(manager->hover, manager->loaded_board->card_stack_position) && manager->hover->input_manager->mouse_clicked) { 
                 manager->card_stack_show_1 = NULL;
                 manager->card_stack_show_2 = NULL;
                 for (int k = 0; k < manager->cards_in_third_stack; k++) {
@@ -435,7 +434,6 @@ void remove_card_from_stack(card_manager* manager) {
         for (int i = 0; i < manager->cards_in_third_stack; i++) {
             manager->rest_of_cards[i] = manager->rest_of_cards[i + 1];
         }
-        printf("rotating card third stack\n");
     }
 
     move_card_to_top(manager, manager->card_stack_show_2);
@@ -458,14 +456,16 @@ void remove_held_card_from_area(card_manager* manager) {
         remove_card_from_stack(manager);
     }
     else {
-        switch (manager->held_card->held_card_area) {
-        case row1: remove_card_from_row(manager, manager->row_1); break;
-        case row2: remove_card_from_row(manager, manager->row_2); break;
-        case row3: remove_card_from_row(manager, manager->row_3); break;
-        case row4: remove_card_from_row(manager, manager->row_4); break;
-        case row5: remove_card_from_row(manager, manager->row_5); break;
-        case row6: remove_card_from_row(manager, manager->row_6); break;
-        case row7: remove_card_from_row(manager, manager->row_7); break;
+        for (int i = 0; i < manager->held_card->other_held_cards_count + 1; i++) {
+            switch (manager->held_card->held_card_area) {
+            case row1: remove_card_from_row(manager, manager->row_1); break;
+            case row2: remove_card_from_row(manager, manager->row_2); break;
+            case row3: remove_card_from_row(manager, manager->row_3); break;
+            case row4: remove_card_from_row(manager, manager->row_4); break;
+            case row5: remove_card_from_row(manager, manager->row_5); break;
+            case row6: remove_card_from_row(manager, manager->row_6); break;
+            case row7: remove_card_from_row(manager, manager->row_7); break;
+            }
         }
     }
 
@@ -619,6 +619,11 @@ void move_card_to_other_rows(card_manager* manager) {
             row_to_add_to->cards[row_to_add_to->card_count] = current_card;
             row_to_add_to->card_count++;
 
+            for (int i = 0; i < manager->held_card->other_held_cards_count; i++) {
+                row_to_add_to->cards[row_to_add_to->card_count] = manager->held_card->other_held_cards[i];
+                row_to_add_to->card_count++;
+            }
+
             drop_held_card(manager);
         }
     } else {
@@ -663,8 +668,9 @@ void update_held_card(card_manager* manager) {
         move_card_to_top(manager, manager->held_card->other_held_cards[i]);
     }
     
+    if (manager->held_card->other_held_cards_count == 0)
+        see_if_held_card_can_be_dropped_in_pile(manager);
 
-    see_if_held_card_can_be_dropped_in_pile(manager);
     if (manager->held_card->held_card != NULL) 
         move_card_to_other_rows(manager);
 
@@ -701,11 +707,19 @@ void get_cards_below_grabbed_card(card_manager* manager) {
         manager->held_card->other_held_cards[i] = NULL;
 
     if (row_card_is_in->cards[row_card_is_in->card_count - 1] != manager->held_card->held_card) {
+        int amount_to_add = 0;
+        int last_index = 0;
         for (int i = row_card_is_in->card_count - 1; i >= 0; i--) {
             if (row_card_is_in->cards[i] == manager->held_card->held_card)
                 break;
 
-            manager->held_card->other_held_cards[manager->held_card->other_held_cards_count] = row_card_is_in->cards[i];
+            last_index = i;
+
+            amount_to_add++;
+        }
+
+        for (int i = 0; i < amount_to_add; i++) {
+            manager->held_card->other_held_cards[manager->held_card->other_held_cards_count] = row_card_is_in->cards[last_index + i];
             manager->held_card->other_held_cards_count++;
         }
     }
