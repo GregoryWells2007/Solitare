@@ -174,7 +174,7 @@ void assign_cards_to_rows(card_manager* manager) {
     manager->cards_in_third_stack = 0;
     manager->rest_of_cards = malloc(sizeof(card) * 22);
     manager->card_stack_cards = malloc(sizeof(card) * 24);
-    manager->max_cards_in_third_stack = 22;
+    manager->max_cards_in_third_stack = 24;
     for (int i = 0; i < 24; i++) {
         manager->card_stack_cards[i] = manager->cards[numbers_to_use_list[i + 28]];
     }
@@ -290,8 +290,11 @@ void check_stack_clicked (card_manager* manager) {
         first_card->flipped = false;
         move_card_to_top(manager, first_card);
         rotate_stack_array(manager);
+        while (manager->card_stack_cards[0] == NULL)
+            rotate_stack_array(manager);
     } else {
-        if (manager->cards_in_third_stack == manager->max_cards_in_third_stack) {
+
+        if ((manager->cards_in_third_stack + 2) == manager->max_cards_in_third_stack) {
             if (in_board_area(manager->hover, manager->loaded_board->card_stack_position) && manager->hover->input_manager->mouse_clicked) {    
                 printf("resetting board\n");
                 manager->card_stack_show_1 = NULL;
@@ -430,6 +433,9 @@ bool is_opposite_color(int type1, int type2) {
 }
 
 void remove_card_from_stack(card_manager* manager) {
+    manager->card_stack_cards[23] = NULL;
+    manager->max_cards_in_third_stack--;
+
     manager->card_stack_show_1 = NULL;
     if (manager->card_stack_show_2 == NULL) 
         return;
@@ -440,7 +446,6 @@ void remove_card_from_stack(card_manager* manager) {
     if (manager->cards_in_third_stack == 0)
         return;
 
-    manager->card_stack_cards[23] = NULL;
 
     manager->card_stack_show_2 = manager->rest_of_cards[0];
     if (manager->cards_in_third_stack > 1) {
@@ -454,7 +459,6 @@ void remove_card_from_stack(card_manager* manager) {
     move_card_to_top(manager, manager->card_stack_show_1);
 
     manager->cards_in_third_stack--;
-    manager->max_cards_in_third_stack--;
 }
 
 void remove_card_from_row(card_manager* manager, card_row* row) {
