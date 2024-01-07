@@ -10,4 +10,7 @@ typedef struct held_card_data {
     card_area held_card_area;
     vector2 card_held_offset;
     card* held_card;
+
+    int other_held_cards_count;
+    card** other_held_cards;
 } held_card_data;

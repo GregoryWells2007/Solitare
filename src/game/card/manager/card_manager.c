@@ -9,6 +9,8 @@ void init_card_manager(card_manager* manager) {
     manager->held_card->held_card = NULL;
     manager->held_card->held_card_area = no_area;
     manager->held_card->card_held_offset = (vector2){ 0, 0 };
+    manager->held_card->other_held_cards_count = 0;
+    manager->held_card->other_held_cards = malloc(sizeof(card) * 13);
 }
 void create_piles(card_manager* manager) {
     manager->clubs_pile = (card_pile){};
@@ -264,13 +266,26 @@ void rotate_stack_array(card_manager* manager) {
 
 void check_stack_clicked (card_manager* manager) {
     card* first_card = NULL;
-    for (int k = 0; k < 23; k++) {
+    for (int k = 0; k < 24; k++) {
         if (manager->card_stack_cards[k] == NULL)
             continue;
         
         first_card = manager->card_stack_cards[k];
         break;
     }
+
+    card* last_card = NULL;
+    for (int k = 23; k >= 0; k--) {
+        if (manager->card_stack_cards[k] == NULL)
+            continue;
+        
+        last_card = manager->card_stack_cards[k];
+        break;
+    }
+
+    if (manager->held_card->held_card == last_card)
+        manager->held_card->held_card_area = stack;
+
     test_card_hover(manager->hover, first_card);
 
     if ((manager->hover->input_manager->mouse_clicked && first_card->mouse_over)) {
@@ -350,53 +365,6 @@ int lowest_distance(float* distances, int count) {
     return index;
 }
 
-void check_first_card_dropped(card_manager* manager) {
-    if (manager->held_card->held_card == NULL)
-        return;
-
-    if (manager->held_card->held_card != manager->card_stack_show_1)
-        return;
-
-    manager->held_card->held_card_area = stack;
-
-    card* held_card = manager->held_card->held_card;
-
-    move_card_to_top(manager, held_card);
-
-    float distances[4] = { 0.0f, 0.0f, 0.0f, 0.0f }; 
-    distances[0] = get_distance(held_card->position, manager->loaded_board->board_spades_position); 
-    distances[1] = get_distance(held_card->position, manager->loaded_board->board_clubs_position); 
-    distances[2] = get_distance(held_card->position, manager->loaded_board->board_hearts_position); 
-    distances[3] = get_distance(held_card->position, manager->loaded_board->board_diamonds_position); 
-
-    int lowest_index = lowest_distance(distances, 4);
-
-    if (lowest_index == 0) {
-        if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_spades_position)) {
-            //printf("droping on spades\n");
-        }
-    }
-
-    if (lowest_index == 1) {
-        if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_clubs_position)) {
-            //printf("droping on clubs\n");
-        }
-    }
-
-    if (lowest_index == 2) {
-        if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_hearts_position)) {
-            //printf("droping on hearts\n");
-        }
-    }
-
-    if (lowest_index == 3) {
-        if (test_card_in_area(manager->hover, held_card, manager->loaded_board->board_diamonds_position)) {
-            //printf("droping on diamonds\n");
-        }
-    }
-
-}
-
 int get_last_index(card** cards) {
     if (cards[0] == NULL)
         return 0;
@@ -440,7 +408,16 @@ bool is_opposite_color(int type1, int type2) {
 }
 
 void remove_card_from_stack(card_manager* manager) {
-    manager->card_stack_cards[23] = NULL;
+    int last_card_index = 0;
+    for (int i = 23; i >= 0; i--)
+        if (manager->card_stack_cards[i] == NULL)
+            continue;
+        else {
+            last_card_index = i;
+            break;
+        }
+
+    manager->card_stack_cards[last_card_index] = NULL;
     manager->max_cards_in_third_stack--;
 
     manager->card_stack_show_1 = NULL;
@@ -452,8 +429,7 @@ void remove_card_from_stack(card_manager* manager) {
     
     if (manager->cards_in_third_stack == 0)
         return;
-
-
+        
     manager->card_stack_show_2 = manager->rest_of_cards[0];
     if (manager->cards_in_third_stack > 1) {
         for (int i = 0; i < manager->cards_in_third_stack; i++) {
@@ -478,8 +454,9 @@ void remove_card_from_row(card_manager* manager, card_row* row) {
 }
 
 void remove_held_card_from_area(card_manager* manager) {
-    if (manager->held_card->held_card_area == stack)
+    if (manager->held_card->held_card_area == stack) {
         remove_card_from_stack(manager);
+    }
     else {
         switch (manager->held_card->held_card_area) {
         case row1: remove_card_from_row(manager, manager->row_1); break;
@@ -501,6 +478,7 @@ void drop_held_card(card_manager* manger) {
 
     manger->held_card->held_card = NULL;
     manger->held_card->held_card_area = no_area;
+    manger->held_card->other_held_cards_count = 0;
 }
 
 void see_if_held_card_can_be_dropped_in_pile(card_manager* manager) {
@@ -672,10 +650,19 @@ void update_held_card(card_manager* manager) {
 
     float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
     float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
+    real_mouse_x -= manager->held_card->card_held_offset.x;
+    real_mouse_y -= manager->held_card->card_held_offset.y;
     manager->held_card->held_card->position = (vector2){ real_mouse_x, real_mouse_y };
     manager->held_card->held_card->held = 1;
 
     move_card_to_top(manager, manager->held_card->held_card);
+
+    for (int i = 0; i < manager->held_card->other_held_cards_count; i++) {
+        manager->held_card->other_held_cards[i]->position = manager->held_card->held_card->position; 
+        manager->held_card->other_held_cards[i]->position.y -= (20 * (i + 1));
+        move_card_to_top(manager, manager->held_card->other_held_cards[i]);
+    }
+    
 
     see_if_held_card_can_be_dropped_in_pile(manager);
     if (manager->held_card->held_card != NULL) 
@@ -686,13 +673,46 @@ void update_held_card(card_manager* manager) {
     }
 }
 
+void get_cards_below_grabbed_card(card_manager* manager) {
+    if (manager->held_card->held_card == NULL)
+        return;
+
+     manager->held_card->other_held_cards_count = 0;
+
+    if (manager->held_card->held_card_area == stack)
+        return;
+
+    card_row* row_card_is_in = NULL;
+    switch (manager->held_card->held_card_area) {
+    case row1: row_card_is_in = manager->row_1; break;
+    case row2: row_card_is_in = manager->row_2; break;
+    case row3: row_card_is_in = manager->row_3; break;
+    case row4: row_card_is_in = manager->row_4; break;
+    case row5: row_card_is_in = manager->row_5; break;
+    case row6: row_card_is_in = manager->row_6; break;
+    case row7: row_card_is_in = manager->row_7; break;
+    }
+
+    if (row_card_is_in == NULL)
+        return;
+
+    manager->held_card->other_held_cards_count = 0;
+    for (int i = 0; i < 13; i++)
+        manager->held_card->other_held_cards[i] = NULL;
+
+    if (row_card_is_in->cards[row_card_is_in->card_count - 1] != manager->held_card->held_card) {
+        for (int i = row_card_is_in->card_count - 1; i >= 0; i--) {
+            if (row_card_is_in->cards[i] == manager->held_card->held_card)
+                break;
+
+            manager->held_card->other_held_cards[manager->held_card->other_held_cards_count] = row_card_is_in->cards[i];
+            manager->held_card->other_held_cards_count++;
+        }
+    }
+}
 
 void update_card_manager(card_manager* manager) {
     bool card_already_hovered = false;
-
-    check_stack_clicked(manager);
-    position_card_stacks(manager);
-    set_card_row_positions(manager);
 
     for (int i = 0; i < 52; i++) {
         card* current_card = manager->cards[i];
@@ -719,15 +739,20 @@ void update_card_manager(card_manager* manager) {
 
             float card_held_offset_x = real_mouse_x - current_card->position.x;
             float card_held_offset_y = real_mouse_y - current_card->position.y;
-        
 
             manager->held_card->card_held_offset = (vector2){ card_held_offset_x, card_held_offset_y };
+
          }
     }
 
-    check_first_card_dropped(manager);
+    check_stack_clicked(manager);
+    position_card_stacks(manager);
+    set_card_row_positions(manager);
+
     update_card_piles(manager);
+    get_cards_below_grabbed_card(manager);
     update_held_card(manager);
+
 
     for (int i = 51; i >= 0; i--) {
         draw_card(manager->renderer, manager->cards[i]);
