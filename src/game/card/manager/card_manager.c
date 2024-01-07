@@ -644,6 +644,11 @@ void move_card_to_other_rows(card_manager* manager) {
             row_to_add_to->cards[0] = current_card;
             row_to_add_to->card_count++;
 
+            for (int i = 0; i < manager->held_card->other_held_cards_count; i++) {
+                row_to_add_to->cards[row_to_add_to->card_count] = manager->held_card->other_held_cards[i];
+                row_to_add_to->card_count++;
+            }
+
             drop_held_card(manager);
         }
     }
