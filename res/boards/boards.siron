@@ -1,0 +1,5 @@
+def<header> {
+    version: 1.0
+}
+
+var<list> : boards -> { string [ "base_board" ] } 
