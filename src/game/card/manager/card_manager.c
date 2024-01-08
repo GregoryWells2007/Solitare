@@ -481,7 +481,6 @@ void remove_card_from_stack(card_manager* manager) {
         }
     }
 }
-
 void remove_card_from_row(card_manager* manager, card_row* row) {
     if (row->card_count >= 2)
         if (row->cards[row->card_count - 2]->flipped == true)
@@ -489,6 +488,10 @@ void remove_card_from_row(card_manager* manager, card_row* row) {
 
     row->card_count--;
     row->cards[row->card_count] = NULL;
+}
+void remove_card_from_pile(card_manager* manager, card_pile* pile) {
+    pile->count--;
+    pile->cards[pile->count] = NULL;
 }
 
 void remove_held_card_from_area(card_manager* manager) {
@@ -505,6 +508,12 @@ void remove_held_card_from_area(card_manager* manager) {
             case row5: remove_card_from_row(manager, manager->row_5); break;
             case row6: remove_card_from_row(manager, manager->row_6); break;
             case row7: remove_card_from_row(manager, manager->row_7); break;
+
+            case clubs_pile: remove_card_from_pile(manager, &manager->clubs_pile); break;
+            case spades_pile: remove_card_from_pile(manager, &manager->spades_pile); break;
+            case hearts_pile: remove_card_from_pile(manager, &manager->hearts_pile); break;
+            case diamonds_pile: remove_card_from_pile(manager, &manager->diamonds_pile); break;
+
             }
         }
     }
@@ -575,18 +584,30 @@ void see_if_held_card_can_be_dropped_in_pile(card_manager* manager) {
 }
 
 void update_card_pile(card_manager* manager, card_pile* pile) {
-    vector2 card_pile_position = (vector2){-100, -100};
-    
+    if (pile->count == 0)
+        return;
+
+    vector2 card_pile_position = (vector2){ 0, 0 };
+    card_area card_area_value;
+
     switch (pile->face) {
-    case clubs: card_pile_position = manager->loaded_board->board_clubs_position; break;
-    case spades: card_pile_position = manager->loaded_board->board_spades_position; break;
-    case hearts: card_pile_position = manager->loaded_board->board_hearts_position; break;
-    case diamonds: card_pile_position = manager->loaded_board->board_diamonds_position; break;
+    case clubs: card_area_value = clubs_pile; card_pile_position = manager->loaded_board->board_clubs_position; break;
+    case spades: card_area_value = spades_pile; card_pile_position = manager->loaded_board->board_spades_position; break;
+    case hearts: card_area_value = hearts_pile; card_pile_position = manager->loaded_board->board_hearts_position; break;
+    case diamonds: card_area_value = diamonds_pile; card_pile_position = manager->loaded_board->board_diamonds_position; break;
     }
 
     for (int i = 0; i < pile->count; i++) {
         pile->cards[i]->position = card_pile_position;
         pile->cards[i]->is_moveable = false;
+    }
+
+    pile->cards[pile->count - 1]->is_moveable = true;
+
+
+
+    if (manager->held_card->held_card == pile->cards[pile->count - 1]) {
+        manager->held_card->held_card_area = card_area_value;
     }
 }
 
