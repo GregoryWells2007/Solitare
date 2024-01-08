@@ -748,13 +748,17 @@ void update_held_card(card_manager* manager) {
     if (manager->held_card->held_card != NULL) 
         move_card_to_other_rows(manager);
 
+    #ifdef LOG_DATA
     printf("and we saw if we could drop it in another row\n");
+    #endif
 
     if (!manager->hover->input_manager->mouse_down) {
         manager->held_card->held_card = NULL;
     }
 
+    #ifdef LOG_DATA
     printf("Finised updating the held card\n");
+    #endif
 }
 
 void get_cards_below_grabbed_card(card_manager* manager) {

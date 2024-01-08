@@ -10,6 +10,7 @@
 
 // if i ever want to print FPS
 // #define PRINT_FPS 
+// #define PRINT_FRAME_SEPERATOR
 
 void set_board_positions(board* board_to_set) {
     board_to_set->board_clubs_position = (vector2){ -565, 260 };
@@ -66,7 +67,9 @@ int main(int argc, char** argv) {
     int frameCount = 0;
 
     while (isOpen(&main_window)) {
+        #ifdef PRINT_FRAME_SEPERATOR
         printf("----------\n");
+        #endif
 
         startTime = get_time();
 
