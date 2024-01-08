@@ -4,6 +4,8 @@
 #include <time.h> 
 #include "math.h"
 
+//#define LOG_DATA
+
 void init_card_manager(card_manager* manager) {
     manager->held_card = malloc(sizeof(held_card_data));
     manager->held_card->held_card = NULL;
@@ -298,50 +300,43 @@ void check_stack_clicked (card_manager* manager) {
     if (manager->held_card->held_card == last_card)
         manager->held_card->held_card_area = stack;
 
-    test_card_hover(manager->hover, first_card);
-
-    test_card_hover(manager->hover, last_card);
-    if (first_card->mouse_over) {
-        move_card_to_top(manager, first_card);
-    }
-
-    if ((manager->hover->input_manager->mouse_clicked && first_card->mouse_over)) {
-
-
-        if (manager->card_stack_show_1 == NULL) {
-            manager->card_stack_show_1 = first_card;
-        } else if (manager->card_stack_show_2 == NULL) {
-            manager->card_stack_show_2 = manager->card_stack_show_1;
-            manager->card_stack_show_1 = first_card;
-        } else {
-            manager->rest_of_cards[manager->cards_in_third_stack] = manager->card_stack_show_2;
-            manager->card_stack_show_2 = manager->card_stack_show_1;
-            manager->card_stack_show_1 = first_card;
-            manager->cards_in_third_stack++;
-
-        }
-
-        first_card->flipped = false;
-        move_card_to_top(manager, first_card);
-        rotate_stack_array(manager);
-        while (manager->card_stack_cards[0] == NULL)
-            rotate_stack_array(manager);
-    } else {
-
-        if ((manager->cards_in_third_stack + 2) == manager->cards_in_stack) {
-            if (in_board_area(manager->hover, manager->loaded_board->card_stack_position) && manager->hover->input_manager->mouse_clicked) { 
-                manager->card_stack_show_1 = NULL;
-                manager->card_stack_show_2 = NULL;
-                for (int k = 0; k < manager->cards_in_third_stack; k++) {
-                    manager->rest_of_cards[k] = NULL;
-                }
-                manager->cards_in_third_stack = 0;
-                for (int i = 0; i < 24; i++) {
-                    if (manager->card_stack_cards[i] == NULL)
-                        continue;
-                    manager->card_stack_cards[i]->flipped = true;
-                }
+    bool in_card_area = in_board_area(manager->hover, manager->loaded_board->card_stack_position);
+    if (in_card_area && manager->hover->input_manager->mouse_clicked) {
+        int add_amonnt = (manager->card_stack_show_1 != NULL) + (manager->card_stack_show_2 != NULL);
+        #ifdef LOG_DATA
+        printf("\nStuff for the item reset, %i, %i\n", (manager->cards_in_third_stack + add_amonnt), manager->cards_in_stack);
+        #endif
+        if ((manager->cards_in_third_stack + add_amonnt) == manager->cards_in_stack) {
+            manager->card_stack_show_1 = NULL;
+            manager->card_stack_show_2 = NULL;
+            for (int k = 0; k < 24; k++) {
+                manager->rest_of_cards[k] = NULL;
             }
+            manager->cards_in_third_stack = 0;
+            for (int i = 0; i < 24; i++) {
+                if (manager->card_stack_cards[i] == NULL)
+                    continue;
+                manager->card_stack_cards[i]->flipped = true;
+            }
+        } else {
+            if (manager->card_stack_show_1 == NULL) {
+                manager->card_stack_show_1 = first_card;
+            } else if (manager->card_stack_show_2 == NULL) {
+                manager->card_stack_show_2 = manager->card_stack_show_1;
+                manager->card_stack_show_1 = first_card;
+            } else {
+                manager->rest_of_cards[manager->cards_in_third_stack] = manager->card_stack_show_2;
+                manager->card_stack_show_2 = manager->card_stack_show_1;
+                manager->card_stack_show_1 = first_card;
+                manager->cards_in_third_stack++;
+
+            }
+
+            first_card->flipped = false;
+            move_card_to_top(manager, first_card);
+            rotate_stack_array(manager);
+            while (manager->card_stack_cards[0] == NULL)
+                rotate_stack_array(manager);
         }
     }
 
@@ -403,7 +398,7 @@ int get_last_index(card** cards) {
 
 card** get_top_row_cards(card_manager* manager) {
     card** new_cards = malloc(sizeof(card) * 7);
-    for (int q = 0; q < 13; q++)
+    for (int q = 0; q < 7; q++)
         new_cards[q] = NULL;
 
     new_cards[0] = manager->row_1->cards[get_last_index(manager->row_1->cards)];
@@ -482,28 +477,12 @@ void remove_card_from_stack(card_manager* manager) {
                 manager->rest_of_cards[i] = manager->rest_of_cards[i + 1];
             }
             manager->cards_in_third_stack--;
-            //manager->rest_of_cards[manager->cards_in_third_stack - 1] = NULL;
 
             move_card_to_top(manager, manager->card_stack_show_2);
             move_card_to_top(manager, manager->card_stack_show_1);
 
         }
     }
-    
-    // if (manager->cards_in_third_stack == 0)
-    //     return;
-        
-    // manager->card_stack_show_2 = manager->rest_of_cards[0];
-    // if (manager->cards_in_third_stack > 1) {
-    //     for (int i = 0; i < manager->cards_in_third_stack; i++) {
-    //         manager->rest_of_cards[i] = manager->rest_of_cards[i + 1];
-    //     }
-    // }
-
-    // move_card_to_top(manager, manager->card_stack_show_2);
-    // move_card_to_top(manager, manager->card_stack_show_1);
-
-    // manager->cards_in_third_stack--;
 }
 
 void remove_card_from_row(card_manager* manager, card_row* row) {
@@ -622,9 +601,20 @@ void update_card_piles(card_manager* manager) {
 }
 
 void move_card_to_other_rows(card_manager* manager) {
+    if (manager->held_card->held_card == NULL)
+        return;
+
     card* current_card = manager->held_card->held_card;
+    #ifdef LOG_DATA
+    printf("Card ID: %i\n", current_card);
+    #endif
 
     card** cards_to_collide_with = get_top_row_cards(manager);
+    #ifdef
+    printf("Cards IDS: %i, %i, %i, %i, %i, %i, %i\n", 
+        cards_to_collide_with[0], cards_to_collide_with[1], cards_to_collide_with[2], cards_to_collide_with[3],
+        cards_to_collide_with[4], cards_to_collide_with[5], cards_to_collide_with[6]);
+    #endif
 
     float distances[7] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
     vector2 postion_to_collide_with = {};
@@ -657,8 +647,10 @@ void move_card_to_other_rows(card_manager* manager) {
         }
     }
 
-    //printf("Distances: {%f, %f, %f, %f, %f, %f, %f}\n", 
-        //distances[0], distances[1], distances[2], distances[3], distances[4], distances[5], distances[6]);
+    #ifdef LOG_DATA
+    printf("Distances: {%f, %f, %f, %f, %f, %f, %f}\n", 
+        distances[0], distances[1], distances[2], distances[3], distances[4], distances[5], distances[6]);
+    #endif
 
     int lowest_distance_index = lowest_distance(distances, 7);
     if (distances[lowest_distance_index] == INT64_MAX)
@@ -722,7 +714,9 @@ void update_held_card(card_manager* manager) {
     if (manager->held_card->held_card == NULL)
         return;
 
+    #ifdef LOG_DATA
     printf("started updating the held card\n");
+    #endif
 
     float real_mouse_x = (((manager->hover->input_manager->mouse_position.x / 1280.0f) * 2) - 1) * 640;
     float real_mouse_y = -((((manager->hover->input_manager->mouse_position.y / 720.0f) * 2) - 1) * 360);
@@ -740,13 +734,21 @@ void update_held_card(card_manager* manager) {
         move_card_to_top(manager, manager->held_card->other_held_cards[i]);
     }
     
+    #ifdef LOG_DATA
     printf("held cards count: %i\n", manager->held_card->other_held_cards_count);
+    #endif
 
     if (manager->held_card->other_held_cards_count == 0)
         see_if_held_card_can_be_dropped_in_pile(manager);
 
+    #ifdef LOG_DATA
+    printf("we saw if we could drop it in a pile\n");
+    #endif
+
     if (manager->held_card->held_card != NULL) 
         move_card_to_other_rows(manager);
+
+    printf("and we saw if we could drop it in another row\n");
 
     if (!manager->hover->input_manager->mouse_down) {
         manager->held_card->held_card = NULL;
@@ -804,8 +806,13 @@ void get_cards_below_grabbed_card(card_manager* manager) {
 void update_card_manager(card_manager* manager) {
     bool card_already_hovered = false;
 
-    check_stack_clicked(manager);
-    position_card_stacks(manager);
+    if (manager->cards_in_stack > 0) {
+        check_stack_clicked(manager);
+        position_card_stacks(manager);
+    }
+    else {
+        printf("not doing the stack stuff\n");
+    }
 
     for (int i = 0; i < 52; i++) {
         card* current_card = manager->cards[i];
