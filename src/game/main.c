@@ -31,7 +31,7 @@ void set_board_positions(board* board_to_set) {
 
 int main(int argc, char** argv) {
     init_windows();
-    window_data main_window_data = { 1280, 720, "Solitare AI\0" };
+    window_data main_window_data = { 1280, 720, "Solitare\0" };
     window main_window = create_window(main_window_data);
     init_opengl();
 
