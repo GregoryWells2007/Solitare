@@ -51,3 +51,5 @@ void create_piles(card_manager* manager);
 void init_card_manager(card_manager* manager);
 void create_cards(card_manager* manager);
 void update_card_manager(card_manager* manager); 
+
+void cleanup_card_manager(card_manager* manager);

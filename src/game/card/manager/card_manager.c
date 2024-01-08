@@ -85,9 +85,6 @@ void assign_cards_to_rows(card_manager* manager) {
             numbersLeft[g] = numbersLeft[g + 1]; 
         }
     }
-    for (int g = 0; g < 52; g++) {
-        printf("%i\n", numbers_to_use_list[g]);
-    }
     free(numbersLeft);
 
     manager->row_1 = malloc(sizeof(card_row));
@@ -610,7 +607,7 @@ void move_card_to_other_rows(card_manager* manager) {
     #endif
 
     card** cards_to_collide_with = get_top_row_cards(manager);
-    #ifdef
+    #ifdef LOG_DATA
     printf("Cards IDS: %i, %i, %i, %i, %i, %i, %i\n", 
         cards_to_collide_with[0], cards_to_collide_with[1], cards_to_collide_with[2], cards_to_collide_with[3],
         cards_to_collide_with[4], cards_to_collide_with[5], cards_to_collide_with[6]);
@@ -814,9 +811,6 @@ void update_card_manager(card_manager* manager) {
         check_stack_clicked(manager);
         position_card_stacks(manager);
     }
-    else {
-        printf("not doing the stack stuff\n");
-    }
 
     for (int i = 0; i < 52; i++) {
         card* current_card = manager->cards[i];
@@ -855,8 +849,25 @@ void update_card_manager(card_manager* manager) {
     get_cards_below_grabbed_card(manager);
     update_held_card(manager);
 
-
     for (int i = 51; i >= 0; i--) {
         draw_card(manager->renderer, manager->cards[i]);
     }
+}
+
+void cleanup_card_manager(card_manager* manager) {
+    free(manager->row_1);
+    free(manager->row_2);
+    free(manager->row_3);
+    free(manager->row_4);
+    free(manager->row_5);
+    free(manager->row_6);
+    free(manager->row_7);
+
+    free(manager->card_stack_cards);
+
+    free(manager->card_stack_show_1);
+    free(manager->card_stack_show_2);
+    free(manager->rest_of_cards);
+
+    free(manager->cards);
 }

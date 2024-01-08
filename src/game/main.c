@@ -103,6 +103,7 @@ int main(int argc, char** argv) {
         }
     }
 
+    cleanup_card_manager(&manager);
     close_windows();
     return 0;
 }
