@@ -37,11 +37,12 @@ typedef struct card_manager {
     int max_cards_in_stack;
     int cards_in_stack;
 
-    card_pile clubs_pile;
-    card_pile spades_pile;
-    card_pile hearts_pile;
-    card_pile diamonds_pile;
+    card_pile* clubs_pile;
+    card_pile* spades_pile;
+    card_pile* hearts_pile;
+    card_pile* diamonds_pile;
 
+    bool won_game;
 } card_manager;
 
 void hold_card(card* manager);
@@ -53,3 +54,5 @@ void create_cards(card_manager* manager);
 void update_card_manager(card_manager* manager); 
 
 void cleanup_card_manager(card_manager* manager);
+
+void reset_game(card_manager* manager);

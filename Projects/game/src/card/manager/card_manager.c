@@ -4,9 +4,9 @@
 #include <time.h> 
 #include "math.h"
 
-//#define LOG_DATA
+#define LOG_DATA
 
-void init_card_manager(card_manager* manager) {
+void create_held_card(card_manager* manager) {
     manager->held_card = malloc(sizeof(held_card_data));
     manager->held_card->held_card = NULL;
     manager->held_card->held_card_area = no_area;
@@ -14,41 +14,40 @@ void init_card_manager(card_manager* manager) {
     manager->held_card->other_held_cards_count = 0;
     manager->held_card->other_held_cards = malloc(sizeof(card) * 13);
 }
+void init_card_manager(card_manager* manager) {
+    create_held_card(manager);
+    manager->won_game = false;
+}
+void create_pile(card_manager* manager, card_face face) {
+    vector2 card_position = (vector2){};
+    switch(face) {
+    case clubs: card_position = manager->loaded_board->board_clubs_position; break;
+    case spades: card_position = manager->loaded_board->board_spades_position; break;
+    case hearts: card_position = manager->loaded_board->board_hearts_position; break;
+    case diamonds: card_position = manager->loaded_board->board_diamonds_position; break;
+    }
+
+    card_pile* pile = malloc(sizeof(card_pile));
+    pile->cards = malloc(sizeof(card) * 13);
+    for (int i = 0; i < 13; i++)
+        pile->cards[i] = NULL;
+    pile->face = face;
+    pile->count = 0;
+    pile->area = card_position;
+    
+    switch(face) {
+    case clubs: manager->clubs_pile = pile; break;
+    case spades: manager->spades_pile = pile; break;
+    case hearts: manager->hearts_pile = pile; break;
+    case diamonds: manager->diamonds_pile = pile; break;
+    }
+}
+
 void create_piles(card_manager* manager) {
-    manager->clubs_pile = (card_pile){};
-    manager->clubs_pile.cards = malloc(sizeof(card) * 13);
-    for (int i = 0; i < 13; i++)
-        manager->clubs_pile.cards[i] = NULL;
-    manager->clubs_pile.face = clubs;
-    manager->clubs_pile.count = 0;
-    manager->clubs_pile.area = manager->loaded_board->board_clubs_position;
-
-
-    manager->spades_pile = (card_pile){};
-    manager->spades_pile.cards = malloc(sizeof(card) * 13);
-    for (int i = 0; i < 13; i++)
-        manager->spades_pile.cards[i] = NULL;
-    manager->spades_pile.face = spades;
-    manager->spades_pile.count = 0;
-    manager->spades_pile.area = manager->loaded_board->board_spades_position;
-
-
-    manager->hearts_pile = (card_pile){};
-    manager->hearts_pile.cards = malloc(sizeof(card) * 13);
-    for (int i = 0; i < 13; i++)
-        manager->hearts_pile.cards[i] = NULL;
-    manager->hearts_pile.face = hearts;
-    manager->hearts_pile.count = 0;
-    manager->hearts_pile.area = manager->loaded_board->board_hearts_position;
-
-
-    manager->diamonds_pile = (card_pile){};
-    manager->diamonds_pile.cards = malloc(sizeof(card) * 13);
-    for (int i = 0; i < 13; i++)
-        manager->diamonds_pile.cards[i] = NULL;
-    manager->diamonds_pile.face = diamonds;
-    manager->diamonds_pile.count = 0;
-    manager->diamonds_pile.area = manager->loaded_board->board_diamonds_position;
+    create_pile(manager, clubs);
+    create_pile(manager, spades);
+    create_pile(manager, hearts);
+    create_pile(manager, diamonds);
 }
 void move_card_to_top(card_manager* manager, card* card_to_top) {
     int index = 0;
@@ -509,10 +508,10 @@ void remove_held_card_from_area(card_manager* manager) {
             case row6: remove_card_from_row(manager, manager->row_6); break;
             case row7: remove_card_from_row(manager, manager->row_7); break;
 
-            case clubs_pile: remove_card_from_pile(manager, &manager->clubs_pile); break;
-            case spades_pile: remove_card_from_pile(manager, &manager->spades_pile); break;
-            case hearts_pile: remove_card_from_pile(manager, &manager->hearts_pile); break;
-            case diamonds_pile: remove_card_from_pile(manager, &manager->diamonds_pile); break;
+            case clubs_pile: remove_card_from_pile(manager, manager->clubs_pile); break;
+            case spades_pile: remove_card_from_pile(manager, manager->spades_pile); break;
+            case hearts_pile: remove_card_from_pile(manager, manager->hearts_pile); break;
+            case diamonds_pile: remove_card_from_pile(manager, manager->diamonds_pile); break;
 
             }
         }
@@ -537,45 +536,45 @@ void see_if_held_card_can_be_dropped_in_pile(card_manager* manager) {
         return;
 
     if (manager->held_card->held_card->data.type == clubs) {
-        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->clubs_pile.area)) {
-            if (manager->clubs_pile.count == manager->held_card->held_card->data.value) {
+        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->clubs_pile->area)) {
+            if (manager->clubs_pile->count == manager->held_card->held_card->data.value) {
                 remove_held_card_from_area(manager);
 
-                manager->clubs_pile.cards[manager->clubs_pile.count] = manager->held_card->held_card;
-                manager->clubs_pile.count++;
+                manager->clubs_pile->cards[manager->clubs_pile->count] = manager->held_card->held_card;
+                manager->clubs_pile->count++;
                 
                 drop_held_card(manager);
             }
         }
     } else if (manager->held_card->held_card->data.type == spades) {
-        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->spades_pile.area)) {
-            if (manager->spades_pile.count == manager->held_card->held_card->data.value) {
+        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->spades_pile->area)) {
+            if (manager->spades_pile->count == manager->held_card->held_card->data.value) {
                 remove_held_card_from_area(manager);
 
-                manager->spades_pile.cards[manager->spades_pile.count] = manager->held_card->held_card;
-                manager->spades_pile.count++;
+                manager->spades_pile->cards[manager->spades_pile->count] = manager->held_card->held_card;
+                manager->spades_pile->count++;
 
                 drop_held_card(manager);
             }
         }
     } else if (manager->held_card->held_card->data.type == hearts) {
-        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->hearts_pile.area)) {
-            if (manager->hearts_pile.count == manager->held_card->held_card->data.value) {
+        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->hearts_pile->area)) {
+            if (manager->hearts_pile->count == manager->held_card->held_card->data.value) {
                 remove_held_card_from_area(manager);
 
-                manager->hearts_pile.cards[manager->hearts_pile.count] = manager->held_card->held_card;
-                manager->hearts_pile.count++;
+                manager->hearts_pile->cards[manager->hearts_pile->count] = manager->held_card->held_card;
+                manager->hearts_pile->count++;
 
                 drop_held_card(manager);
             }
         }
     } else if (manager->held_card->held_card->data.type == diamonds) {
-        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->diamonds_pile.area)) {
-            if (manager->diamonds_pile.count == manager->held_card->held_card->data.value) {
+        if (test_card_in_area(manager->hover, manager->held_card->held_card, manager->diamonds_pile->area)) {
+            if (manager->diamonds_pile->count == manager->held_card->held_card->data.value) {
                 remove_held_card_from_area(manager);
 
-                manager->diamonds_pile.cards[manager->diamonds_pile.count] = manager->held_card->held_card;
-                manager->diamonds_pile.count++;
+                manager->diamonds_pile->cards[manager->diamonds_pile->count] = manager->held_card->held_card;
+                manager->diamonds_pile->count++;
                 
                 drop_held_card(manager);
             }
@@ -612,10 +611,10 @@ void update_card_pile(card_manager* manager, card_pile* pile) {
 }
 
 void update_card_piles(card_manager* manager) {
-    update_card_pile(manager, &manager->clubs_pile);
-    update_card_pile(manager, &manager->spades_pile);
-    update_card_pile(manager, &manager->hearts_pile);
-    update_card_pile(manager, &manager->diamonds_pile);
+    update_card_pile(manager, manager->clubs_pile);
+    update_card_pile(manager, manager->spades_pile);
+    update_card_pile(manager, manager->hearts_pile);
+    update_card_pile(manager, manager->diamonds_pile);
 }
 
 void move_card_to_other_rows(card_manager* manager) {
@@ -870,9 +869,49 @@ void update_card_manager(card_manager* manager) {
     get_cards_below_grabbed_card(manager);
     update_held_card(manager);
 
+    if (manager->clubs_pile->count == 13 && manager->spades_pile->count == 13 &&
+        manager->hearts_pile->count == 13 && manager->diamonds_pile->count == 13) {
+        manager->won_game = true;
+    }
+    #ifdef LOG_DATA 
+    else {
+        printf("Pile Counts: %i, %i, %i, %i\n", manager->clubs_pile->count, manager->spades_pile->count, manager->hearts_pile->count, manager->diamonds_pile->count);
+    }
+    #endif
+
     for (int i = 51; i >= 0; i--) {
         draw_card(manager->renderer, manager->cards[i]);
     }
+}
+
+void reset_game(card_manager* manager) {
+    #ifdef LOG_DATA
+    printf("reset game");
+    #endif
+
+    free(manager->held_card);
+    create_held_card(manager);
+
+    free(manager->row_1);
+    free(manager->row_2);
+    free(manager->row_3);
+    free(manager->row_4);
+    free(manager->row_5);
+    free(manager->row_6);
+    free(manager->row_7);
+
+    free(manager->card_stack_cards);
+    
+    assign_cards_to_rows(manager);
+
+    free(manager->clubs_pile);
+    free(manager->spades_pile);
+    free(manager->hearts_pile);
+    free(manager->diamonds_pile);
+
+    create_piles(manager);
+
+    manager->won_game = false;
 }
 
 void cleanup_card_manager(card_manager* manager) {

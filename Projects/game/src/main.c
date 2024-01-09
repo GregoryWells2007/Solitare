@@ -10,7 +10,7 @@
 
 // if i ever want to print FPS
 // #define PRINT_FPS 
-// #define PRINT_FRAME_SEPERATOR
+#define PRINT_FRAME_SEPERATOR
 
 void set_board_positions(board* board_to_set) {
     board_to_set->board_clubs_position = (vector2){ -565, 260 };
@@ -90,6 +90,10 @@ int main(int argc, char** argv) {
         update_card_manager(&manager);
 
         draw_window(&main_window);
+
+        if (manager.won_game) {
+            reset_game(&manager);
+        }
 
         endTime = get_time();
         totalTime += (endTime - startTime);
