@@ -9,8 +9,6 @@
 > - The base solitare rules <br />
 
 ## Future updates needed
-> - Rework the project structure
->> If i want to take this project any further the whole structure is going to need a whole rework from the ground up as it was designed for a small like rendering engine and game <br />
 > - Improved rendering engine <br />
 >> Add in new rendering features like <br />
 >> - Framebuffers <br />
