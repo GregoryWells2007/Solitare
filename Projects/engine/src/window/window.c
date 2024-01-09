@@ -40,6 +40,8 @@ static void mouse_clicked_callback(GLFWwindow* win, int button, int action, int 
 
 
 window create_window(window_data data) {
+    GLFWmonitor* glfw_monitor = glfwGetPrimaryMonitor();
+
     GLFWwindow* glfw_window = glfwCreateWindow(data.sizeX, data.sizeY, data.name, NULL, NULL);
     if (!glfw_window) {
         printf("GLFW window creation failed\n");
@@ -51,10 +53,10 @@ window create_window(window_data data) {
     glfwSetCursorPosCallback(glfw_window, cursor_position_callback);
     glfwSetMouseButtonCallback(glfw_window, mouse_clicked_callback);
 
-    // int max_width  = GetSystemMetrics(SM_CXSCREEN);
-    // int max_hieght = GetSystemMetrics(SM_CYSCREEN);
+    int width_mm, height_mm;
+    glfwGetMonitorPhysicalSize(glfw_monitor, &width_mm, &height_mm);
 
-    // glfwSetWindowMonitor(window, NULL, (max_width/2)-(width/2), (max_hieght/2) - (height/2), width, height, GLFW_DONT_CARE);
+    glfwSetWindowPos(glfw_window, width_mm, height_mm);
 
     window new_window = {};
     new_window.window = glfw_window;
