@@ -40,7 +40,7 @@ static void mouse_clicked_callback(GLFWwindow* win, int button, int action, int 
 
 
 window create_window(window_data data) {
-    GLFWwindow* glfw_window = glfwCreateWindow(1280, 720, "Solitare AI", NULL, NULL);
+    GLFWwindow* glfw_window = glfwCreateWindow(data.sizeX, data.sizeY, data.name, NULL, NULL);
     if (!glfw_window) {
         printf("GLFW window creation failed\n");
         glfwTerminate();
@@ -51,6 +51,10 @@ window create_window(window_data data) {
     glfwSetCursorPosCallback(glfw_window, cursor_position_callback);
     glfwSetMouseButtonCallback(glfw_window, mouse_clicked_callback);
 
+    // int max_width  = GetSystemMetrics(SM_CXSCREEN);
+    // int max_hieght = GetSystemMetrics(SM_CYSCREEN);
+
+    // glfwSetWindowMonitor(window, NULL, (max_width/2)-(width/2), (max_hieght/2) - (height/2), width, height, GLFW_DONT_CARE);
 
     window new_window = {};
     new_window.window = glfw_window;
