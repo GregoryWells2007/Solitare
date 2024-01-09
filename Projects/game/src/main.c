@@ -10,7 +10,7 @@
 
 // if i ever want to print FPS
 // #define PRINT_FPS 
-#define PRINT_FRAME_SEPERATOR
+// #define PRINT_FRAME_SEPERATOR
 
 void set_board_positions(board* board_to_set) {
     board_to_set->board_clubs_position = (vector2){ -565, 260 };

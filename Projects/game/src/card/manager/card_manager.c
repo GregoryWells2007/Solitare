@@ -4,7 +4,7 @@
 #include <time.h> 
 #include "math.h"
 
-#define LOG_DATA
+// #define LOG_DATA
 
 void create_held_card(card_manager* manager) {
     manager->held_card = malloc(sizeof(held_card_data));
@@ -634,6 +634,7 @@ void move_card_to_other_rows(card_manager* manager) {
     #endif
 
     float distances[7] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+    vector2 vdistances[7] = { };
     vector2 postion_to_collide_with = {};
     for (int q = 0; q < 7; q++) {
         if (cards_to_collide_with[q] != NULL) {
@@ -647,7 +648,6 @@ void move_card_to_other_rows(card_manager* manager) {
             if (cards_to_collide_with[q]->data.value != (current_card->data.value + 1))
                 distances[q] = INT64_MAX;
         } else {
-
             switch (q) {
                 case 0: postion_to_collide_with = manager->loaded_board->board_cards_position_1; break;
                 case 1: postion_to_collide_with = manager->loaded_board->board_cards_position_2; break;
@@ -657,6 +657,8 @@ void move_card_to_other_rows(card_manager* manager) {
                 case 5: postion_to_collide_with = manager->loaded_board->board_cards_position_6; break;
                 case 6: postion_to_collide_with = manager->loaded_board->board_cards_position_7; break; 
             }
+
+            vdistances[q] = postion_to_collide_with;
 
             distances[q] = get_distance(current_card->position, postion_to_collide_with);
             if (current_card->data.value != king)
@@ -700,7 +702,7 @@ void move_card_to_other_rows(card_manager* manager) {
             drop_held_card(manager);
         }
     } else {
-        if (test_card_in_area(manager->hover, current_card, postion_to_collide_with) && !manager->hover->input_manager->mouse_down) {
+        if (test_card_in_area(manager->hover, current_card, vdistances[lowest_distance_index]) && !manager->hover->input_manager->mouse_down) {
             remove_held_card_from_area(manager);
 
             card_row* row_to_add_to = NULL;
