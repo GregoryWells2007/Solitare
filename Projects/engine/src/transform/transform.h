@@ -2,7 +2,7 @@
 
 #include <cglm/struct.h>
 
-#include "engine/types/multi2.h"
+#include "src/types/multi2.h"
 
 typedef struct transform {
     vector2 position;

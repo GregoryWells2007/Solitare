@@ -1,6 +1,6 @@
 #pragma once
 #include "engine.h"
-#include "game/board/board.h"
+#include "src/board/board.h"
 
 typedef struct board_renderer {
     mesh board_mesh;

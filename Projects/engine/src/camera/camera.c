@@ -1,5 +1,4 @@
 #include "camera.h"
-
 void set_camera_bounds(camera* cam, float left, float right, float top, float bottom) {
     cam->left = left;
     cam->right = right;

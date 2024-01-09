@@ -1,5 +1,5 @@
 #pragma once
-#include "game/card/card.h"
+#include "src/card/card.h"
 #include "engine.h"
 
 typedef struct card_hover {

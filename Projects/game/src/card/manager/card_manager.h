@@ -1,9 +1,9 @@
 #pragma once
 #include "engine.h"
-#include "game/card/hover/card_hover.h"
-#include "game/card/card.h"
-#include "game/card/renderer/card_renderer.h"
-#include "game/board/board.h"
+#include "src/card/hover/card_hover.h"
+#include "src/card/card.h"
+#include "src/card/renderer/card_renderer.h"
+#include "src/board/board.h"
 
 #include "held_card.h"
 #include "card_pile.h"

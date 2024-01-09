@@ -1,6 +1,6 @@
 #pragma once
 #include "engine.h"
-#include "game/card/card.h"
+#include "src/card/card.h"
 
 typedef struct card_renderer {
     mesh card_mesh;

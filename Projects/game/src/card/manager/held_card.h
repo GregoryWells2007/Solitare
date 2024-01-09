@@ -1,6 +1,6 @@
 #pragma once
 #include "engine.h"
-#include "game/card/card.h"
+#include "src/card/card.h"
 
 typedef enum card_area {
     stack, 
