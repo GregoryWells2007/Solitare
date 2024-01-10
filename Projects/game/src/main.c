@@ -7,17 +7,11 @@ int main(int argc, char** argv) {
     window main_window = create_window(main_window_data);
     init_opengl();
 
-    
+
 
     while (isOpen(&main_window)) {
         main_window.input->mouse_clicked = false;  
         update_windows();
-        if (main_window.input->mouse_down && mouse_can_be_clicked) {
-            main_window.input->mouse_clicked = true;  
-            mouse_can_be_clicked = false;
-        }
-        if (!main_window.input->mouse_down)
-            mouse_can_be_clicked = true;
 
         clear_window(&main_window, (color){ 38.0f, 162.0f, 105.0f, 1.0f });
 
