@@ -1,6 +1,6 @@
 #include "src/platform/platform.h"
 
-#if PLATFORM == PLATFORM_WINDOWS
+#if OS == OS_WINDOWS
 #include "src/windowing/window.h"
 #include "stdio.h"
 

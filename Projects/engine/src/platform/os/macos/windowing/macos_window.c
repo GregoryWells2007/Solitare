@@ -1,6 +1,6 @@
 #include "src/platform/platform.h"
 
-#if PLATFORM == PLATFORM_MACOS
+#if OS == OS_MACOS
 #include "src/windowing/window.h"
 #include "stdio.h"
 
