@@ -10,15 +10,14 @@ int main(int argc, char** argv) {
     window_update_data(&main_window);
 
     window_properties* main_window_properties = window_get_properties(&main_window); // imma add some properties later
-    window_properties_set_resizable(main_window_properties, true);
-    window_properties_set_maximized(main_window_properties, true);
+    window_properties_set_resizable(main_window_properties, false);
+    window_properties_set_maximized(main_window_properties, false);
+    window_properties_set_decorated(main_window_properties, true);
     window_update_properties(&main_window);
 
     window_open(&main_window);
 
-    int frame_count = 0;
-
-    while (window_is_open(&main_window)) {        
+    while (window_is_open(&main_window)) {    
         window_update(&main_window);
     }
      

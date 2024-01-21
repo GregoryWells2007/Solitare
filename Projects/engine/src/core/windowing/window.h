@@ -19,6 +19,7 @@ void platform_window_set_title(window* window, char* title);
 
 void platform_window_set_resizable(window* window, bool resizable);
 void platform_window_set_maximized(window* window, bool maximized);
+void platform_window_set_decorated(window* window, bool decorated);
 
 typedef struct window {
     window_data data;
@@ -58,6 +59,7 @@ HEADER_DEF void window_update_data(window* win) {
 HEADER_DEF void window_update_properties(window* win) {
     platform_window_set_resizable(win, win->properties.is_resizable);
     platform_window_set_maximized(win, win->properties.is_maximized);
+    platform_window_set_decorated(win, win->properties.is_decorated);
 }
 
 HEADER_DEF bool window_is_open(window* win) { return win->is_open; }

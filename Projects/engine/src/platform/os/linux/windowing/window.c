@@ -4,58 +4,63 @@
 #include "src/core/windowing/window.h"
 #include "GLFW/glfw3.h"
 
-// no fucking clue what this does 
-// https://stackoverflow.com/questions/21421074/how-to-create-a-full-screen-window-on-the-current-monitor-with-glfw
-static int mini(int x, int y) { return x < y ? x : y; }
-static int maxi(int x, int y) { return x > y ? x : y; }
-GLFWmonitor* get_current_monitor(GLFWwindow *window) {
-    int nmonitors, i;
-    int wx, wy, ww, wh;
-    int mx, my, mw, mh;
-    int overlap, bestoverlap;
-    GLFWmonitor *bestmonitor;
-    GLFWmonitor **monitors;
-    const GLFWvidmode *mode;
-
-    bestoverlap = 0;
-    bestmonitor = NULL;
-
-    glfwGetWindowPos(window, &wx, &wy);
-    glfwGetWindowSize(window, &ww, &wh);
-    monitors = glfwGetMonitors(&nmonitors);
-    if (nmonitors == 1)
-        return monitors[0]; 
-
-    for (i = 0; i < nmonitors; i++) {
-        mode = glfwGetVideoMode(monitors[i]);
-        glfwGetMonitorPos(monitors[i], &mx, &my);
-        mw = mode->width;
-        mh = mode->height;
-
-        overlap =
-            maxi(0, mini(wx + ww, mx + mw) - maxi(wx, mx)) *
-            maxi(0, mini(wy + wh, my + mh) - maxi(wy, my));
-
-        if (bestoverlap < overlap) {
-            bestoverlap = overlap;
-            bestmonitor = monitors[i];
-        }
-    }
-
-    return bestmonitor;
-}
-
 struct platform_window {
     GLFWwindow* window;
 };
 
-void glfw_maximize_window(window* main_window) {
-    printf("maximising window\n");
+GLFWmonitor* glfw_get_window_monitor(window* main_window) {
+    GLFWwindow* window = main_window->platform_window->window;
 
+    int monitor_count = 0;
+    GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
+
+    GLFWmonitor* closest = monitors[0];
+
+    int window_pos_x, window_pos_y;
+    //glfwGetWindowPos(window, &window_pos_x, &window_pos_y);
+
+    int window_size_x = main_window->current_size.x, window_size_y = main_window->current_size.y;
+
+    int window_bounds[4] = {
+        window_pos_x, window_pos_y, window_pos_x + window_size_x, window_pos_y + window_size_y
+    };
+    //printf("window bounds: %i, %i, %i, %i\n", window_bounds[0], window_bounds[1], window_bounds[2], window_bounds[3]);
+
+    for (int i = 0; i < monitor_count; i++) {
+        int monitor_x_pos, monitor_y_pos;
+        glfwGetMonitorPos(monitors[i], &monitor_x_pos, &monitor_y_pos);
+
+        const GLFWvidmode* mode = glfwGetVideoMode(monitors[i]);
+        int monitor_x_size = mode->width, monitor_y_size = mode->height;
+
+        int current_monitor_bounds[4] = {
+            monitor_x_pos, monitor_y_pos, monitor_x_pos + monitor_x_size, monitor_y_pos + monitor_y_size
+        };
+
+        //printf("monitor bounds: %i, %i, %i, %i\n", current_monitor_bounds[0], current_monitor_bounds[1], current_monitor_bounds[2], current_monitor_bounds[3]);
+
+        float percent_in = 0.0f;
+
+        int pixels_over_left_bound = min(0, current_monitor_bounds[0] - window_bounds[0]);
+        int pixels_over_right_bound = min(0, -(current_monitor_bounds[2] - window_bounds[2]));
+
+        int pixels_over_top_bound = min(0, current_monitor_bounds[1] - window_bounds[1]);
+        int pixels_over_bottom_bound = min(0, -(current_monitor_bounds[3] - window_bounds[3]));
+
+        // printf("pixels over bounds: %i, %i, %i, %i\n", pixels_over_left_bound, pixels_over_right_bound, pixels_over_top_bound, pixels_over_bottom_bound);
+        // printf("percent of window in mointor: %f\n\n", percent_in);
+    }
+
+    //printf("\n");
+
+    return closest;
+}
+
+void glfw_maximize_window(window* main_window) {
     GLFWwindow* window = main_window->platform_window->window;
 
     glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_FALSE);
-    GLFWmonitor* monitor = get_current_monitor(window);
+    GLFWmonitor* monitor = glfw_get_window_monitor(main_window);
 
     int x_pos, y_pos;
     glfwGetMonitorPos(monitor, &x_pos, &y_pos);
@@ -73,12 +78,10 @@ void glfw_maximize_window(window* main_window) {
 
 
 void glfw_unmaximize_window(window* main_window) {
-    printf("unmaximising window\n");
-
     GLFWwindow* window = main_window->platform_window->window;
 
     glfwSetWindowAttrib(window, GLFW_DECORATED, GLFW_TRUE);
-    GLFWmonitor* monitor = get_current_monitor(window);
+    GLFWmonitor* monitor = glfw_get_window_monitor(main_window);
     
     int monitor_x_pos, monitor_y_pos;
     glfwGetMonitorPos(monitor, &monitor_x_pos, &monitor_y_pos);
@@ -100,7 +103,7 @@ void platform_window_create(window* window) {
     if (!glfwInit())
         printf("Failed to initlize GLFW\n");
     
-    window->platform_window->window = glfwCreateWindow(100, 100, "test", NULL, NULL);
+    window->platform_window->window = glfwCreateWindow(100, 100, "temp", NULL, NULL);
 
     if (!window->platform_window->window)
         printf("Window failed to open\n");
@@ -108,9 +111,6 @@ void platform_window_create(window* window) {
 
     window_update_data(window);
     window_update_properties(window);
-
-    if (window->properties.is_maximized)
-        glfw_maximize_window(window);
 }
 
 void platform_window_open(window* window) {
@@ -123,6 +123,8 @@ void platform_window_update(window* window) {
     glfwSwapBuffers(window->platform_window->window);
     glfwPollEvents();
 
+    glfw_get_window_monitor(window);
+    
     if (glfwWindowShouldClose(window->platform_window->window)) window->is_open = false;
 }
 
@@ -148,14 +150,18 @@ void platform_window_set_resizable(window* window, bool resizable) {
     glfwSetWindowSize(window->platform_window->window, window->data.size.x, window->data.size.y);
 }
 void platform_window_set_maximized(window* window, bool maximized) { 
-    printf("\n\n%i\n\n", maximized);
-
     glfwSetWindowAttrib(window->platform_window->window, GLFW_MAXIMIZED, maximized); 
     if (maximized)
         glfw_maximize_window(window);
     else {
         glfw_unmaximize_window(window);
     }
+}
+void platform_window_set_decorated(window* window, bool decorated) {
+    if (window->properties.is_maximized)
+        return;
+    
+    glfwSetWindowAttrib(window->platform_window->window, GLFW_DECORATED, decorated); 
 }
 
 #endif
