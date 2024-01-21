@@ -14,6 +14,9 @@ void platform_window_open(window* window);
 void platform_window_update(window* window);
 void platform_window_close(window* window);
 
+void platform_window_set_size(window* window, int width, int height);
+void platform_window_set_title(window* window, char* title);
+
 typedef struct window {
     window_data data;
     window_properties properties;
@@ -42,6 +45,10 @@ HEADER_DEF void window_update(window* win) {
 HEADER_DEF void window_close(window* win) {
     // i also dont need to do anything here
     platform_window_close(win);
+}
+HEADER_DEF void window_update_data(window* win) {
+    platform_window_set_size(win, win->data.size.x, win->data.size.y);
+    platform_window_set_title(win, win->data.title);
 }
 
 HEADER_DEF bool window_is_open(window* win) { return win->is_open; }

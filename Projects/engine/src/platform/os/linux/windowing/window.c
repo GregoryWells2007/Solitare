@@ -39,5 +39,6 @@ void platform_window_close(window* window) {
 }
 
 void platform_window_set_size(window* window, int width, int height) { glfwSetWindowSize(window->platform_window->window, width, height); }
+void platform_window_set_title(window* window, char* title) { glfwSetWindowTitle(window->platform_window->window, title ); }
 
 #endif
