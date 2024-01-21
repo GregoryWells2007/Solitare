@@ -2,29 +2,20 @@
 #include "engine.h"
 
 int main(int argc, char** argv) {
-    window_manager win_manager;
-    window_manager_create(&win_manager);
+    window main_window = window_create();
 
-    // window main_window;
-    // window_create(main_window, { (vector2){ 1280, 720 }, "Test main window" });
-    
+    window_data* main_window_data = window_get_data(&main_window); 
+    window_data_set_name(main_window_data, "Main Window\0");
+    window_data_set_size(main_window_data, (vector2){ 1920, 1080 });
 
-    // init_windows();
-    // window_data main_window_data = { 1280, 720, "Solitare\0" };
-    // window main_window = create_window(main_window_data);
-    // init_opengl();
+    window_properties* main_window_properties = window_get_properties(&main_window); // imma add some properties later
 
-    // while (isOpen(&main_window)) {
-    //     main_window.input->mouse_clicked = false;  
-    //     update_windows();
+    window_open(&main_window);
 
-    //     clear_window(&main_window, (color){ 38.0f, 162.0f, 105.0f, 1.0f });
-
-    //     // do rendering
-
-    //     draw_window(&main_window);
-    // }
-
-    // close_windows();
-    // return 0;
+    while (window_is_open(&main_window)) {
+        printf("updating window");
+        window_update(&main_window);
+    }
+     
+    window_close(&main_window);
 }
