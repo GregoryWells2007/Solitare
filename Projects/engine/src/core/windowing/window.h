@@ -25,7 +25,7 @@ typedef struct window {
 
 HEADER_DEF window window_create() {
     window new_window = (window) {};
-    new_window.data = (window_data) { "New Window", (vector2){ 128, 720 } };
+    new_window.data = (window_data) { "New Window", (vector2){ 1280, 720 } };
     new_window.properties = (window_properties) {  };
 
     platform_window_create(&new_window);
@@ -36,11 +36,11 @@ HEADER_DEF void window_open(window* win) {
     platform_window_open(win);
 }
 HEADER_DEF void window_update(window* win) {
-
+    // i dont need to do anything here
     platform_window_update(win);
 }
 HEADER_DEF void window_close(window* win) {
-
+    // i also dont need to do anything here
     platform_window_close(win);
 }
 
