@@ -2,8 +2,8 @@
 
 typedef struct vector2 {
     union {
-        struct { float x, y; };    
-        struct { float a, b; };     
+        struct { int x, y; };    
+        struct { int a, b; };     
     };
 } vector2;
 

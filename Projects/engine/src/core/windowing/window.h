@@ -26,13 +26,15 @@ typedef struct window {
 
     bool is_open;
 
+    vector2 current_size;
+
     struct platform_window* platform_window;
 } window;
 
 HEADER_DEF window window_create() {
     window new_window = (window) {};
     new_window.data = (window_data) { "New Window", (vector2){ 1280, 720 } };
-    new_window.properties = (window_properties) { true, true };
+    new_window.properties = (window_properties) { true, false, false };
 
     platform_window_create(&new_window);
     return new_window;
