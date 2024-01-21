@@ -17,6 +17,21 @@ int main(int argc, char** argv) {
 
     window_open(&main_window);
 
+    output_buffer game_output_buffer = output_buffer_create();
+    output_buffer_data* game_output_buffer_properties = output_buffer_get_properties(&game_output_buffer);
+    game_output_buffer_set_size(game_output_buffer_properties, (vector2){ 1280, 720 });
+
+    output_buffer_attachment color_attachment = output_buffer_attachment_create();
+    output_buffer_attachment_set_texture_format(&color_attachment, RGBA8);
+
+    output_buffer_attachment depth_stencil_attachment = output_buffer_attachment_create();
+    output_buffer_attachment_set_texture_format(&depth_attachment, DEPTH24STENCIL8);
+
+    game_output_buffer_add_attachment(&game_output_buffer, &color_attachment);
+    game_output_buffer_add_attachment(&game_output_buffer, &depth_stencil_attachment);
+
+    output_buffer_initilize(&game_output_buffer);
+
     while (window_is_open(&main_window)) {    
         window_update(&main_window);
     }
