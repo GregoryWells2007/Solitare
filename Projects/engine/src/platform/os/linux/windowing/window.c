@@ -13,16 +13,22 @@ void platform_window_create(window* window) {
 
     if (!glfwInit())
         printf("Failed to initlize GLFW\n");
-    window->platform_window->window = glfwCreateWindow(500, 500, "Title", NULL, NULL);
+    window->platform_window->window = glfwCreateWindow(window->data.size.x, window->data.size.y, window->data.title, NULL, NULL);
+
     if (!window->platform_window->window)
         printf("Window failed to open\n");
+    glfwHideWindow(window->platform_window->window);
 }
 
 void platform_window_open(window* window) {
-    glfwMakeContextCurrent(window->platform_window->window);
+    
+
+    glfwShowWindow(window->platform_window->window);
 }
 
 void platform_window_update(window* window) {
+    glfwMakeContextCurrent(window->platform_window->window);
+
     glfwSwapBuffers(window->platform_window->window);
     glfwPollEvents();
 }
