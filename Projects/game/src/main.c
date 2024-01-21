@@ -10,11 +10,12 @@ int main(int argc, char** argv) {
     window_update_data(&main_window);
 
     window_properties* main_window_properties = window_get_properties(&main_window); // imma add some properties later
+    //window_properties_set_resizable(main_window_properties, false);
 
     window_open(&main_window);
 
     while (window_is_open(&main_window)) {
-        printf("updating window");
+        //printf("updating window\n");
         window_update(&main_window);
     }
      

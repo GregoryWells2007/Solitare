@@ -17,6 +17,9 @@ void platform_window_close(window* window);
 void platform_window_set_size(window* window, int width, int height);
 void platform_window_set_title(window* window, char* title);
 
+void platform_window_set_resizable(window* window, bool resizable);
+void platform_window_set_maximized(window* window, bool maximized);
+
 typedef struct window {
     window_data data;
     window_properties properties;
@@ -29,7 +32,7 @@ typedef struct window {
 HEADER_DEF window window_create() {
     window new_window = (window) {};
     new_window.data = (window_data) { "New Window", (vector2){ 1280, 720 } };
-    new_window.properties = (window_properties) {  };
+    new_window.properties = (window_properties) { true, true };
 
     platform_window_create(&new_window);
     return new_window;
@@ -49,6 +52,10 @@ HEADER_DEF void window_close(window* win) {
 HEADER_DEF void window_update_data(window* win) {
     platform_window_set_size(win, win->data.size.x, win->data.size.y);
     platform_window_set_title(win, win->data.title);
+}
+HEADER_DEF void window_update_properties(window* win) {
+    platform_window_set_resizable(win, win->properties.is_resizable);
+    platform_window_set_maximized(win, win->properties.is_maximized);
 }
 
 HEADER_DEF bool window_is_open(window* win) { return win->is_open; }
