@@ -2,21 +2,25 @@
 
 #if OS == OS_LINUX
 #include "src/core/windowing/window.h"
+#include "GLFW/glfw3.h"
 
 struct platform_window_props {
-    
+    GLFWwindow* window;
 };
 
-window window_create() {
+void platform_window_create(window* window) {
 
 }
-void window_open(window* win) {
+
+void platform_window_open(window* window) {
 
 }
-void window_update(window* win) {
+
+void platform_window_update(window* window) {
 
 }
-void window_close(window* win) {
+
+void platform_window_close(window* window) {
 
 }
 
