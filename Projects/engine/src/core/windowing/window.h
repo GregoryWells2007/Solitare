@@ -8,7 +8,7 @@
 typedef struct window window;
 
 // platform window stuff
-struct platform_window_props;
+struct platform_window;
 void platform_window_create(window* window);
 void platform_window_open(window* window);
 void platform_window_update(window* window);
@@ -20,11 +20,13 @@ typedef struct window {
 
     bool is_open;
 
-    struct platform_window_props* platform_properties;
+    struct platform_window* platform_window;
 } window;
 
 HEADER_DEF window window_create() {
     window new_window = (window) {};
+    new_window.data = (window_data) { "New Window", (vector2){ 128, 720 } };
+    new_window.properties = (window_properties) {  };
 
     platform_window_create(&new_window);
     return new_window;
