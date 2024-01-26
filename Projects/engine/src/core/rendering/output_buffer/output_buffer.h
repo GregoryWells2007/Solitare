@@ -4,11 +4,19 @@
 #include "output_buffer_data.h"
 #include "output_buffer_attachment.h"
 
+typedef struct output_buffer output_buffer;
+
+struct platform_output_buffer;
+void platform_output_buffer_initilize(output_buffer* buffer);
+
 typedef struct output_buffer {
     output_buffer_data data;
 
     output_buffer_attachment** output_buffer_attachments;
     int output_buffer_attachment_count;
+
+
+    struct platform_output_buffer* platform_output_buffer;
 } output_buffer;
 
 HEADER_DEF output_buffer output_buffer_create() { 
@@ -27,6 +35,6 @@ HEADER_DEF void output_buffer_add_attachment(output_buffer* buffer, output_buffe
     buffer->output_buffer_attachment_count++;
 }
 
-void output_buffer_initilize() {
-    // just do the rapi stuff
+HEADER_DEF void output_buffer_initilize(output_buffer* buffer) {
+    platform_output_buffer_initilize(buffer);
 }
