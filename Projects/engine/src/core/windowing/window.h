@@ -22,6 +22,9 @@ void platform_window_set_maximized(window* window, bool maximized);
 void platform_window_set_decorated(window* window, bool decorated);
 
 typedef struct window {
+    // idfk man
+    window* main_window;
+
     window_data data;
     window_properties properties;
 
@@ -36,11 +39,12 @@ HEADER_DEF window window_create() {
     window new_window = (window) {};
     new_window.data = (window_data) { "New Window", (vector2){ 1280, 720 } };
     new_window.properties = (window_properties) { true, false, false };
-
-    platform_window_create(&new_window);
+    new_window.main_window = NULL;
     return new_window;
 }
 HEADER_DEF void window_open(window* win) {
+    platform_window_create(win);
+
     win->is_open = true;
     platform_window_open(win);
 }
@@ -53,10 +57,16 @@ HEADER_DEF void window_close(window* win) {
     platform_window_close(win);
 }
 HEADER_DEF void window_update_data(window* win) {
+    if (!win->is_open)
+        return;
+
     platform_window_set_size(win, win->data.size.x, win->data.size.y);
     platform_window_set_title(win, win->data.title);
 }
 HEADER_DEF void window_update_properties(window* win) {
+    if (!win->is_open)
+        return;
+
     platform_window_set_resizable(win, win->properties.is_resizable);
     platform_window_set_maximized(win, win->properties.is_maximized);
     platform_window_set_decorated(win, win->properties.is_decorated);

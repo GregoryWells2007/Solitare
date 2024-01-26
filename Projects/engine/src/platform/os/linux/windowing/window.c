@@ -109,7 +109,11 @@ void glfw_unmaximize_window(window* main_window) {
 void platform_window_create(window* window) {
     window->platform_window = malloc(sizeof(struct platform_window));
     
-    window->platform_window->window = glfwCreateWindow(100, 100, "temp", NULL, NULL);
+    GLFWwindow* main_window = NULL;
+    if (window->main_window)
+        main_window = window->main_window->platform_window->window;
+
+    window->platform_window->window = glfwCreateWindow(window->data.size.x, window->data.size.y, window->data.title, NULL, main_window);
     glfwMakeContextCurrent(window->platform_window->window);
 
 #if RAPI == RAPI_OPENGL

@@ -4,6 +4,7 @@
 #include "src/types/vector2.h"
 
 // window includes
+#include "src/core/windowing/window_manager.h"
 #include "src/core/windowing/window.h"
 
 // rendering includes

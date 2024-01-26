@@ -4,7 +4,10 @@
 int main(int argc, char** argv) {
     engine_init();
 
+    window_manager win_manager = window_manager_create();
+    
     window main_window = window_create();
+    window_manager_set_main_window(&win_manager, &main_window);
 
     window_data* main_window_data = window_get_data(&main_window); 
     window_data_set_name(main_window_data, "Main Window\0");
