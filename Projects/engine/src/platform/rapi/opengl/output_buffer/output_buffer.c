@@ -9,7 +9,7 @@ struct platform_output_buffer {
 } platform_output_buffer;
 
 void platform_output_buffer_initilize(output_buffer* buffer) {
-    printf("init platform output buffer\n");
+    
 }
 
 #endif

@@ -1,8 +1,14 @@
 #include "engine_api.h"
 
 #if OS == OS_LINUX
+
+#if RAPI == RAPI_OPENGL
+#include "glad/glad.h"
+#endif
+
 #include "src/core/windowing/window.h"
 #include "GLFW/glfw3.h"
+
 
 struct platform_window {
     GLFWwindow* window;
@@ -104,6 +110,12 @@ void platform_window_create(window* window) {
     window->platform_window = malloc(sizeof(struct platform_window));
     
     window->platform_window->window = glfwCreateWindow(100, 100, "temp", NULL, NULL);
+    glfwMakeContextCurrent(window->platform_window->window);
+
+#if RAPI == RAPI_OPENGL
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        printf("GLAD initilization failed\n");
+#endif
 
     if (!window->platform_window->window)
         printf("Window failed to open\n");

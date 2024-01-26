@@ -12,5 +12,4 @@
 #include "engine_api.h"
 HEADER_DEF void engine_init() {
     platform_init();
-    rapi_init();
 }
