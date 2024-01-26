@@ -1,5 +1,8 @@
 #pragma once
 
+void platform_init();
+void rapi_init();
+
 // operating system
 #define OS_LINUX 0x1b4
 #define OS_WINDOWS 0x1ef
