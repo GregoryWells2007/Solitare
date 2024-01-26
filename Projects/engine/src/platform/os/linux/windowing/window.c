@@ -102,9 +102,6 @@ void glfw_unmaximize_window(window* main_window) {
 
 void platform_window_create(window* window) {
     window->platform_window = malloc(sizeof(struct platform_window));
-
-    if (!glfwInit())
-        printf("Failed to initlize GLFW\n");
     
     window->platform_window->window = glfwCreateWindow(100, 100, "temp", NULL, NULL);
 
