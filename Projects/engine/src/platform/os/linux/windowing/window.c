@@ -8,52 +8,55 @@ struct platform_window {
     GLFWwindow* window;
 };
 
+// imma rewite this shit later im just bored and kinda for forgot how this shit works
 GLFWmonitor* glfw_get_window_monitor(window* main_window) {
-    GLFWwindow* window = main_window->platform_window->window;
+    // GLFWwindow* window = main_window->platform_window->window;
 
+    // int monitor_count = 0;
+    // GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
+
+    // GLFWmonitor* closest = monitors[0];
+
+    // int window_pos_x, window_pos_y;
+    // //glfwGetWindowPos(window, &window_pos_x, &window_pos_y);
+
+    // int window_size_x = main_window->current_size.x, window_size_y = main_window->current_size.y;
+
+    // int window_bounds[4] = {
+    //     window_pos_x, window_pos_y, window_pos_x + window_size_x, window_pos_y + window_size_y
+    // };
+    // //printf("window bounds: %i, %i, %i, %i\n", window_bounds[0], window_bounds[1], window_bounds[2], window_bounds[3]);
+
+    // for (int i = 0; i < monitor_count; i++) {
+    //     int monitor_x_pos, monitor_y_pos;
+    //     glfwGetMonitorPos(monitors[i], &monitor_x_pos, &monitor_y_pos);
+
+    //     const GLFWvidmode* mode = glfwGetVideoMode(monitors[i]);
+    //     int monitor_x_size = mode->width, monitor_y_size = mode->height;
+
+    //     int current_monitor_bounds[4] = {
+    //         monitor_x_pos, monitor_y_pos, monitor_x_pos + monitor_x_size, monitor_y_pos + monitor_y_size
+    //     };
+
+    //     //printf("monitor bounds: %i, %i, %i, %i\n", current_monitor_bounds[0], current_monitor_bounds[1], current_monitor_bounds[2], current_monitor_bounds[3]);
+
+    //     float percent_in = 0.0f;
+
+    //     int pixels_over_left_bound = min(0, current_monitor_bounds[0] - window_bounds[0]);
+    //     int pixels_over_right_bound = min(0, -(current_monitor_bounds[2] - window_bounds[2]));
+
+    //     int pixels_over_top_bound = min(0, current_monitor_bounds[1] - window_bounds[1]);
+    //     int pixels_over_bottom_bound = min(0, -(current_monitor_bounds[3] - window_bounds[3]));
+
+    //     // printf("pixels over bounds: %i, %i, %i, %i\n", pixels_over_left_bound, pixels_over_right_bound, pixels_over_top_bound, pixels_over_bottom_bound);
+    //     // printf("percent of window in mointor: %f\n\n", percent_in);
+    // }
+
+    // //printf("\n");
+
+    // return closest;
     int monitor_count = 0;
-    GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
-
-    GLFWmonitor* closest = monitors[0];
-
-    int window_pos_x, window_pos_y;
-    //glfwGetWindowPos(window, &window_pos_x, &window_pos_y);
-
-    int window_size_x = main_window->current_size.x, window_size_y = main_window->current_size.y;
-
-    int window_bounds[4] = {
-        window_pos_x, window_pos_y, window_pos_x + window_size_x, window_pos_y + window_size_y
-    };
-    //printf("window bounds: %i, %i, %i, %i\n", window_bounds[0], window_bounds[1], window_bounds[2], window_bounds[3]);
-
-    for (int i = 0; i < monitor_count; i++) {
-        int monitor_x_pos, monitor_y_pos;
-        glfwGetMonitorPos(monitors[i], &monitor_x_pos, &monitor_y_pos);
-
-        const GLFWvidmode* mode = glfwGetVideoMode(monitors[i]);
-        int monitor_x_size = mode->width, monitor_y_size = mode->height;
-
-        int current_monitor_bounds[4] = {
-            monitor_x_pos, monitor_y_pos, monitor_x_pos + monitor_x_size, monitor_y_pos + monitor_y_size
-        };
-
-        //printf("monitor bounds: %i, %i, %i, %i\n", current_monitor_bounds[0], current_monitor_bounds[1], current_monitor_bounds[2], current_monitor_bounds[3]);
-
-        float percent_in = 0.0f;
-
-        int pixels_over_left_bound = min(0, current_monitor_bounds[0] - window_bounds[0]);
-        int pixels_over_right_bound = min(0, -(current_monitor_bounds[2] - window_bounds[2]));
-
-        int pixels_over_top_bound = min(0, current_monitor_bounds[1] - window_bounds[1]);
-        int pixels_over_bottom_bound = min(0, -(current_monitor_bounds[3] - window_bounds[3]));
-
-        // printf("pixels over bounds: %i, %i, %i, %i\n", pixels_over_left_bound, pixels_over_right_bound, pixels_over_top_bound, pixels_over_bottom_bound);
-        // printf("percent of window in mointor: %f\n\n", percent_in);
-    }
-
-    //printf("\n");
-
-    return closest;
+    return glfwGetMonitors(&monitor_count)[0];
 }
 
 void glfw_maximize_window(window* main_window) {
