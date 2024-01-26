@@ -2,6 +2,8 @@
 #include "engine.h"
 
 int main(int argc, char** argv) {
+    engine_init();
+
     window main_window = window_create();
 
     window_data* main_window_data = window_get_data(&main_window); 
