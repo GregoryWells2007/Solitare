@@ -1,6 +1,11 @@
 #include "stdio.h"
 #include "engine.h"
 
+typedef struct triangle_vertex {
+    // position
+    float x, y;
+} triangle_vertex;
+
 int main(int argc, char** argv) {
     engine_init();
 
@@ -22,6 +27,36 @@ int main(int argc, char** argv) {
 
     window_open(&main_window);
 
+    struct triangle_vertex vertices[3] = {
+        { -0.5f, -0.5f },
+        {  0.0f,  0.5f },
+        {  0.5f, -0.5f }
+    };
+
+    triangle triangles[1] = {
+        { 0, 1, 2 }
+    };
+
+    vertex_array triangle = vertex_array_create();
+
+    array_buffer triangle_positions_buffer = array_buffer_create(); 
+    array_buffer_set_data(&triangle_positions_buffer, vertices);
+    array_buffer_set_draw_type(&triangle_positions_buffer, static_draw);   
+
+    array_buffer_set_attribute_count(&triangle_positions_buffer, 1);
+    vertex_attribute first_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
+    array_buffer_set_attribute(&triangle_positions_buffer, 0, &first_attribute);
+
+    index_buffer triangle_index_buffer = index_buffer_create();
+    index_buffer_set_data(&triangle_index_buffer, triangles);
+    index_buffer_set_draw_type(&triangle_index_buffer, static_draw); 
+
+    vertex_array_build(&triangle);
+
+
+    // don't worry about this output buffer stuff imma actually write the underlying code for this later
+
+    /*
     output_buffer game_output_buffer = output_buffer_create();
     output_buffer_data* game_output_buffer_properties = output_buffer_get_properties(&game_output_buffer);
     output_buffer_data_set_size(game_output_buffer_properties, (vector2){ 1280, 720 });
@@ -36,7 +71,9 @@ int main(int argc, char** argv) {
     output_buffer_add_attachment(&game_output_buffer, &depth_stencil_attachment);
 
     output_buffer_initilize(&game_output_buffer);
+    */
 
+    
     while (window_is_open(&main_window)) {
         window_manager_update(&win_manager);
     }
