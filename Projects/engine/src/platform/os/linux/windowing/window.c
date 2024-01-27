@@ -116,11 +116,6 @@ void platform_window_create(window* window) {
     window->platform_window->window = glfwCreateWindow(window->data.size.x, window->data.size.y, window->data.title, NULL, main_window);
     glfwMakeContextCurrent(window->platform_window->window);
 
-#if RAPI == RAPI_OPENGL
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-        printf("GLAD initilization failed\n");
-#endif
-
     if (!window->platform_window->window)
         printf("Window failed to open\n");
     glfwHideWindow(window->platform_window->window);
@@ -130,6 +125,15 @@ void platform_window_create(window* window) {
 }
 
 void platform_window_open(window* window) {
+    #if RAPI == RAPI_OPENGL
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        printf("GLAD initilization failed\n");
+    
+    #endif
+
+
+
     glfwShowWindow(window->platform_window->window);
 }
 
