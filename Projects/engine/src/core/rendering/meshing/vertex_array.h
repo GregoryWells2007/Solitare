@@ -15,3 +15,7 @@ HEADER_DEF vertex_array vertex_array_create() {
 
     return new_vertex_array;
 }
+
+HEADER_DEF void vertex_array_build(vertex_array* array) {
+
+}
