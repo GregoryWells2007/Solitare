@@ -1,6 +1,7 @@
 #pragma once
 #include "engine_api.h"
-#include "array_buffer.h"
+#include "buffer_types/array_buffer.h"
+#include "buffer_types/index_buffer.h"
 
 typedef struct vertex_array {
     array_buffer** array_buffers;
