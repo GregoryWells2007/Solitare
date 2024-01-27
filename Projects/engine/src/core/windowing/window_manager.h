@@ -6,7 +6,7 @@ typedef struct window_manager {
     window* main_window;
 
     window** windows;
-    int windows_count;
+    int window_count;
 } window_manager;
 
 HEADER_DEF window_manager window_manager_create() {
@@ -14,7 +14,7 @@ HEADER_DEF window_manager window_manager_create() {
     new_window_manager.main_window = NULL;
 
     new_window_manager.windows = NULL;
-    new_window_manager.windows_count = 0;
+    new_window_manager.window_count = 0;
     return new_window_manager;
 }
 
@@ -33,13 +33,14 @@ HEADER_DEF void window_manager_add_window(window_manager* win_manager, window* w
         return;
     }
 
-    win_manager->windows = realloc(win_manager->windows, win_manager->windows_count + 1);
-    win_manager->windows[win_manager->windows_count] = window;
-    win_manager->windows_count++;
+    win_manager->windows = realloc(win_manager->windows, win_manager->window_count + 1);
+    win_manager->windows[win_manager->window_count] = window;
+    win_manager->window_count++;
 }
 
 HEADER_DEF void window_manager_update(window_manager* win_manager) {
     window_update(win_manager->main_window);
-    for (int i = 0; i < win_manager->windows_count; i++)
+
+    for (int i = 0; i < win_manager->window_count; i++)
         window_update(win_manager->windows[i]);
 }   
