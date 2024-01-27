@@ -2,6 +2,7 @@
 
 #include "src/platform/platform.h"
 #include "src/types/vector2.h"
+#include "src/types/vector3.h"
 
 // window includes
 #include "src/core/windowing/window_manager.h"
