@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
     output_buffer_initilize(&game_output_buffer);
 
     while (window_is_open(&main_window)) {
-        window_update(&main_window);
+        window_manager_update(&win_manager);
     }
      
     window_close(&main_window);
