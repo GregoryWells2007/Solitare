@@ -43,9 +43,8 @@ int main(int argc, char** argv) {
     array_buffer_set_data(&triangle_positions_buffer, vertices);
     array_buffer_set_draw_type(&triangle_positions_buffer, static_draw);   
 
-    array_buffer_set_attribute_count(&triangle_positions_buffer, 1);
-    vertex_attribute first_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
-    array_buffer_set_attribute(&triangle_positions_buffer, 0, &first_attribute);
+    vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
+    array_buffer_add_attribute(&triangle_positions_buffer, &positions_attribute);
 
     index_buffer triangle_index_buffer = index_buffer_create();
     index_buffer_set_data(&triangle_index_buffer, triangles);
