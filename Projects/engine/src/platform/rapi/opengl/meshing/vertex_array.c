@@ -13,6 +13,24 @@ void platform_vertex_array_build(veretx_array* array) {
 
     glGenVertexArrays(1, &array->platform_vertex_array->rendererID);
     glBindVertexArray(array->platform_vertex_array->rendererID);
+
+    int max_attribs = 0;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &max_attribs);
+
+    int current_indes = 0;
+    for (int i = 0; i < array->array_buffer_count; i++) {
+        array_buffer* curr_array_buffer = array->array_buffers[i];
+        for (int c = 0; c < curr_array_buffer->attribute_count; c++) {
+            if (current_indes == max_attribs) {
+                printf("You have too many vertex attribs the max is%i\n", max_attribs);
+                return;
+            }
+
+            glEnableVertexArrayAttrib(array->platform_vertex_array->rendererID, current_indes);
+
+            current_indes++;
+        }
+    }
 }
 
 void platform_vertex_array_delete(veretx_array* array) {
