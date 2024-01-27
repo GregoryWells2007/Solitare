@@ -9,6 +9,7 @@
 #include "src/core/windowing/window.h"
 
 // rendering includes
+#include "src/core/rendering/meshing/vertex_array.h"
 #include "src/core/rendering/output_buffer/output_buffer.h"
 
 #include "engine_api.h"
