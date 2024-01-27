@@ -3,7 +3,7 @@
 #include "window_items/window_data.h"
 #include "window_items/window_properties.h"
 
-#include "screen_renderer/screen_renderer.h"
+#include "src/core/screen_renderer/screen_renderer.h"
 
 #include "src/types/boolean.h"
 
@@ -31,7 +31,7 @@ typedef struct window {
     window_data data;
     window_properties properties;
 
-    screen_renderer renderer;
+    screen_renderer* renderer;
 
     bool is_open;
 
@@ -45,7 +45,7 @@ HEADER_DEF window window_create() {
     new_window.data = (window_data) { "New Window", (vector2){ 1280, 720 } };
     new_window.properties = (window_properties) { true, false, false };
     new_window.main_window = NULL;
-    new_window.renderer = (screen_renderer) { };
+    new_window.renderer = NULL;
     return new_window;
 }
 HEADER_DEF void window_open(window* win) {
