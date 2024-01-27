@@ -23,14 +23,34 @@ HEADER_DEF vertex_array vertex_array_create() {
     return new_vertex_array;
 }
 
+HEADER_DEF void vertex_array_add_array_buffer(vertex_array* array, array_buffer* buffer) {
+    array->array_buffers = realloc(array->array_buffers, array->array_buffer_count + 1);
+    array->array_buffers[array->array_buffer_count] = buffer;
+    array->array_buffer_count++;
+}
+
+HEADER_DEF void vertex_array_set_index_buffer(vertex_array* array, index_buffer* buffer) {
+    if (array->index_buffer != NULL) {
+        printf("this vertex array already have an index buffer\n");
+        return;
+    }
+
+    array->index_buffer = buffer;
+}
+
 HEADER_DEF void vertex_array_build(vertex_array* array) {
     platform_vertex_array_build(array);
+
+    for (int i = 0; i < array->array_buffer_count; i++) {
+        array_buffer_build(array->array_buffers[i]);
+    }
 }
 
 HEADER_DEF void vertex_array_delete(vertex_array* array) {
     platform_vertex_array_delete(array);
     
-    free(array->index_buffer);
     free(array->platform_vertex_array);
-    free(array->array_buffers);
+
+    for (int i = 0; i < array->array_buffer_count; i++)
+        array_buffer_delete(array->array_buffers[i]);
 }

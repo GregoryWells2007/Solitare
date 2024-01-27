@@ -1,10 +1,9 @@
 #include "stdio.h"
 #include "engine.h"
 
-typedef struct triangle_vertex {
-    // position
+struct triangle_vertex {
     float x, y;
-} triangle_vertex;
+};
 
 int main(int argc, char** argv) {
     engine_init();
@@ -40,7 +39,7 @@ int main(int argc, char** argv) {
     vertex_array triangle = vertex_array_create();
 
     array_buffer triangle_positions_buffer = array_buffer_create(); 
-    array_buffer_set_data(&triangle_positions_buffer, vertices);
+    array_buffer_set_data(&triangle_positions_buffer, vertices, 3);
     array_buffer_set_draw_type(&triangle_positions_buffer, static_draw);   
 
     vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
@@ -49,6 +48,9 @@ int main(int argc, char** argv) {
     index_buffer triangle_index_buffer = index_buffer_create();
     index_buffer_set_data(&triangle_index_buffer, triangles);
     index_buffer_set_draw_type(&triangle_index_buffer, static_draw); 
+
+    vertex_array_add_array_buffer(&triangle, &triangle_positions_buffer);
+    vertex_array_set_index_buffer(&triangle, &triangle_index_buffer);
 
     vertex_array_build(&triangle);
     
