@@ -1,17 +1,37 @@
 #pragma once
 
-typedef struct vector3 {
+typedef struct vector3i {
     union {
         struct { int x, y, z; };    
         struct { int a, b, c; };     
     };
-} vector3;
+} vector3i;
 
-typedef vector3 float3;
-typedef vector3 vec3;
+typedef struct vector3f {
+    union {
+        struct { float x, y, z; };    
+        struct { float a, b, c; };     
+    };
+} vector3f;
 
-typedef vector3 Vector3;
-typedef vector3 Float3;
-typedef vector3 Vec3;
+typedef vector3f float3;
+typedef vector3f vec3;
 
-typedef vector3 triangle;
+typedef vector3f vector3;
+
+typedef vector3f Vector3;
+typedef vector3f Float3;
+typedef vector3f Vec3;
+
+/////// -------------- //
+
+typedef vector3i triangle;
+
+typedef vector3i int3;
+typedef vector3i ivec3;
+
+typedef vector3i vector3int;
+
+typedef vector3i Vector3int;
+typedef vector3i Int3;
+typedef vector3i IVec3;
