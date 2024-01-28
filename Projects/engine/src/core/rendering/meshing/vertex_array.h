@@ -45,6 +45,8 @@ HEADER_DEF void vertex_array_build(vertex_array* array) {
     for (int i = 0; i < array->array_buffer_count; i++) {
         array_buffer_build(array->array_buffers[i]);
     }
+
+    index_buffer_build(array->index_buffer);
 }
 
 HEADER_DEF void vertex_array_draw(vertex_array* array) {
