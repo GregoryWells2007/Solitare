@@ -26,27 +26,84 @@ int main(int argc, char** argv) {
 
     window_open(&main_window);
 
-    struct triangle_vertex vertices[3] = {
-        { 
-            -0.5f, -0.5f
-        },
-        {  
-            0.0f,  0.5f 
-        },
-        {  
-            0.5f, -0.5f 
-        }
+    struct triangle_vertex vertices[24] = {
+        { -1.000f,  1.750f },
+        { -1.045f,  1.745f },
+        { -1.075f,  1.735f },
+        { -1.110f,  1.700f },
+        { -1.120f,  1.670f },
+        { -1.125f,  1.625f },
+        
+        { -1.125f, -1.625f },
+        { -1.120f, -1.670f },
+        { -1.110f, -1.700f },
+        { -1.075f, -1.735f },
+        { -1.045f, -1.745f },
+        { -1.009f, -1.750f },
+
+        { 1.000f, -1.750f },
+        { 1.045f, -1.745f },
+        { 1.075f, -1.735f },
+        { 1.110f, -1.700f },
+        { 1.120f, -1.670f },
+        { 1.125f, -1.625f },
+
+        { 1.125f,  1.625f },
+        { 1.120f,  1.670f },
+        { 1.110f,  1.700f },
+        { 1.075f,  1.735f },
+        { 1.045f,  1.745f },
+        { 1.000f,  1.750f }
     };
 
-    triangle triangles[1] = {
-        { 0, 1, 2 }
+    for (int i = 0; i < 24; i++) {
+        vertices[i].x = vertices[i].x / 4.0f;
+        vertices[i].y = vertices[i].y / 4.0f;
+
+        vertices[i].x *= 0.9;
+        vertices[i].y *= 1.6;
+    }
+
+    triangle triangles[22] = {
+        { 0,  1, 22 },
+        { 0, 23, 22 },
+
+        { 1, 2, 21 },
+        { 1, 22, 21 },
+
+        { 2, 3, 20 },
+        { 2, 21, 20 },
+
+        { 3, 4, 19 },
+        { 3, 20, 19 },
+
+        { 4, 5, 18 },
+        { 4, 19, 18 },
+
+        { 5, 6, 17 },
+        { 5, 18, 17 },
+
+        { 6, 7, 16 },
+        { 6, 17, 16 },
+
+        { 7, 8, 15 },
+        { 7, 16, 15 },
+
+        { 8, 9, 14 },
+        { 8, 15, 14 },
+
+        { 9, 10, 13 },
+        { 9, 14, 13 },
+
+        { 10, 11, 12 },
+        { 10, 13, 12 },
     };
 
     vertex_array triangle = vertex_array_create();
 
     array_buffer triangle_positions_buffer = array_buffer_create(); 
     array_buffer_set_data(&triangle_positions_buffer, vertices);
-    array_buffer_set_vertex_count(&triangle_positions_buffer, 3);
+    array_buffer_set_vertex_count(&triangle_positions_buffer, 24);
     array_buffer_set_draw_type(&triangle_positions_buffer, static_draw);   
 
     vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
@@ -54,7 +111,7 @@ int main(int argc, char** argv) {
 
     index_buffer triangle_index_buffer = index_buffer_create();
     index_buffer_set_data(&triangle_index_buffer, triangles);
-    index_buffer_set_triangle_count(&triangle_index_buffer, 1);
+    index_buffer_set_triangle_count(&triangle_index_buffer, 22);
     index_buffer_set_draw_type(&triangle_index_buffer, static_draw); 
 
     vertex_array_add_array_buffer(&triangle, &triangle_positions_buffer);
