@@ -7,6 +7,7 @@ typedef struct veretx_array veretx_array;
 
 struct platform_vertex_array;
 void platform_vertex_array_build(veretx_array* array);
+void platform_vertex_array_draw(veretx_array* array);
 void platform_vertex_array_delete(veretx_array* array);
 
 typedef struct veretx_array {
@@ -44,6 +45,10 @@ HEADER_DEF void vertex_array_build(vertex_array* array) {
     for (int i = 0; i < array->array_buffer_count; i++) {
         array_buffer_build(array->array_buffers[i]);
     }
+}
+
+HEADER_DEF void vertex_array_draw(vertex_array* array) {
+    platform_vertex_array_draw(array);
 }
 
 HEADER_DEF void vertex_array_delete(vertex_array* array) {

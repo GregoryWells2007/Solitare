@@ -33,6 +33,11 @@ void platform_vertex_array_build(veretx_array* array) {
     }
 }
 
+void platform_vertex_array_draw(vertex_array* array) {
+    glClearColor(0.5, 0.5, 0.5, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 void platform_vertex_array_delete(veretx_array* array) {
     glDeleteVertexArrays(1, &array->platform_vertex_array->rendererID);
 }
