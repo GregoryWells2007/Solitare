@@ -8,7 +8,7 @@ struct platform_vertex_array {
     unsigned int rendererID;
 };
 
-void platform_vertex_array_build(veretx_array* array) {
+void platform_vertex_array_build(vertex_array* array) {
     array->platform_vertex_array = malloc(sizeof(struct platform_vertex_array));
 
     glGenVertexArrays(1, &array->platform_vertex_array->rendererID);
@@ -38,7 +38,7 @@ void platform_vertex_array_draw(vertex_array* array) {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void platform_vertex_array_delete(veretx_array* array) {
+void platform_vertex_array_delete(vertex_array* array) {
     glDeleteVertexArrays(1, &array->platform_vertex_array->rendererID);
 }
 

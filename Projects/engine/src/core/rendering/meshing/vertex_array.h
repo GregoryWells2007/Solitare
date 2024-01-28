@@ -3,14 +3,14 @@
 #include "buffer_types/array_buffer.h"
 #include "buffer_types/index_buffer.h"
 
-typedef struct veretx_array veretx_array;
+typedef struct vertex_array vertex_array;
 
 struct platform_vertex_array;
-void platform_vertex_array_build(veretx_array* array);
-void platform_vertex_array_draw(veretx_array* array);
-void platform_vertex_array_delete(veretx_array* array);
+void platform_vertex_array_build(vertex_array* array);
+void platform_vertex_array_draw(vertex_array* array);
+void platform_vertex_array_delete(vertex_array* array);
 
-typedef struct veretx_array {
+typedef struct vertex_array {
     array_buffer** array_buffers;
     int array_buffer_count;
 
