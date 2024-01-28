@@ -27,8 +27,6 @@ typedef vector4f quaternion;
 
 /////// -------------- //
 
-typedef vector4i triangle;
-
 typedef vector4i int4;
 typedef vector4i ivec4;
 
