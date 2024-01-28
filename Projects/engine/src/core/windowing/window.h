@@ -35,14 +35,14 @@ typedef struct window {
 
     bool is_open;
 
-    vector2 current_size;
+    int2 current_size;
 
     struct platform_window* platform_window;
 } window;
 
 HEADER_DEF window window_create() {
     window new_window = (window) {};
-    new_window.data = (window_data) { "New Window", (vector2){ 1280, 720 } };
+    new_window.data = (window_data) { "New Window", (int2){ 1280, 720 } };
     new_window.properties = (window_properties) { true, false, false };
     new_window.main_window = NULL;
     new_window.renderer = NULL;
