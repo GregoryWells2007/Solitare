@@ -7,6 +7,8 @@ typedef struct array_buffer array_buffer;
 struct platform_array_buffer;
 void platform_array_buffer_build(array_buffer* buffer);
 void platform_array_buffer_delete(array_buffer* buffer);
+void platform_array_buffer_bind(array_buffer* buffer);
+void platform_array_buffer_draw(array_buffer* buffer);
 
 typedef struct vertex_attribute {
     vertex_attribute_type attribute_type;
@@ -44,6 +46,14 @@ HEADER_DEF void array_buffer_add_attribute(array_buffer* buffer, vertex_attribut
 
 HEADER_DEF void array_buffer_build(array_buffer* buffer) {
     platform_array_buffer_build(buffer);
+}
+
+HEADER_DEF void array_buffer_draw(array_buffer* buffer) {
+    platform_array_buffer_draw(buffer);
+}
+
+HEADER_DEF void array_buffer_bind(array_buffer* buffer) {
+    platform_array_buffer_bind(buffer);
 }
 
 HEADER_DEF void array_buffer_delete(array_buffer* buffer) {

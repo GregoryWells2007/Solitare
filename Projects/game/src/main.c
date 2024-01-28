@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
     vertex_array_build(&triangle);
     
     while (window_is_open(&main_window)) {
+        vertex_array_bind(&triangle);
         vertex_array_draw(&triangle);
 
         window_manager_update(&win_manager);

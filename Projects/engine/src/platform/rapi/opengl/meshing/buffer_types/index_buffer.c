@@ -19,7 +19,14 @@ void platform_index_buffer_build(index_buffer* buffer) {
     struct platform_index_buffer* new_buffer = malloc(sizeof(struct platform_index_buffer));
     new_buffer->rendererID = rendererID;
     buffer->platform_index_buffer = new_buffer;
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+void platform_index_buffer_bind(index_buffer* buffer) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->platform_index_buffer->rendererID);
+}
+
 void platform_index_buffer_delete(index_buffer* buffer) {
     glDeleteBuffers(1, &buffer->platform_index_buffer->rendererID);
 }

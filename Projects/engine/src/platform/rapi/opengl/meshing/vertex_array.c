@@ -8,10 +8,6 @@ struct platform_vertex_array {
     unsigned int rendererID;
 };
 
-struct platform_index_buffer {
-    unsigned int rendererID;
-};
-
 void platform_vertex_array_build(vertex_array* array) {
     array->platform_vertex_array = malloc(sizeof(struct platform_vertex_array));
 
@@ -37,18 +33,17 @@ void platform_vertex_array_build(vertex_array* array) {
     }
 }
 
-void platform_vertex_array_draw(vertex_array* array) {
-    glClearColor(0.5, 0.5, 0.5, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+void platform_vertex_array_draw(vertex_array* array) {  
+    if (array->index_buffer)  
+        glDrawElements(GL_TRIANGLES, (array->index_buffer->triangle_count * 3), GL_UNSIGNED_INT, NULL);
+    else {
+        for (int c = 0; c < array->array_buffer_count; c++)
+            array_buffer_draw(array->array_buffers[c]);
+    }
+}
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
+void platform_vertex_array_bind(vertex_array* array) {
     glBindVertexArray(array->platform_vertex_array->rendererID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, array->index_buffer->platform_index_buffer->rendererID);
-    
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
-
-    glBindVertexArray(0);
 }
 
 void platform_vertex_array_delete(vertex_array* array) {

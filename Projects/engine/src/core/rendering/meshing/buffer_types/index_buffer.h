@@ -6,6 +6,7 @@ typedef struct index_buffer index_buffer;
 struct platform_index_buffer;
 void platform_index_buffer_build(index_buffer* buffer);
 void platform_index_buffer_delete(index_buffer* buffer);
+void platform_index_buffer_bind(index_buffer* buffer);
 
 typedef struct index_buffer {
     void** data;
@@ -29,6 +30,10 @@ HEADER_DEF void index_buffer_set_draw_type(index_buffer* buffer, buffer_draw_typ
 
 HEADER_DEF void index_buffer_build(index_buffer* buffer) {
     platform_index_buffer_build(buffer);
+}
+
+HEADER_DEF void index_buffer_bind(index_buffer* buffer) {
+    platform_index_buffer_bind(buffer);
 }
 
 HEADER_DEF void index_buffer_delete(index_buffer* buffer) {

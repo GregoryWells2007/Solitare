@@ -10,6 +10,8 @@ void platform_vertex_array_build(vertex_array* array);
 void platform_vertex_array_draw(vertex_array* array);
 void platform_vertex_array_delete(vertex_array* array);
 
+void platform_vertex_array_bind(vertex_array* array);
+
 typedef struct vertex_array {
     array_buffer** array_buffers;
     int array_buffer_count;
@@ -41,6 +43,7 @@ HEADER_DEF void vertex_array_set_index_buffer(vertex_array* array, index_buffer*
 
 HEADER_DEF void vertex_array_build(vertex_array* array) {
     platform_vertex_array_build(array);
+    platform_vertex_array_bind(array);
 
     for (int i = 0; i < array->array_buffer_count; i++) {
         array_buffer_build(array->array_buffers[i]);
@@ -51,6 +54,11 @@ HEADER_DEF void vertex_array_build(vertex_array* array) {
 
 HEADER_DEF void vertex_array_draw(vertex_array* array) {
     platform_vertex_array_draw(array);
+}
+
+HEADER_DEF void vertex_array_bind(vertex_array* array) {
+    platform_vertex_array_bind(array);
+    index_buffer_bind(array->index_buffer);
 }
 
 HEADER_DEF void vertex_array_delete(vertex_array* array) {
