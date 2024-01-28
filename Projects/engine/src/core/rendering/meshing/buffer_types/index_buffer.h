@@ -8,7 +8,7 @@ void platform_index_buffer_build(index_buffer* buffer);
 void platform_index_buffer_delete(index_buffer* buffer);
 
 typedef struct index_buffer {
-    void* data;
+    void** data;
     int triangle_count;
 
     buffer_draw_type draw_type;
