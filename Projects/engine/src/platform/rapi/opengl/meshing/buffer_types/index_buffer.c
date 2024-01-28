@@ -14,13 +14,7 @@ void platform_index_buffer_build(index_buffer* buffer) {
 
     glCreateBuffers(1, &rendererID);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID);
-
-    int* triangles = malloc(sizeof(int) * 3);
-    triangles[0] = 0;
-    triangles[1] = 1;
-    triangles[2] = 2;
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * 3, triangles, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(triangle) * buffer->triangle_count, buffer->data, (buffer->draw_type == static_draw) ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW );
     
     struct platform_index_buffer* new_buffer = malloc(sizeof(struct platform_index_buffer));
     new_buffer->rendererID = rendererID;
