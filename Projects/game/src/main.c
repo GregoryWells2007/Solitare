@@ -55,7 +55,6 @@ int main(int argc, char** argv) {
         { 1.045f,  1.745f },
         { 1.000f,  1.750f }
     };
-
     for (int i = 0; i < 24; i++) {
         vertices[i].x = vertices[i].x / 4.0f;
         vertices[i].y = vertices[i].y / 4.0f;
@@ -63,7 +62,6 @@ int main(int argc, char** argv) {
         vertices[i].x *= 0.9;
         vertices[i].y *= 1.6;
     }
-
     triangle triangles[22] = {
         { 0,  1, 22 },
         { 0, 23, 22 },
@@ -124,10 +122,9 @@ int main(int argc, char** argv) {
     clear_screen_data_set_screen_color(&screen_clear, (color){ 150, 150, 150, 1.0f });
 
     while (window_is_open(&main_window)) {
-        clear_screen(&screen_clear);
+        
 
-        vertex_array_bind(&triangle);
-        vertex_array_draw(&triangle);
+
 
         window_manager_update(&win_manager);
     }
@@ -135,5 +132,6 @@ int main(int argc, char** argv) {
     clear_screen_data_delete(&screen_clear);
     vertex_array_delete(&triangle);
 
-    window_close(&main_window);
+    window_manager_delete(&win_manager);
+    return 0;
 }

@@ -19,6 +19,7 @@ HEADER_DEF window_manager window_manager_create() {
     new_window_manager.window_count = 0;
 
     new_window_manager.screen_renderer = malloc(sizeof(screen_renderer));
+    screen_renderer_init(new_window_manager.screen_renderer);
 
     return new_window_manager;
 }
@@ -54,3 +55,11 @@ HEADER_DEF void window_manager_update(window_manager* win_manager) {
         window_update(win_manager->windows[i]);
     }
 }   
+
+HEADER_DEF void window_manager_delete(window_manager* win_manager) {
+    window_close(win_manager->main_window);
+    for (int i = 0; i < win_manager->window_count; i++) 
+        window_close(win_manager->windows[i]);
+
+    free(win_manager->screen_renderer);
+}
