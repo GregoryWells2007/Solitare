@@ -3,6 +3,8 @@
 #include "src/platform/platform.h"
 #include "src/types/vector2.h"
 #include "src/types/vector3.h"
+#include "src/types/vector4.h"
+#include "src/types/color.h"
 
 // window includes
 #include "src/core/windowing/window_manager.h"
@@ -11,6 +13,7 @@
 // rendering includes
 #include "src/core/rendering/meshing/vertex_array.h"
 #include "src/core/rendering/output_buffer/output_buffer.h"
+#include "src/core/rendering/utils/screen_clearing.h"
 
 #include "engine_api.h"
 HEADER_DEF void engine_init() {

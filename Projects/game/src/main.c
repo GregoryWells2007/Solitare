@@ -56,13 +56,20 @@ int main(int argc, char** argv) {
 
     vertex_array_build(&triangle);
     
+    clear_screen_data screen_clear = clear_screen_data_create(); 
+    clear_screen_data_enable_layer(&screen_clear, color_layer);
+    clear_screen_data_set_screen_color(&screen_clear, (color){ 150, 150, 150, 1.0f });
+
     while (window_is_open(&main_window)) {
+        clear_screen(&screen_clear);
+
         vertex_array_bind(&triangle);
         vertex_array_draw(&triangle);
 
         window_manager_update(&win_manager);
     }
-     
+    
+    clear_screen_data_delete(&screen_clear);
     vertex_array_delete(&triangle);
 
     window_close(&main_window);
