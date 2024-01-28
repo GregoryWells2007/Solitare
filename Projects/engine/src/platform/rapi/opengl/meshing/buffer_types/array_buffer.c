@@ -17,29 +17,21 @@ GLenum platform_get_type(vertex_attribute_type type) {
 void platform_array_buffer_build(array_buffer* buffer) {
     unsigned int rendererID;
 
-    float verts[6] = {
-        -0.5f, -0.5f,
-         0.0f,  0.5f,
-         0.5f, -0.5f
-    };
-
     glCreateBuffers(1, &rendererID);
     glBindBuffer(GL_ARRAY_BUFFER, rendererID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6, verts, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(buffer->data[0]) * buffer->vertex_count, buffer->data, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void*)0);
-    
 
-    // size_t current_offset = 0;
-    // size_t array_size = sizeof(buffer->data[0]);
+    size_t current_offset = 0;
+    size_t array_size = sizeof(buffer->data[0]);
 
-    // for (int i = 0; i < buffer->attribute_count; i++) {
-    //     vertex_attribute* attribure = buffer->attributes[i];
+    for (int i = 0; i < buffer->attribute_count; i++) {
+        vertex_attribute* attribure = buffer->attributes[i];
 
-    //     GLenum type = platform_get_type(attribure->attribute_type);
+        GLenum type = platform_get_type(attribure->attribute_type);
 
-    //     glVertexAttribPointer(i, attribure->attribute_count, type, GL_FALSE, array_size, (const void*)current_offset);
-    // }
+        glVertexAttribPointer(i, attribure->count, type, GL_FALSE, array_size, (const void*)current_offset);
+    }
     
     
     buffer->platform_array_buffer = malloc(sizeof(struct platform_array_buffer));
