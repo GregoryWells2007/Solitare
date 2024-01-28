@@ -132,20 +132,18 @@ void platform_window_open(window* window) {
     
     #endif
 
-
-
     glfwShowWindow(window->platform_window->window);
 }
 
 void platform_window_update(window* window) {
-    glfwMakeContextCurrent(window->platform_window->window);
-
     glfwSwapBuffers(window->platform_window->window);
     glfwPollEvents();
-
-    glfw_get_window_monitor(window);
     
     if (glfwWindowShouldClose(window->platform_window->window)) window->is_open = false;
+}
+
+void platform_window_prep_for_draw(window* window) {
+    glfwMakeContextCurrent(window->platform_window->window);
 }
 
 void platform_window_close(window* window) {

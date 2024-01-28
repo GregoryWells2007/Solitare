@@ -54,7 +54,6 @@ HEADER_DEF void window_manager_update(window_manager* win_manager) {
     win_manager->main_window->renderer = win_manager->screen_renderer;
 
     window_update(win_manager->main_window);
-    screen_renderder_draw(win_manager->screen_renderer);
 
     for (int i = 0; i < win_manager->window_count; i++) {
         win_manager->windows[i]->renderer = win_manager->screen_renderer;

@@ -23,6 +23,8 @@ void platform_window_set_resizable(window* window, bool resizable);
 void platform_window_set_maximized(window* window, bool maximized);
 void platform_window_set_decorated(window* window, bool decorated);
 
+void platform_window_prep_for_draw(window* window);
+
 typedef struct window {
     // idfk man
     window* main_window;
@@ -55,7 +57,8 @@ HEADER_DEF void window_open(window* win) {
     platform_window_open(win);
 }
 HEADER_DEF void window_update(window* win) {
-    // i dont need to do anything here
+    platform_window_prep_for_draw(win);
+    screen_renderder_draw(win->renderer);
     platform_window_update(win);
 }
 HEADER_DEF void window_close(window* win) {

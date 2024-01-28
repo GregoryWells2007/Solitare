@@ -26,96 +26,96 @@ int main(int argc, char** argv) {
 
     window_open(&main_window);
 
-    // struct triangle_vertex vertices[24] = {
-    //     { -1.000f,  1.750f },
-    //     { -1.045f,  1.745f },
-    //     { -1.075f,  1.735f },
-    //     { -1.110f,  1.700f },
-    //     { -1.120f,  1.670f },
-    //     { -1.125f,  1.625f },
+    struct triangle_vertex vertices[24] = {
+        { -1.000f,  1.750f },
+        { -1.045f,  1.745f },
+        { -1.075f,  1.735f },
+        { -1.110f,  1.700f },
+        { -1.120f,  1.670f },
+        { -1.125f,  1.625f },
         
-    //     { -1.125f, -1.625f },
-    //     { -1.120f, -1.670f },
-    //     { -1.110f, -1.700f },
-    //     { -1.075f, -1.735f },
-    //     { -1.045f, -1.745f },
-    //     { -1.009f, -1.750f },
+        { -1.125f, -1.625f },
+        { -1.120f, -1.670f },
+        { -1.110f, -1.700f },
+        { -1.075f, -1.735f },
+        { -1.045f, -1.745f },
+        { -1.009f, -1.750f },
 
-    //     { 1.000f, -1.750f },
-    //     { 1.045f, -1.745f },
-    //     { 1.075f, -1.735f },
-    //     { 1.110f, -1.700f },
-    //     { 1.120f, -1.670f },
-    //     { 1.125f, -1.625f },
+        { 1.000f, -1.750f },
+        { 1.045f, -1.745f },
+        { 1.075f, -1.735f },
+        { 1.110f, -1.700f },
+        { 1.120f, -1.670f },
+        { 1.125f, -1.625f },
 
-    //     { 1.125f,  1.625f },
-    //     { 1.120f,  1.670f },
-    //     { 1.110f,  1.700f },
-    //     { 1.075f,  1.735f },
-    //     { 1.045f,  1.745f },
-    //     { 1.000f,  1.750f }
-    // };
-    // for (int i = 0; i < 24; i++) {
-    //     vertices[i].x = vertices[i].x / 4.0f;
-    //     vertices[i].y = vertices[i].y / 4.0f;
+        { 1.125f,  1.625f },
+        { 1.120f,  1.670f },
+        { 1.110f,  1.700f },
+        { 1.075f,  1.735f },
+        { 1.045f,  1.745f },
+        { 1.000f,  1.750f }
+    };
+    for (int i = 0; i < 24; i++) {
+        vertices[i].x = vertices[i].x / 4.0f;
+        vertices[i].y = vertices[i].y / 4.0f;
 
-    //     vertices[i].x *= 0.9;
-    //     vertices[i].y *= 1.6;
-    // }
-    // triangle triangles[22] = {
-    //     { 0,  1, 22 },
-    //     { 0, 23, 22 },
+        vertices[i].x *= 0.9;
+        vertices[i].y *= 1.6;
+    }
+    triangle triangles[22] = {
+        { 0,  1, 22 },
+        { 0, 23, 22 },
 
-    //     { 1, 2, 21 },
-    //     { 1, 22, 21 },
+        { 1, 2, 21 },
+        { 1, 22, 21 },
 
-    //     { 2, 3, 20 },
-    //     { 2, 21, 20 },
+        { 2, 3, 20 },
+        { 2, 21, 20 },
 
-    //     { 3, 4, 19 },
-    //     { 3, 20, 19 },
+        { 3, 4, 19 },
+        { 3, 20, 19 },
 
-    //     { 4, 5, 18 },
-    //     { 4, 19, 18 },
+        { 4, 5, 18 },
+        { 4, 19, 18 },
 
-    //     { 5, 6, 17 },
-    //     { 5, 18, 17 },
+        { 5, 6, 17 },
+        { 5, 18, 17 },
 
-    //     { 6, 7, 16 },
-    //     { 6, 17, 16 },
+        { 6, 7, 16 },
+        { 6, 17, 16 },
 
-    //     { 7, 8, 15 },
-    //     { 7, 16, 15 },
+        { 7, 8, 15 },
+        { 7, 16, 15 },
 
-    //     { 8, 9, 14 },
-    //     { 8, 15, 14 },
+        { 8, 9, 14 },
+        { 8, 15, 14 },
 
-    //     { 9, 10, 13 },
-    //     { 9, 14, 13 },
+        { 9, 10, 13 },
+        { 9, 14, 13 },
 
-    //     { 10, 11, 12 },
-    //     { 10, 13, 12 },
-    // };
+        { 10, 11, 12 },
+        { 10, 13, 12 },
+    };
 
-    // vertex_array triangle = vertex_array_create();
+    vertex_array triangle = vertex_array_create();
 
-    // array_buffer triangle_positions_buffer = array_buffer_create(); 
-    // array_buffer_set_data(&triangle_positions_buffer, vertices);
-    // array_buffer_set_vertex_count(&triangle_positions_buffer, 24);
-    // array_buffer_set_draw_type(&triangle_positions_buffer, static_draw);   
+    array_buffer triangle_positions_buffer = array_buffer_create(); 
+    array_buffer_set_data(&triangle_positions_buffer, vertices);
+    array_buffer_set_vertex_count(&triangle_positions_buffer, 24);
+    array_buffer_set_draw_type(&triangle_positions_buffer, static_draw);   
 
-    // vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
-    // array_buffer_add_attribute(&triangle_positions_buffer, &positions_attribute);
+    vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
+    array_buffer_add_attribute(&triangle_positions_buffer, &positions_attribute);
 
-    // index_buffer triangle_index_buffer = index_buffer_create();
-    // index_buffer_set_data(&triangle_index_buffer, triangles);
-    // index_buffer_set_triangle_count(&triangle_index_buffer, 22);
-    // index_buffer_set_draw_type(&triangle_index_buffer, static_draw); 
+    index_buffer triangle_index_buffer = index_buffer_create();
+    index_buffer_set_data(&triangle_index_buffer, triangles);
+    index_buffer_set_triangle_count(&triangle_index_buffer, 22);
+    index_buffer_set_draw_type(&triangle_index_buffer, static_draw); 
 
-    // vertex_array_add_array_buffer(&triangle, &triangle_positions_buffer);
-    // vertex_array_set_index_buffer(&triangle, &triangle_index_buffer);
+    vertex_array_add_array_buffer(&triangle, &triangle_positions_buffer);
+    vertex_array_set_index_buffer(&triangle, &triangle_index_buffer);
 
-    // vertex_array_build(&triangle);
+    vertex_array_build(&triangle);
     
     clear_screen_data screen_clear = clear_screen_data_create(); 
     clear_screen_data_enable_layer(&screen_clear, color_layer);
@@ -123,14 +123,17 @@ int main(int argc, char** argv) {
 
     while (window_is_open(&main_window)) {
         
+        clear_screen(&screen_clear);
 
+        vertex_array_bind(&triangle);
+        vertex_array_draw(&triangle);
 
 
         window_manager_update(&win_manager);
     }
     
     clear_screen_data_delete(&screen_clear);
-    //vertex_array_delete(&triangle);
+    vertex_array_delete(&triangle);
 
     window_manager_delete(&win_manager);
     return 0;
