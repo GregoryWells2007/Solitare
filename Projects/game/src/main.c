@@ -27,9 +27,15 @@ int main(int argc, char** argv) {
     window_open(&main_window);
 
     struct triangle_vertex vertices[3] = {
-        { -0.5f, -0.5f },
-        {  0.0f,  0.5f },
-        {  0.5f, -0.5f }
+        { 
+            -0.5f, -0.5f
+        },
+        {  
+            0.0f,  0.5f 
+        },
+        {  
+            0.5f, -0.5f 
+        }
     };
 
     triangle triangles[1] = {

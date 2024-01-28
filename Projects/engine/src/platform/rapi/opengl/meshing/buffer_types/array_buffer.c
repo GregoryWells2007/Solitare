@@ -26,11 +26,16 @@ void platform_array_buffer_build(array_buffer* buffer) {
     size_t array_size = sizeof(buffer->data[0]);
 
     for (int i = 0; i < buffer->attribute_count; i++) {
+
         vertex_attribute* attribure = buffer->attributes[i];
 
         GLenum type = platform_get_type(attribure->attribute_type);
 
         glVertexAttribPointer(i, attribure->count, type, GL_FALSE, array_size, (const void*)current_offset);
+
+        // for other attribute types this is going to need to be changed
+        size_t type_size = get_size_of_type(attribure->attribute_type); 
+        current_offset += type_size * attribure->count;
     }
     
     
