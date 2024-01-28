@@ -9,6 +9,7 @@ typedef struct window_manager {
     int window_count;
 
     screen_renderer* screen_renderer;
+    bool screen_renderer_initilized;
 } window_manager;
 
 HEADER_DEF window_manager window_manager_create() {
@@ -19,7 +20,7 @@ HEADER_DEF window_manager window_manager_create() {
     new_window_manager.window_count = 0;
 
     new_window_manager.screen_renderer = malloc(sizeof(screen_renderer));
-    screen_renderer_init(new_window_manager.screen_renderer);
+    new_window_manager.screen_renderer_initilized = false;
 
     return new_window_manager;
 }
@@ -45,9 +46,15 @@ HEADER_DEF void window_manager_add_window(window_manager* win_manager, window* w
 }
 
 HEADER_DEF void window_manager_update(window_manager* win_manager) {
+    if (!win_manager->screen_renderer_initilized) {
+        screen_renderder_init(win_manager->screen_renderer);
+        win_manager->screen_renderer_initilized = true;
+    }
+
     win_manager->main_window->renderer = win_manager->screen_renderer;
 
     window_update(win_manager->main_window);
+    screen_renderder_draw(win_manager->screen_renderer);
 
     for (int i = 0; i < win_manager->window_count; i++) {
         win_manager->windows[i]->renderer = win_manager->screen_renderer;
