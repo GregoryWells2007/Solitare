@@ -167,6 +167,7 @@ int main(int argc, char** argv) {
     
     clear_screen_data_delete(&screen_clear);
     vertex_array_delete(&triangle);
+    shader_program_delete(&triangle_shader);
 
     window_manager_delete(&win_manager);
     return 0;

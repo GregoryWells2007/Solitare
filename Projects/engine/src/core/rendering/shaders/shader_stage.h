@@ -5,6 +5,7 @@
 typedef struct shader_stage shader_stage;
 struct platform_shader_stage;
 void platform_shader_stage_build(shader_stage* stage);
+void platform_shader_stage_delete(shader_stage* stage);
 
 typedef enum shader_stage_type {
     no_stage,
@@ -35,4 +36,11 @@ HEADER_DEF void shader_stage_set_source(shader_stage* stage, char* source) { sta
 
 HEADER_DEF void shader_stage_build(shader_stage* stage) {
     platform_shader_stage_build(stage);
+}
+
+HEADER_DEF void shader_stage_delete(shader_stage* stage) {
+    platform_shader_stage_delete(stage);
+
+    free(stage->shader_source);
+    free(stage->platform_shader_stage);
 }

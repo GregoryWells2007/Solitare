@@ -58,4 +58,8 @@ void platform_shader_stage_build(shader_stage* stage) {
     stage->platform_shader_stage->rendererID = rendererID;
 }
 
+void platform_shader_stage_delete(shader_stage* stage) {
+    glDeleteShader(stage->platform_shader_stage->rendererID);   
+}
+
 #endif

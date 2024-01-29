@@ -13,4 +13,13 @@ void platform_shader_program_init(shader_program* program) {
     program->platform_shader_program->rendererID = glCreateProgram();
 }
 
+void platform_shader_program_create(shader_program* program) {
+    glLinkProgram(program->platform_shader_program->rendererID);
+    glValidateProgram(program->platform_shader_program->rendererID);
+}
+
+void platform_shader_program_delete(shader_program* program) {
+    glDeleteProgram(program->platform_shader_program->rendererID);
+}
+
 #endif
