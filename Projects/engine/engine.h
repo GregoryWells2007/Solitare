@@ -14,6 +14,7 @@
 #include "src/core/rendering/meshing/vertex_array.h"
 #include "src/core/rendering/output_buffer/output_buffer.h"
 #include "src/core/rendering/utils/screen_clearing.h"
+#include "src/core/rendering/shaders/shader_program.h"
 
 #include "engine_api.h"
 HEADER_DEF void engine_init() {
