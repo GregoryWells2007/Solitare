@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     char* vertex_shader_src = ""
     "#version 330 core\n"
     "\n"
-    "layout(location = 0) in vec2 position\n"
+    "layout(location = 0) in vec2 position;\n"
     "\n"
     "void main(void) {\n"
     "   gl_Position = vec4(position, 0.0, 1.0);\n"
@@ -149,6 +149,8 @@ int main(int argc, char** argv) {
     
     shader_program_set_stage(&triangle_shader, &triangle_vertex_shader);
     shader_program_set_stage(&triangle_shader, &triangle_fragment_shader);
+
+    shader_program_build(&triangle_shader);
 
     clear_screen_data screen_clear = clear_screen_data_create(); 
     clear_screen_data_enable_layer(&screen_clear, color_layer);
