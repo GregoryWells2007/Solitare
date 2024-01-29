@@ -16,4 +16,5 @@ HEADER_DEF size_t get_size_of_type(vertex_attribute_type type) {
     switch (type) {
     case vertex_attribute_type_float: return sizeof(float); 
     }
+    return sizeof(float);
 }

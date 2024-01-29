@@ -3,6 +3,7 @@
 
 struct triangle_vertex {
     float x, y;
+    float u, v;
 };
 
 int main(int argc, char** argv) {
@@ -27,33 +28,33 @@ int main(int argc, char** argv) {
     window_open(&main_window);
 
     struct triangle_vertex vertices[24] = {
-        { -1.000f,  1.750f },
-        { -1.045f,  1.745f },
-        { -1.075f,  1.735f },
-        { -1.110f,  1.700f },
-        { -1.120f,  1.670f },
-        { -1.125f,  1.625f },
+        { -1.000f,  1.750f, 0.0f, 0.0f },
+        { -1.045f,  1.745f, 0.0f, 0.0f },
+        { -1.075f,  1.735f, 0.0f, 0.0f },
+        { -1.110f,  1.700f, 0.0f, 0.0f },
+        { -1.120f,  1.670f, 0.0f, 0.0f },
+        { -1.125f,  1.625f, 0.0f, 0.0f },
         
-        { -1.125f, -1.625f },
-        { -1.120f, -1.670f },
-        { -1.110f, -1.700f },
-        { -1.075f, -1.735f },
-        { -1.045f, -1.745f },
-        { -1.009f, -1.750f },
+        { -1.125f, -1.625f, 0.0f, 0.0f },
+        { -1.120f, -1.670f, 0.0f, 0.0f },
+        { -1.110f, -1.700f, 0.0f, 0.0f },
+        { -1.075f, -1.735f, 0.0f, 0.0f },
+        { -1.045f, -1.745f, 0.0f, 0.0f },
+        { -1.009f, -1.750f, 0.0f, 0.0f },
 
-        { 1.000f, -1.750f },
-        { 1.045f, -1.745f },
-        { 1.075f, -1.735f },
-        { 1.110f, -1.700f },
-        { 1.120f, -1.670f },
-        { 1.125f, -1.625f },
+        {  1.000f, -1.750f, 0.0f, 0.0f },
+        {  1.045f, -1.745f, 0.0f, 0.0f },
+        {  1.075f, -1.735f, 0.0f, 0.0f },
+        {  1.110f, -1.700f, 0.0f, 0.0f },
+        {  1.120f, -1.670f, 0.0f, 0.0f },
+        {  1.125f, -1.625f, 0.0f, 0.0f },
 
-        { 1.125f,  1.625f },
-        { 1.120f,  1.670f },
-        { 1.110f,  1.700f },
-        { 1.075f,  1.735f },
-        { 1.045f,  1.745f },
-        { 1.000f,  1.750f }
+        {  1.125f,  1.625f, 0.0f, 0.0f },
+        {  1.120f,  1.670f, 0.0f, 0.0f },
+        {  1.110f,  1.700f, 0.0f, 0.0f },
+        {  1.075f,  1.735f, 0.0f, 0.0f },
+        {  1.045f,  1.745f, 0.0f, 0.0f },
+        {  1.000f,  1.750f, 0.0f, 0.0f }
     };
     for (int i = 0; i < 24; i++) {
         vertices[i].x = vertices[i].x / 4.0f;
@@ -107,6 +108,9 @@ int main(int argc, char** argv) {
     vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
     array_buffer_add_attribute(&triangle_positions_buffer, &positions_attribute);
 
+    vertex_attribute uv_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
+    array_buffer_add_attribute(&triangle_positions_buffer, &uv_attribute);
+
     index_buffer triangle_index_buffer = index_buffer_create();
     index_buffer_set_data(&triangle_index_buffer, triangles);
     index_buffer_set_triangle_count(&triangle_index_buffer, 22);
@@ -121,6 +125,7 @@ int main(int argc, char** argv) {
     "#version 330 core\n"
     "\n"
     "layout(location = 0) in vec2 position;\n"
+    "layout(location = 1) in vec2 uv;\n"
     "\n"
     "void main(void) {\n"
     "   gl_Position = vec4(position, 0.0, 1.0);\n"
