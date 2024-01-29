@@ -117,17 +117,48 @@ int main(int argc, char** argv) {
 
     vertex_array_build(&triangle);
     
+    char* vertex_shader_src = ""
+    "#version 330 core\n"
+    "\n"
+    "layout(location = 0) in vec2 position\n"
+    "\n"
+    "void main(void) {\n"
+    "   gl_Position = vec4(position, 0.0, 1.0);\n"
+    "}\n"
+    ;
+
+    char* fragment_shader_src = ""
+    "#version 330 core\n"
+    "\n"
+    "out vec4 color;\n"
+    "\n"
+    "void main(void) {\n"
+    "   color = vec4(1.0, 0.0, 0.0, 1.0);\n"
+    "}\n"
+    ;
+
+    shader_program triangle_shader = shader_program_create();
+
+    shader_stage triangle_vertex_shader = shader_stage_create();
+    shader_stage_set_type(&triangle_vertex_shader, vertex_shader);
+    shader_stage_set_source(&triangle_vertex_shader, vertex_shader_src);
+    
+    shader_stage triangle_fragment_shader = shader_stage_create();
+    shader_stage_set_type(&triangle_fragment_shader, fragment_shader);
+    shader_stage_set_source(&triangle_fragment_shader, fragment_shader_src);
+    
+    shader_program_set_stage(&triangle_shader, &triangle_vertex_shader);
+    shader_program_set_stage(&triangle_shader, &triangle_fragment_shader);
+
     clear_screen_data screen_clear = clear_screen_data_create(); 
     clear_screen_data_enable_layer(&screen_clear, color_layer);
     clear_screen_data_set_screen_color(&screen_clear, (color){ 150, 150, 150, 1.0f });
 
-    while (window_is_open(&main_window)) {
-        
+    while (window_is_open(&main_window)) {        
         clear_screen(&screen_clear);
 
         vertex_array_bind(&triangle);
         vertex_array_draw(&triangle);
-
 
         window_manager_update(&win_manager);
     }
