@@ -50,7 +50,10 @@ void platform_array_buffer_draw(array_buffer* buffer) {
 }
 
 void platform_array_buffer_bind(array_buffer* buffer) {
-    glBindBuffer(GL_ARRAY_BUFFER, buffer->platform_array_buffer->rendererID);
+    if (!buffer)
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    else
+        glBindBuffer(GL_ARRAY_BUFFER, buffer->platform_array_buffer->rendererID);
 }
 
 void platform_array_buffer_delete(array_buffer* buffer) {
