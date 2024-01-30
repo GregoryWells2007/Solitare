@@ -43,7 +43,10 @@ void platform_vertex_array_draw(vertex_array* array) {
 }
 
 void platform_vertex_array_bind(vertex_array* array) {
-    glBindVertexArray(array->platform_vertex_array->rendererID);
+    if (!array)
+        glBindVertexArray(0);
+    else
+        glBindVertexArray(array->platform_vertex_array->rendererID);
 }
 
 void platform_vertex_array_delete(vertex_array* array) {

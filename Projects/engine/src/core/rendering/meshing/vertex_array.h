@@ -41,6 +41,12 @@ HEADER_DEF void vertex_array_set_index_buffer(vertex_array* array, index_buffer*
     array->index_buffer = buffer;
 }
 
+HEADER_DEF void vertex_array_bind(vertex_array* array) {
+    platform_vertex_array_bind(array);
+    if (array)
+        index_buffer_bind(array->index_buffer);
+}
+
 HEADER_DEF void vertex_array_build(vertex_array* array) {
     platform_vertex_array_build(array);
     platform_vertex_array_bind(array);
@@ -50,16 +56,14 @@ HEADER_DEF void vertex_array_build(vertex_array* array) {
     }
 
     index_buffer_build(array->index_buffer);
+
+    vertex_array_bind(NULL);
 }
 
 HEADER_DEF void vertex_array_draw(vertex_array* array) {
     platform_vertex_array_draw(array);
 }
 
-HEADER_DEF void vertex_array_bind(vertex_array* array) {
-    platform_vertex_array_bind(array);
-    index_buffer_bind(array->index_buffer);
-}
 
 HEADER_DEF void vertex_array_delete(vertex_array* array) {
     platform_vertex_array_delete(array);
