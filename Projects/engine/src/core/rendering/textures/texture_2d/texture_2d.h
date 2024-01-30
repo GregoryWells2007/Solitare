@@ -1,5 +1,6 @@
 #pragma once
 #include "engine_api.h"
+#include "src/types/vector2.h"
 #include "texture_2d_enums.h"
 
 typedef struct texture_2d texture_2d;
