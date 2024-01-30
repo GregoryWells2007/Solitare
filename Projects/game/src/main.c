@@ -169,6 +169,8 @@ int main(int argc, char** argv) {
     while (window_is_open(&main_window)) {        
         clear_screen(&screen_clear);
 
+        shader_program_bind(&triangle_shader);
+    
         vertex_array_bind(&triangle);
         vertex_array_draw(&triangle);
 

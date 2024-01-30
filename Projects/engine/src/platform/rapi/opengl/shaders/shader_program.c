@@ -33,4 +33,11 @@ void platform_shader_program_delete(shader_program* program) {
     glDeleteProgram(program->platform_shader_program->rendererID);
 }
 
+void platform_shader_program_bind(shader_program* program) {
+    if (!program)
+        glUseProgram(0);
+    else    
+        glUseProgram(program->platform_shader_program->rendererID);
+}
+
 #endif

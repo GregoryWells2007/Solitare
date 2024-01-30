@@ -7,6 +7,7 @@ struct platform_shader_program;
 void platform_shader_program_init(shader_program* program);
 void platform_shader_program_create(shader_program* program);
 void platform_shader_program_delete(shader_program* program);
+void platform_shader_program_bind(shader_program* program);
 
 typedef struct shader_program {
     shader_stage** stages;
@@ -34,6 +35,10 @@ HEADER_DEF void shader_program_set_stage(shader_program* program, shader_stage* 
     program->stage_count++;
 }
 
+HEADER_DEF void shader_program_bind(shader_program* program) {
+    platform_shader_program_bind(program);
+}
+
 HEADER_DEF void shader_program_build(shader_program* program) {
     platform_shader_program_init(program);
 
@@ -41,6 +46,7 @@ HEADER_DEF void shader_program_build(shader_program* program) {
         shader_stage_build(program->stages[i]);
 
     platform_shader_program_create(program);
+    shader_program_bind(NULL);
 }
 
 HEADER_DEF void shader_program_delete(shader_program* program) {
