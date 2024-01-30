@@ -15,6 +15,8 @@ typedef struct texture_2d {
     texture_2d_color_mode color_mode;
     void* data;
 
+    struct platform_texture_2d* platform_texture_2d;
+
     texture_2d_parameter_value* values;
 } texture_2d;
 
@@ -23,6 +25,7 @@ HEADER_DEF texture_2d texture_2d_create() {
     new_texture_2d.texture_size = (int2){ 0, 0 };
     new_texture_2d.color_mode = texture_2d_color_mode_none;
     new_texture_2d.data = NULL;
+    new_texture_2d.platform_texture_2d = NULL;
 
     new_texture_2d.values = malloc(sizeof(texture_2d_parameter_value) * texture_2d_parameter_none);
     return new_texture_2d;

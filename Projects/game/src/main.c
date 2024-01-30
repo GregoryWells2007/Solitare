@@ -1,5 +1,4 @@
 #include "stdio.h"
-#include "stdint.h"
 #include "engine.h"
 
 struct triangle_vertex {
@@ -142,9 +141,10 @@ int main(int argc, char** argv) {
     "out vec4 color;\n"
     "\n"
     "in vec2 vUV;\n"
+    "uniform sampler2D texure;\n"
     "\n"
     "void main(void) {\n"
-    "   color = vec4(vUV, 0.0, 1.0);\n"
+    "   color = texture(texure, vUV);\n"
     "}\n"
     ;
 
@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
     texture_2d_set_parameter(&cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
 
     texture_2d_set_parameter(&cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
-    texture_2d_set_parameter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
+    texture_2d_set_parameter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_clamp);
 
     texture_2d_set_width(&cards_image, 2);
     texture_2d_set_height(&cards_image, 2);
@@ -176,10 +176,10 @@ int main(int argc, char** argv) {
     texture_2d_set_color_mode(&cards_image, RGBA);
 
     unsigned int* pixels = malloc(sizeof(unsigned int) * 4);
-    pixels[0] = 0xff000000;
-    pixels[1] = 0x00ff0000;
-    pixels[2] = 0x00000000;
-    pixels[3] = 0x00ff0000;
+    pixels[0] = 0x0000ff;
+    pixels[1] = 0x00ff00;
+    pixels[2] = 0x00ff00;
+    pixels[3] = 0xff0000;
 
     texture_2d_set_data(&cards_image, pixels);
 
@@ -192,8 +192,9 @@ int main(int argc, char** argv) {
     while (window_is_open(&main_window)) {        
         clear_screen(&screen_clear);
 
+        texture_2d_bind(&cards_image, 0);
         shader_program_bind(&triangle_shader);
-    
+
         vertex_array_bind(&triangle);
         vertex_array_draw(&triangle);
 
