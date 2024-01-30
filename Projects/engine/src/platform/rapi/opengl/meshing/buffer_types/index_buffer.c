@@ -24,7 +24,10 @@ void platform_index_buffer_build(index_buffer* buffer) {
 }
 
 void platform_index_buffer_bind(index_buffer* buffer) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->platform_index_buffer->rendererID);
+    if (!buffer)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    else
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->platform_index_buffer->rendererID);
 }
 
 void platform_index_buffer_delete(index_buffer* buffer) {
