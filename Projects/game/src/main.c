@@ -1,4 +1,5 @@
 #include "stdio.h"
+#include "stdlib.h"
 #include "engine.h"
 
 struct triangle_vertex {
@@ -161,6 +162,28 @@ int main(int argc, char** argv) {
     shader_program_set_stage(&triangle_shader, &triangle_fragment_shader);
 
     shader_program_build(&triangle_shader);
+
+    texture_2d cards_image = texture_2d_create();
+    texture_2d_set_filter(&cards_image, texture_2d_magnification_filter, texture_filter_nearest);
+    texture_2d_set_filter(&cards_image, texture_2d_minification_filter, texture_filter_nearest);
+
+    texture_2d_set_filter(&cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
+    texture_2d_set_filter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
+
+    texture_2d_set_width(&cards_image, 2);
+    texture_2d_set_height(&cards_image, 2);
+
+    texture_2d_set_color_mode(&cards_image, RGBA);
+
+    uint8_t* pixels = malloc(sizeof(uint8_t) * 4);
+    pixels[0] = 0xff000000;
+    pixels[1] = 0x00ff0000;
+    pixels[2] = 0x00000000;
+    pixels[3] = 0x00ff0000;
+
+    texture_2d_set_data(&cards_image, pixels);
+
+    texture_2d_build(&cards_image);
 
     clear_screen_data screen_clear = clear_screen_data_create(); 
     clear_screen_data_enable_layer(&screen_clear, color_layer);
