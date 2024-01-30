@@ -1,5 +1,5 @@
 #include "stdio.h"
-#include "stdlib.h"
+#include "stdint.h"
 #include "engine.h"
 
 struct triangle_vertex {
@@ -164,18 +164,18 @@ int main(int argc, char** argv) {
     shader_program_build(&triangle_shader);
 
     texture_2d cards_image = texture_2d_create();
-    texture_2d_set_filter(&cards_image, texture_2d_magnification_filter, texture_filter_nearest);
-    texture_2d_set_filter(&cards_image, texture_2d_minification_filter, texture_filter_nearest);
+    texture_2d_set_parameter(&cards_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
+    texture_2d_set_parameter(&cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
 
-    texture_2d_set_filter(&cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
-    texture_2d_set_filter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
+    texture_2d_set_parameter(&cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
+    texture_2d_set_parameter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
 
     texture_2d_set_width(&cards_image, 2);
     texture_2d_set_height(&cards_image, 2);
 
     texture_2d_set_color_mode(&cards_image, RGBA);
 
-    uint8_t* pixels = malloc(sizeof(uint8_t) * 4);
+    unsigned int* pixels = malloc(sizeof(unsigned int) * 4);
     pixels[0] = 0xff000000;
     pixels[1] = 0x00ff0000;
     pixels[2] = 0x00000000;
