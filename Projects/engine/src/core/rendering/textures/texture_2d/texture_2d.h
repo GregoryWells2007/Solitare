@@ -38,7 +38,7 @@ HEADER_DEF void texture_2d_set_width(texture_2d* texture, int width) { texture->
 HEADER_DEF void texture_2d_set_height(texture_2d* texture, int height) { texture->texture_size.y = height; }
 HEADER_DEF void texture_2d_set_size(texture_2d* texture, int width, int height) { 
     texture->texture_size.x = width; 
-    texture->texture_size.x = height; 
+    texture->texture_size.y = height; 
 }
 
 HEADER_DEF void texture_2d_bind(texture_2d* texture, int slot) { platform_texture_2d_bind(texture, slot); }
