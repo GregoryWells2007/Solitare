@@ -256,6 +256,7 @@ int main(int argc, char** argv) {
     framebuffer_delete(&screen_framebuffer);
     vertex_array_delete(&triangle);
     shader_program_delete(&triangle_shader);
+    texture_2d_delete(&cards_image);
 
     window_manager_delete(&win_manager);
     return 0;

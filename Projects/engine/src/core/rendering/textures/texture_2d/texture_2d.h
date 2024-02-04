@@ -9,6 +9,7 @@ void platform_texture_2d_generate(texture_2d* texture);
 void platform_texture_2d_set_param(texture_2d_parameter param, texture_2d_parameter_value inpu);
 void platform_texture_2d_bind(texture_2d* texture, int slot);
 void platform_texture_2d_set_data(texture_2d* texture);
+void platform_texture_2d_delete(texture_2d* texture);
 
 typedef struct texture_2d {
     int2 texture_size;
@@ -52,4 +53,9 @@ HEADER_DEF void texture_2d_build(texture_2d* texture) {
         platform_texture_2d_set_param(i, texture->values[i]);
 
     platform_texture_2d_set_data(texture);
+}
+
+HEADER_DEF void texture_2d_delete(texture_2d* texture) {
+    platform_texture_2d_delete(texture);
+    free(texture->platform_texture_2d);
 }

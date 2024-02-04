@@ -71,4 +71,8 @@ void platform_texture_2d_set_data(texture_2d* texture) {
         texture->data);
 }
 
+void platform_texture_2d_delete(texture_2d* texture) {
+    glDeleteTextures(1, &texture->platform_texture_2d->rendererID);
+}
+
 #endif
