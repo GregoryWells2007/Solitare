@@ -7,4 +7,4 @@
 > - [x] Abstracting out OpenGL
 > - [x] Revamping the Meshing system
 > - [x] Cleaning up GPU memory
-> - [ ] Frame Buffers
+> - [x] Frame Buffers
