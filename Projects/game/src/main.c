@@ -27,6 +27,44 @@ int main(int argc, char** argv) {
 
     window_open(&main_window);
 
+    framebuffer screen_framebuffer = framebuffer_create();
+
+    // create a screen texture
+
+    texture_2d color_texture = texture_2d_create();
+    texture_2d_set_parameter(&color_texture, texture_2d_magnification_filter, texture_2d_filter_linear);
+    texture_2d_set_parameter(&color_texture, texture_2d_minification_filter, texture_2d_filter_linear);
+
+    texture_2d_set_parameter(&color_texture, texture_2d_wrap_x, texture_2d_wrap_repeat);
+    texture_2d_set_parameter(&color_texture, texture_2d_wrap_y, texture_2d_wrap_repeat);
+
+    texture_2d_set_width(&color_texture, 1280);
+    texture_2d_set_height(&color_texture, 720);
+
+    texture_2d_set_color_mode(&color_texture, RGBA);
+
+    texture_2d_build(&color_texture);
+
+    framebuffer_add_texture_2d(&screen_framebuffer, color_attachment_0, &color_texture);
+
+    texture_2d depth_stencil_texture = texture_2d_create();
+    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_magnification_filter, texture_2d_filter_linear);
+    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_minification_filter, texture_2d_filter_linear);
+
+    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_wrap_x, texture_2d_wrap_repeat);
+    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_wrap_y, texture_2d_wrap_repeat);
+
+    texture_2d_set_width(&depth_stencil_texture, 1280);
+    texture_2d_set_height(&depth_stencil_texture, 720);
+
+    texture_2d_set_color_mode(&depth_stencil_texture, DEPTH24STENCIL8);   
+
+    texture_2d_build(&depth_stencil_texture);
+
+    framebuffer_add_texture_2d(&screen_framebuffer, depth_stencil_attachment, &depth_stencil_texture);
+
+    framebuffer_build(&screen_framebuffer);
+
     struct triangle_vertex vertices[24] = {
         { -1.000f,  1.750f,     0.0556f, 1.0000f },
         { -1.045f,  1.745f,     0.0356f, 0.9986f },
@@ -192,16 +230,21 @@ int main(int argc, char** argv) {
     while (window_is_open(&main_window)) {        
         clear_screen(&screen_clear);
 
+        framebuffer_bind(&screen_framebuffer);
+
         texture_2d_bind(&cards_image, 0);
         shader_program_bind(&triangle_shader);
 
         vertex_array_bind(&triangle);
         vertex_array_draw(&triangle);
 
+        framebuffer_bind(NULL);
+
         window_manager_update(&win_manager);
     }
     
     clear_screen_data_delete(&screen_clear);
+    framebuffer_delete(&framebuffer);
     vertex_array_delete(&triangle);
     shader_program_delete(&triangle_shader);
 
