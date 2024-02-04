@@ -47,7 +47,7 @@ HEADER_DEF void window_manager_add_window(window_manager* win_manager, window* w
 
 HEADER_DEF void window_manager_update(window_manager* win_manager) {
     if (!win_manager->screen_renderer_initilized) {
-        screen_renderder_init(win_manager->screen_renderer);
+        screen_renderer_init(win_manager->screen_renderer);
         win_manager->screen_renderer_initilized = true;
     }
 
@@ -67,5 +67,6 @@ HEADER_DEF void window_manager_delete(window_manager* win_manager) {
     for (int i = 0; i < win_manager->window_count; i++) 
         window_close(win_manager->windows[i]);
 
+    screen_renderer_delete(win_manager->screen_renderer);
     free(win_manager->screen_renderer);
 }

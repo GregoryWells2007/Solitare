@@ -22,5 +22,6 @@ typedef struct screen_renderer {
     char* fragment_shader_src;
 } screen_renderer;
 
-void screen_renderder_init(screen_renderer* renderer);
-void screen_renderder_draw(screen_renderer* renderer);
+void screen_renderer_init(screen_renderer* renderer);
+void screen_renderer_draw(screen_renderer* renderer);
+void screen_renderer_delete(screen_renderer* renderer);

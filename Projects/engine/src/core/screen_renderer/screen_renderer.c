@@ -6,7 +6,7 @@ struct quad_vertex {
     float x, y;
 };
 
-void screen_renderder_init(screen_renderer* renderer) {
+void screen_renderer_init(screen_renderer* renderer) {
     float verts[16] = {
         -1.0,  1.0, 0.0, 1.0,
         -1.0, -1.0, 0.0, 0.0,
@@ -87,9 +87,14 @@ void screen_renderder_init(screen_renderer* renderer) {
     vertex_array_build(&renderer->screen_vertex_array);
 }
 
-void screen_renderder_draw(screen_renderer* renderer) {
+void screen_renderer_draw(screen_renderer* renderer) {
     shader_program_bind(&renderer->screen_shader);
 
     vertex_array_bind(&renderer->screen_vertex_array);
     vertex_array_draw(&renderer->screen_vertex_array);
+}
+
+void screen_renderer_delete(screen_renderer* renderer) {
+    vertex_array_delete(&renderer->screen_vertex_array);
+    shader_program_delete(&renderer->screen_shader);
 }
