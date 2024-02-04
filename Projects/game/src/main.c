@@ -65,7 +65,6 @@ int main(int argc, char** argv) {
 
     texture_2d_build(&depth_stencil_texture);
 
-
     framebuffer_attachment framebuffer_depth_stencil_attachment = framebuffer_attachment_create();
     framebuffer_attachment_set_data_type(&framebuffer_depth_stencil_attachment, framebuffer_data_type_texture_2d);
     framebuffer_attachment_set_attachment_type(&framebuffer_depth_stencil_attachment, depth_stencil_attachment);
