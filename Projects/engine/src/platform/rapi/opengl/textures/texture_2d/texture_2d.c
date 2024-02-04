@@ -4,9 +4,8 @@
 #include "src/core/rendering/textures/texture_2d/texture_2d.h"
 #include "glad/glad.h"
 
-struct platform_texture_2d {
-    unsigned int rendererID;
-};
+#include "texture_2d_platform.h"
+
 void platform_texture_2d_generate(texture_2d* texture) {
     unsigned int rendererID;
     

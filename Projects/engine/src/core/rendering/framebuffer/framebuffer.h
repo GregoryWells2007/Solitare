@@ -5,6 +5,9 @@
 typedef struct framebuffer framebuffer;
 struct platform_framebuffer;
 void platform_framebuffer_build(framebuffer* buffer);
+
+void platform_framebuffer_add_attachment(framebuffer* buffer, framebuffer_attachment* attachment);
+
 void platform_framebuffer_bind(framebuffer* buffer);
 void platform_framebuffer_delete(framebuffer* buffer);
 
@@ -33,6 +36,13 @@ HEADER_DEF void framebuffer_bind(framebuffer* buffer) { platform_framebuffer_bin
 HEADER_DEF void framebuffer_build(framebuffer* buffer) {
     platform_framebuffer_build(buffer);
     framebuffer_bind(buffer);
+
+    for (int i = 0; i < buffer->attachment_count; i++) {
+        framebuffer_attachment* attachment = buffer->attachments[i];
+        platform_framebuffer_add_attachment(buffer, attachment);
+    }
+
+    framebuffer_bind(NULL);
 }
 
 
