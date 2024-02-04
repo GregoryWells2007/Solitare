@@ -58,7 +58,7 @@ HEADER_DEF void window_open(window* win) {
 }
 HEADER_DEF void window_update(window* win) {
     platform_window_prep_for_draw(win);
-    //screen_renderder_draw(win->renderer);
+    screen_renderder_draw(win->renderer);
     platform_window_update(win);
 }
 HEADER_DEF void window_close(window* win) {
