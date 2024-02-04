@@ -9,7 +9,7 @@ void platform_set_screen_color(color col) {
 }
 
 void platform_clear_screen(screen_layer* layers, int count) {
-    GLbitfield mask = GL_COLOR_BUFFER_BIT;
+    GLbitfield mask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
 
     // im fucking lazy so this shit needs to be made faster later
 
