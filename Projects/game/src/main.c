@@ -51,22 +51,15 @@ int main(int argc, char** argv) {
     framebuffer_attachment_set_data(&framebuffer_color_attachment, &color_texture);
     framebuffer_add_attachment(&screen_framebuffer, &framebuffer_color_attachment);
 
-    texture_2d depth_stencil_texture = texture_2d_create();
-    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_magnification_filter, texture_2d_filter_linear);
-    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_minification_filter, texture_2d_filter_linear);
+    renderbuffer depth_stencil_texture = renderbuffer_create();
+    renderbuffer_set_width(&depth_stencil_texture, 1280);
+    renderbuffer_set_height(&depth_stencil_texture, 720);
+    renderbuffer_set_color_mode(&depth_stencil_texture, DEPTHSTENCIL);   
 
-    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_wrap_x, texture_2d_wrap_repeat);
-    texture_2d_set_parameter(&depth_stencil_texture, texture_2d_wrap_y, texture_2d_wrap_repeat);
-
-    texture_2d_set_width(&depth_stencil_texture, 1280);
-    texture_2d_set_height(&depth_stencil_texture, 720);
-    
-    texture_2d_set_color_mode(&depth_stencil_texture, DEPTHSTENCIL);   
-
-    texture_2d_build(&depth_stencil_texture);
+    renderbuffer_build(&depth_stencil_texture);
 
     framebuffer_attachment framebuffer_depth_stencil_attachment = framebuffer_attachment_create();
-    framebuffer_attachment_set_data_type(&framebuffer_depth_stencil_attachment, framebuffer_data_type_texture_2d);
+    framebuffer_attachment_set_data_type(&framebuffer_depth_stencil_attachment, framebuffer_data_type_renderbuffer);
     framebuffer_attachment_set_attachment_type(&framebuffer_depth_stencil_attachment, depth_stencil_attachment);
     framebuffer_attachment_set_data(&framebuffer_depth_stencil_attachment, &depth_stencil_texture);
     framebuffer_add_attachment(&screen_framebuffer, &framebuffer_depth_stencil_attachment);
@@ -235,10 +228,9 @@ int main(int argc, char** argv) {
     clear_screen_data_enable_layer(&screen_clear, color_layer);
     clear_screen_data_set_screen_color(&screen_clear, (color){ 150, 150, 150, 1.0f });
 
-    while (window_is_open(&main_window)) {        
-        clear_screen(&screen_clear);
-
+    while (window_is_open(&main_window)) {      
         framebuffer_bind(&screen_framebuffer);
+        clear_screen(&screen_clear);
 
         texture_2d_bind(&cards_image, 0);
         shader_program_bind(&triangle_shader);
@@ -247,6 +239,7 @@ int main(int argc, char** argv) {
         vertex_array_draw(&triangle);
 
         framebuffer_bind(NULL);
+        texture_2d_bind(&color_texture, 0);
 
         window_manager_update(&win_manager);
     }
