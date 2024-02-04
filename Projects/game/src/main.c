@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
     texture_2d_set_width(&depth_stencil_texture, 1280);
     texture_2d_set_height(&depth_stencil_texture, 720);
     
-    texture_2d_set_color_mode(&depth_stencil_texture, DEPTH24STENCIL8);   
+    texture_2d_set_color_mode(&depth_stencil_texture, DEPTHSTENCIL);   
 
     texture_2d_build(&depth_stencil_texture);
 

@@ -36,6 +36,22 @@ GLenum texture_2d_parameter_value_to_opengl(texture_2d_parameter_value input) {
     }
 }
 
+GLenum texture_2d_texture_2d_color_mode_to_opengl_internal(texture_2d_color_mode input) {
+    switch (input)
+    {
+    case RGBA: return GL_RGBA8;
+    case DEPTHSTENCIL: return GL_DEPTH24_STENCIL8;
+    }
+}
+
+GLenum texture_2d_texture_2d_color_mode_to_opengl_format(texture_2d_color_mode input) {
+    switch (input)
+    {
+    case RGBA: return GL_RGBA;
+    case DEPTHSTENCIL: return GL_DEPTH_STENCIL;
+    }
+}
+
 void platform_texture_2d_set_param(texture_2d_parameter param, texture_2d_parameter_value input) {
     glTexParameteri(GL_TEXTURE_2D, texture_2d_parameter_to_opengl(param), texture_2d_parameter_value_to_opengl(input));
 }
@@ -48,7 +64,11 @@ void platform_texture_2d_bind(texture_2d* texture, int slot) {
     }
 }
 void platform_texture_2d_set_data(texture_2d* texture) {        
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, texture->texture_size.x, texture->texture_size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture->data);
+    glTexImage2D(GL_TEXTURE_2D, 0, 
+        texture_2d_texture_2d_color_mode_to_opengl_internal(texture->color_mode), texture->texture_size.x, texture->texture_size.y, 0, 
+        texture_2d_texture_2d_color_mode_to_opengl_format(texture->color_mode), 
+        GL_UNSIGNED_BYTE, 
+        texture->data);
 }
 
 #endif

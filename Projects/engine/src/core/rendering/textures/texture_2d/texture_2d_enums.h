@@ -15,5 +15,5 @@ typedef enum texture_2d_parameter_value {
 } texture_2d_parameter_value;
 
 typedef enum texture_2d_color_mode {
-    RGBA, texture_2d_color_mode_none
+    RGBA, DEPTHSTENCIL, texture_2d_color_mode_none
 } texture_2d_color_mode;
