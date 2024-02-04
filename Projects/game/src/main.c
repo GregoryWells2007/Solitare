@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
     framebuffer_attachment framebuffer_color_attachment = framebuffer_attachment_create();
     framebuffer_attachment_set_data_type(&framebuffer_color_attachment, framebuffer_data_type_texture_2d);
     framebuffer_attachment_set_attachment_type(&framebuffer_color_attachment, color_attachment_0);
-    framebuffer_attachment_set_data_(&framebuffer_color_attachment, &color_texture);
+    framebuffer_attachment_set_data(&framebuffer_color_attachment, &color_texture);
     framebuffer_add_attachment(&screen_framebuffer, &framebuffer_color_attachment);
 
     texture_2d depth_stencil_texture = texture_2d_create();
@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
     framebuffer_attachment framebuffer_depth_stencil_attachment = framebuffer_attachment_create();
     framebuffer_attachment_set_data_type(&framebuffer_depth_stencil_attachment, framebuffer_data_type_texture_2d);
     framebuffer_attachment_set_attachment_type(&framebuffer_depth_stencil_attachment, depth_stencil_attachment);
-    framebuffer_attachment_set_data_(&framebuffer_depth_stencil_attachment, &depth_stencil_texture);
+    framebuffer_attachment_set_data(&framebuffer_depth_stencil_attachment, &depth_stencil_texture);
     framebuffer_add_attachment(&screen_framebuffer, &framebuffer_depth_stencil_attachment);
 
     framebuffer_build(&screen_framebuffer);
@@ -253,7 +253,7 @@ int main(int argc, char** argv) {
     }
     
     clear_screen_data_delete(&screen_clear);
-    framebuffer_delete(&framebuffer);
+    framebuffer_delete(&screen_framebuffer);
     vertex_array_delete(&triangle);
     shader_program_delete(&triangle_shader);
 
