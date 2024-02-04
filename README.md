@@ -1,32 +1,28 @@
-# A solitare game that i wrote in plain C and OpenGL
+# A solitare game from scratch
+> ### Rust game written from scratch in C
 
 ## Description
-> I wrote this project over the coarse of about a week just as something to get me more familiar with C and I enjoyed writing it so im making it into a more long term project
+> A game of solitare written in C
 
 ## Current Features
-> - Card rendering <br />
-> - Basic board rendering <br />
-> - The base solitare rules <br />
+> - Rendering engine written from scratch in C
+> - Basic game of solitare
 
 ## Future updates needed
 > - Improved rendering engine <br />
 >> New rendering features <br />
+>> - Lower level control <br />
 >> - Framebuffers <br />
 >> - Batched rendering <br />
->> - UI Engine <br />
->> - Text rendering <br />
->> - Maybe vulkan (prob not i just kinda want to try it out) <br />
 >>
->> Fix older rendering freatures like <br />
->> - Revamp the meshing system
->> - New shader loader using siron files
-> - Improved board rendering <br />
->> Right now the board rendering is very basic and it just draws and image so i have a system planned that will read the data it needs and draw it out to an OpenGL framebuffer at the start of the game that can be drawn every frame <br />
+>>  Redo Game logic in GO <br />
+>>  - Go is GOated and it's much easier to work in C is not ment for game dev
+>>  - Implement as many variations of Solitare as I can
+>>
+>> Redo Engine in Rust
+>> - Rewrite the high level rendering functions in Rust
+>> - Make sure the functions work well in Go and C
 
-## Optimizations plans
-> - cards that are not visible being rendererd <br />
-> - game board being redrawn every frame when you can go whole minutes without moving something <br />
-> - rework a lot of the card manager script as it is kinda buggy and patchworked together
 
 ## Futures plans that could be cool
 > More boards <br />
