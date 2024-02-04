@@ -35,14 +35,6 @@ GLenum texture_2d_parameter_value_to_opengl(texture_2d_parameter_value input) {
     }
 }
 
-GLenum texture_2d_texture_2d_color_mode_to_opengl_internal(texture_2d_color_mode input) {
-    switch (input)
-    {
-    case RGBA: return GL_RGBA8;
-    case DEPTHSTENCIL: return GL_DEPTH24_STENCIL8;
-    }
-}
-
 GLenum texture_2d_texture_2d_color_mode_to_opengl_format(texture_2d_color_mode input) {
     switch (input)
     {

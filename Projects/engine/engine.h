@@ -17,6 +17,7 @@
 #include "src/core/rendering/shaders/shader_program.h"
 #include "src/core/rendering/textures/texture_2d/texture_2d.h"
 #include "src/core/rendering/framebuffer/framebuffer.h"
+#include "src/core/rendering/framebuffer/renderbuffer/renderbuffer.h"
 
 #include "engine_api.h"
 HEADER_DEF void engine_init() {

@@ -245,7 +245,11 @@ int main(int argc, char** argv) {
     }
     
     clear_screen_data_delete(&screen_clear);
+    
+    texture_2d_delete(&color_texture);
+    renderbuffer_delete(&depth_stencil_texture);
     framebuffer_delete(&screen_framebuffer);
+    
     vertex_array_delete(&triangle);
     shader_program_delete(&triangle_shader);
     texture_2d_delete(&cards_image);

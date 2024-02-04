@@ -2,8 +2,10 @@
 
 #if RAPI == RAPI_OPENGL
 #include "src/core/rendering/framebuffer/framebuffer.h"
-#include "../textures/texture_2d/texture_2d_platform.h"
+#include "src/core/rendering/framebuffer/renderbuffer/renderbuffer.h"
 #include "glad/glad.h"
+#include "../textures/texture_2d/texture_2d_platform.h"
+#include "renderbuffer_platform.h"
 
 struct platform_framebuffer {
     unsigned int rendererID;
@@ -37,11 +39,12 @@ void platform_framebuffer_add_attachment(framebuffer* buffer, framebuffer_attach
         texture_2d* texture = attachment->data;
         struct platform_texture_2d* tex = texture->platform_texture_2d;
 
-        printf("%i, %i\n", platform_attachment_type_opengl(attachment->attachment_type), tex->rendererID);
-
         glFramebufferTexture2D(GL_FRAMEBUFFER, platform_attachment_type_opengl(attachment->attachment_type), GL_TEXTURE_2D, tex->rendererID, 0);
     } else {
-        printf("RENDERBUFFER not supported at attachment type\n");
+        renderbuffer* renderbuffer = attachment->data;
+        struct platform_renderbuffer* tex = renderbuffer->platform_renderbuffer;
+    
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, platform_attachment_type_opengl(attachment->attachment_type), GL_RENDERBUFFER, tex->rendererID);
     }
 }
 
