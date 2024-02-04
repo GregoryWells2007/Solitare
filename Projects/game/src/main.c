@@ -45,7 +45,11 @@ int main(int argc, char** argv) {
 
     texture_2d_build(&color_texture);
 
-    framebuffer_add_texture_2d(&screen_framebuffer, color_attachment_0, &color_texture);
+    framebuffer_attachment framebuffer_color_attachment = framebuffer_attachment_create();
+    framebuffer_attachment_set_data_type(&framebuffer_color_attachment, framebuffer_data_type_texture_2d);
+    framebuffer_attachment_set_attachment_type(&framebuffer_color_attachment, color_attachment_0);
+    framebuffer_attachment_set_data_(&framebuffer_color_attachment, &color_texture);
+    framebuffer_add_attachment(&screen_framebuffer, &framebuffer_color_attachment);
 
     texture_2d depth_stencil_texture = texture_2d_create();
     texture_2d_set_parameter(&depth_stencil_texture, texture_2d_magnification_filter, texture_2d_filter_linear);
@@ -56,12 +60,17 @@ int main(int argc, char** argv) {
 
     texture_2d_set_width(&depth_stencil_texture, 1280);
     texture_2d_set_height(&depth_stencil_texture, 720);
-
+    
     texture_2d_set_color_mode(&depth_stencil_texture, DEPTH24STENCIL8);   
 
     texture_2d_build(&depth_stencil_texture);
 
-    framebuffer_add_texture_2d(&screen_framebuffer, depth_stencil_attachment, &depth_stencil_texture);
+
+    framebuffer_attachment framebuffer_depth_stencil_attachment = framebuffer_attachment_create();
+    framebuffer_attachment_set_data_type(&framebuffer_depth_stencil_attachment, framebuffer_data_type_texture_2d);
+    framebuffer_attachment_set_attachment_type(&framebuffer_depth_stencil_attachment, depth_stencil_attachment);
+    framebuffer_attachment_set_data_(&framebuffer_depth_stencil_attachment, &depth_stencil_texture);
+    framebuffer_add_attachment(&screen_framebuffer, &framebuffer_depth_stencil_attachment);
 
     framebuffer_build(&screen_framebuffer);
 
