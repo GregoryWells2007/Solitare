@@ -8,5 +8,8 @@
 > - [x] Revamping the Meshing system
 > - [x] Cleaning up GPU memory
 > - [ ] Frame Buffers
-> - [ ] Batched rendering
+
 > - [ ] New Shader workflow
+> - [ ] New Texture workflow
+
+> - [ ] Batched rendering
