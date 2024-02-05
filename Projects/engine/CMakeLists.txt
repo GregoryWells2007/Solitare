@@ -9,4 +9,4 @@ target_include_directories(engine PUBLIC ./)
 add_subdirectory(Depends/glad/)
 add_subdirectory(Depends/glfw/)
 
-target_link_libraries(engine CGLM GLFW GLAD GL dl X11 m)
+target_link_libraries(engine GLFW GLAD GL dl X11 m)
