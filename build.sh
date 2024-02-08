@@ -21,6 +21,7 @@ function help_function {
         echo "  --help, -h                 for getting help"
         echo "  --usage, -u [COMMAND]      shows how a commans if run"
         echo "  --clean, -c                cleans the whole project"
+        echo "  --delete, -d [PROJECT]     deletes the specified project" 
     elif [ $1 = "USAGE" ]; then
         echo "./build.sh --help"
     else
@@ -49,6 +50,15 @@ function clean_project {
     fi
 }
 
+# deletes a specified project
+function delete_project {
+    if [ $1 == "RUN" ]; then
+        echo "im not implements this yet xoxo"
+    else
+        echo "./build.sh --delete [PROJECT]"
+    fi
+}
+
 # how a command is used function
 function command_usage {
     if [ $1 = "RUN" ]; then
@@ -68,6 +78,12 @@ function command_usage {
             clean_project "USAGE";
         elif [ $2 = "-c" ]; then
             clean_project "USAGE";
+        fi;
+
+        if [ $2 = "--delete" ]; then
+            delete_project "USAGE";
+        elif [ $2 = "-d" ]; then
+            delete_project "USAGE";
         fi;
 
     else 
@@ -95,12 +111,22 @@ do
             i=$((i+1));
 
             if [ $i = $# ]; then
-                command_error "--usage" "no input provided";
+                command_error "--usage" "no command provided";
             else
                 command_usage "RUN" ${inputs[$i]};
             fi
         elif [ $command = "clean" ]; then
             clean_project "RUN";
+        elif [ $command = "delete" ]; then
+
+            i=$((i+1));
+
+            if [ $i = $# ]; then
+                command_error "--delete" "no project provided (did you mean to run --clean)";
+            else
+                delete_project "RUN" ${inputs[$i]};
+            fi
+
         else
             command_not_known $var;
         fi
@@ -118,6 +144,16 @@ do
             fi
         elif [ $command = "c" ]; then
             clean_project "RUN";
+        elif [ $command = "d" ]; then
+
+            i=$((i+1));
+
+            if [ $i = $# ]; then
+                command_error "-d" "no project provided (did you mean to run -c)";
+            else
+                delete_project "RUN" ${inputs[$i]};
+            fi
+
         else
             command_not_known $var;
         fi
