@@ -159,33 +159,6 @@ int main(int argc, char** argv) {
     vertex_array_set_index_buffer(&triangle, &triangle_index_buffer);
 
     vertex_array_build(&triangle);
-    
-    char* vertex_shader_src = ""
-    "#version 330 core\n"
-    "\n"
-    "layout(location = 0) in vec2 position;\n"
-    "layout(location = 1) in vec2 uv;\n"
-    "\n"
-    "out vec2 vUV;\n"
-    "\n"
-    "void main(void) {\n"
-    "   vUV = uv;\n"
-    "   gl_Position = vec4(position, 0.0, 1.0);\n"
-    "}\n"
-    ;
-
-    char* fragment_shader_src = ""
-    "#version 330 core\n"
-    "\n"
-    "out vec4 color;\n"
-    "\n"
-    "in vec2 vUV;\n"
-    "uniform sampler2D texure;\n"
-    "\n"
-    "void main(void) {\n"
-    "   color = texture(texure, vUV);\n"
-    "}\n"
-    ;
 
     file vertex_shader_file = file_load_from_path("../res/shaders/card_shader/card_shader_vertex.glsl");
     file fragment_shader_file = file_load_from_path("../res/shaders/card_shader/card_shader_fragment.glsl");
