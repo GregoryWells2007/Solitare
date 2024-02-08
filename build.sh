@@ -23,7 +23,12 @@ function help_function {
         echo "  --clean, -c                cleans the whole project"
         echo "  --delete, -d [PROJECT]     deletes the specified project"
         echo "  --build -b                 builds the whole project"; 
-
+        echo ""
+        echo "Utils: "
+        echo "  --run -r                runs the project when the build is finished"
+        echo "  --run-last              runs the last build that was successful"
+        echo "  --test-project          tests the project with specified tests"
+        echo "  --run-test -t [TEST]    runs one specified test"
     elif [ $1 = "USAGE" ]; then
         echo "./build.sh --help"
     else
@@ -70,6 +75,42 @@ function build_project {
     fi
 }
 
+# runs the project
+function run_project {
+    if [ $1 == "RUN" ]; then
+        echo "PLEASE WRITE THIS FUNCTION - ME (run_project)"
+    else
+        echo "./build.sh --run"
+    fi
+}
+
+#runs the last with a successful build
+function run_last_build {
+    if [ $1 == "RUN" ]; then
+        echo "PLEASE WRITE THIS FUNCTION - ME (run_last_build)"
+    else
+        echo "./build.sh --run-last"
+    fi
+}
+
+# runs all the tests on the project
+function test_project {
+    if [ $1 == "RUN" ]; then
+        echo "PLEASE WRITE THIS FUNCTION - ME (test_project)"
+    else
+        echo "./build.sh --test-project"
+    fi
+}
+
+# runs the project
+function run_project_test {
+    if [ $1 == "RUN" ]; then
+        echo "PLEASE WRITE THIS FUNCTION - ME (run_project_test)"
+    else
+        echo "./build.sh --run-test [PROJECT]"
+    fi
+}
+
 # how a command is used function
 function command_usage {
     if [ $1 = "RUN" ]; then
@@ -103,6 +144,28 @@ function command_usage {
             build_project "USAGE";
         fi;
 
+
+
+        if [ $2 = "--run" ]; then
+            run_project "USAGE";
+        elif [ $2 = "-r" ]; then
+            run_project "USAGE";
+        fi;
+
+        if [ $2 = "--run-last" ]; then
+            run_last_build "USAGE";
+        fi;
+
+        if [ $2 = "--test-project" ]; then
+            test_project "USAGE";
+        fi;
+
+        if [ $2 = "--run-test" ]; then
+            run_project_test "USAGE";
+        elif [ $2 = "-t" ]; then
+            run_project_test "USAGE";
+        fi;
+
     else 
         echo "./build.sh --usage [COMMAND]";
     fi
@@ -114,6 +177,8 @@ for var in $@;
 do
     inputs+=($var);
 done;
+
+built_project=false;
 
 # loop through everything
 for ((i=0; i<$#; i++));
@@ -145,6 +210,25 @@ do
             fi
         elif [ $command = "build" ]; then
             build_project "RUN";
+            built_project=true;
+        elif [ $command = "run" ]; then
+            if [ $built_project = false ]; then
+                command_error "--run" "--build or -b not called"
+            else
+                run_project "RUN";
+            fi
+        elif [ $command = "run-last" ]; then
+            run_last_build "RUN";
+        elif [ $command = "test-project" ]; then
+            test_project "RUN";
+        elif [ $command = "run-test" ]; then
+            i=$((i+1));
+
+            if [ $i = $# ]; then
+                command_error "--run-test" "no test provided (did you mean to run --test-project)";
+            else
+                test_project "RUN" ${inputs[$i]};
+            fi
         else
             command_not_known $var;
         fi
@@ -173,6 +257,21 @@ do
             fi
         elif [ $command = "b" ]; then
             build_project "RUN";
+            built_project=true;
+        elif [ $command = "r" ]; then
+            if [ $built_project = false ]; then
+                command_error "-r" "--build or -b not called"
+            else
+                run_project "RUN";
+            fi
+        elif [ $command = "t" ]; then
+            i=$((i+1));
+
+            if [ $i = $# ]; then
+                command_error "-t" "no test provided (did you mean to run --test-project)";
+            else
+                test_project "RUN" ${inputs[$i]};
+            fi
         else
             command_not_known $var;
         fi
