@@ -21,7 +21,9 @@ function help_function {
         echo "  --help, -h                 for getting help"
         echo "  --usage, -u [COMMAND]      shows how a commans if run"
         echo "  --clean, -c                cleans the whole project"
-        echo "  --delete, -d [PROJECT]     deletes the specified project" 
+        echo "  --delete, -d [PROJECT]     deletes the specified project"
+        echo "  --build -b                 builds the whole project"; 
+
     elif [ $1 = "USAGE" ]; then
         echo "./build.sh --help"
     else
@@ -53,9 +55,18 @@ function clean_project {
 # deletes a specified project
 function delete_project {
     if [ $1 == "RUN" ]; then
-        echo "im not implements this yet xoxo"
+        echo "PLEASE WRITE THIS FUNCTION - ME (delete_project)"
     else
         echo "./build.sh --delete [PROJECT]"
+    fi
+}
+
+# builds the whole project
+function build_project {
+    if [ $1 == "RUN" ]; then
+        echo "PLEASE WRITE THIS FUNCTION - ME (build_project)"
+    else
+        echo "./build.sh --build"
     fi
 }
 
@@ -84,6 +95,12 @@ function command_usage {
             delete_project "USAGE";
         elif [ $2 = "-d" ]; then
             delete_project "USAGE";
+        fi;
+
+        if [ $2 = "--build" ]; then
+            build_project "USAGE";
+        elif [ $2 = "-b" ]; then
+            build_project "USAGE";
         fi;
 
     else 
@@ -126,7 +143,8 @@ do
             else
                 delete_project "RUN" ${inputs[$i]};
             fi
-
+        elif [ $command = "build" ]; then
+            build_project "RUN";
         else
             command_not_known $var;
         fi
@@ -153,7 +171,8 @@ do
             else
                 delete_project "RUN" ${inputs[$i]};
             fi
-
+        elif [ $command = "b" ]; then
+            build_project "RUN";
         else
             command_not_known $var;
         fi
