@@ -187,15 +187,18 @@ int main(int argc, char** argv) {
     "}\n"
     ;
 
+    file vertex_shader_file = file_load_from_path("../res/shaders/card_shader/card_shader_vertex.glsl");
+    file fragment_shader_file = file_load_from_path("../res/shaders/card_shader/card_shader_fragment.glsl");
+
     shader_program triangle_shader = shader_program_create();
 
     shader_stage triangle_vertex_shader = shader_stage_create();
     shader_stage_set_type(&triangle_vertex_shader, vertex_shader);
-    shader_stage_set_source(&triangle_vertex_shader, vertex_shader_src);
+    shader_stage_set_source(&triangle_vertex_shader, file_get_data(&vertex_shader_file));
     
     shader_stage triangle_fragment_shader = shader_stage_create();
     shader_stage_set_type(&triangle_fragment_shader, fragment_shader);
-    shader_stage_set_source(&triangle_fragment_shader, fragment_shader_src);
+    shader_stage_set_source(&triangle_fragment_shader, file_get_data(&fragment_shader_file));
     
     shader_program_set_stage(&triangle_shader, &triangle_vertex_shader);
     shader_program_set_stage(&triangle_shader, &triangle_fragment_shader);
