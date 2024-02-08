@@ -1,6 +1,7 @@
 #include "screen_renderer.h"
 #include "src/types/vector3.h"
 #include "stdio.h"
+#include "src/core/utils/file.h"
 
 struct quad_vertex {
     float x, y;
@@ -19,42 +20,18 @@ void screen_renderer_init(screen_renderer* renderer) {
         0, 3, 2
     };
     
-    renderer->vertex_shader_src = ""
-    "#version 330 core\n"
-    "\n"
-    "layout(location = 0) in vec2 position;\n"
-    "layout(location = 1) in vec2 uv;\n"
-    "\n"
-    "out vec2 vUV;\n"
-    "\n"
-    "void main(void) {\n"
-    "   vUV = uv;\n"
-    "   gl_Position = vec4(position, 0.0, 1.0);\n"
-    "}\n"
-    ;
-
-    renderer->fragment_shader_src = ""
-    "#version 330 core\n"
-    "\n"
-    "out vec4 color;\n"
-    "\n"
-    "in vec2 vUV;\n"
-    "uniform sampler2D texure;\n"
-    "\n"
-    "void main(void) {\n"
-    "   color = texture(texure, vUV);\n"
-    "}\n"
-    ;
+    file vertex_shader_source = file_load_from_path("../Projects/engine/resources/shaders/screen_shader/screen_shader_vertex.glsl");
+    file fragment_shader_source = file_load_from_path("../Projects/engine/resources/shaders/screen_shader/screen_shader_fragment.glsl");
 
     renderer->screen_shader = shader_program_create();
 
     renderer->screen_renderder_vertex_shader = shader_stage_create();
     shader_stage_set_type(&renderer->screen_renderder_vertex_shader, vertex_shader);
-    shader_stage_set_source(&renderer->screen_renderder_vertex_shader, renderer->vertex_shader_src);
+    shader_stage_set_source(&renderer->screen_renderder_vertex_shader, file_get_data(&vertex_shader_source));
     
     renderer->screen_renderer_fragment_shader = shader_stage_create();
     shader_stage_set_type(&renderer->screen_renderer_fragment_shader, fragment_shader);
-    shader_stage_set_source(&renderer->screen_renderer_fragment_shader, renderer->fragment_shader_src);
+    shader_stage_set_source(&renderer->screen_renderer_fragment_shader, file_get_data(&fragment_shader_source));
     
     shader_program_set_stage(&renderer->screen_shader, &renderer->screen_renderder_vertex_shader);
     shader_program_set_stage(&renderer->screen_shader, &renderer->screen_renderer_fragment_shader);
