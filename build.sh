@@ -90,7 +90,8 @@ function run_project {
 #runs the last with a successful build
 function run_last_build {
     if [ $1 == "RUN" ]; then
-        echo "PLEASE WRITE THIS FUNCTION - ME (run_last_build)"
+        cd build
+        ./Solitare
     else
         echo "./build.sh --run-last"
     fi
