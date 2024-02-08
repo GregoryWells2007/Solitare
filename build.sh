@@ -69,7 +69,9 @@ function delete_project {
 # builds the whole project
 function build_project {
     if [ $1 == "RUN" ]; then
-        echo "PLEASE WRITE THIS FUNCTION - ME (build_project)"
+        cd build
+        make
+        cd ../
     else
         echo "./build.sh --build"
     fi
@@ -78,7 +80,8 @@ function build_project {
 # runs the project
 function run_project {
     if [ $1 == "RUN" ]; then
-        echo "PLEASE WRITE THIS FUNCTION - ME (run_project)"
+        cd build
+        ./Solitare
     else
         echo "./build.sh --run"
     fi
