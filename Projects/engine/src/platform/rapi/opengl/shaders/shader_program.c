@@ -52,7 +52,8 @@ void platform_upload_uniform_matrix3(unsigned int uniformID, void* data) {
     printf("MATRIX3 uploading not supported\n");
 } 
 void platform_upload_uniform_int1(unsigned int uniformID, void* data) {
-    printf("INT1 uploading not supported\n");
+    int value = *((int*)data);
+    glUniform1i(uniformID, value);
 }
 void platform_upload_uniform_int2(unsigned int uniformID, void* data) {
     printf("INT2 uploading not supported\n");
