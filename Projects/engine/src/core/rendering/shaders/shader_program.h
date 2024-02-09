@@ -37,7 +37,7 @@ HEADER_DEF void shader_program_set_stage(shader_program* program, shader_stage* 
         return;
     }
 
-    program->stages = realloc(program->stages, program->stage_count + 1);
+    program->stages = realloc(program->stages, (sizeof(shader_stage)) * (program->stage_count + 1));
     program->stages[program->stage_count] = stage;
     program->stage_count++;
 }
@@ -72,7 +72,7 @@ HEADER_DEF void shader_program_delete(shader_program* program) {
 }
 
 HEADER_DEF void shader_program_set_uniform(shader_program* program, shader_uniform* uniform) { 
-    program->uniforms = realloc(program->uniforms, program->uniform_count + 1);
+    program->uniforms = realloc(program->uniforms, sizeof(shader_uniform) * (program->uniform_count + 1));
     program->uniforms[program->uniform_count] = uniform;
     program->uniform_count++;
 
