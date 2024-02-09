@@ -1,6 +1,9 @@
 #pragma once
 #include "engine_api.h"
 
+typedef struct shader_uniform shader_uniform;
+struct platform_shader_uniform;
+
 typedef enum shader_uniform_type {
     uniform_matrix4, uniform_matrix3, 
     uniform_int1, uniform_int2, uniform_int3, uniform_int4,
@@ -12,4 +15,6 @@ typedef struct shader_uniform {
     void* data;
     char* name;
     shader_uniform_type type;
+
+    struct platform_shader_uniform* platform_shader_uniform;
 } shader_uniform;

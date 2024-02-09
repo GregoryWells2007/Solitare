@@ -11,9 +11,14 @@ void platform_shader_program_create(shader_program* program);
 void platform_shader_program_delete(shader_program* program);
 void platform_shader_program_bind(shader_program* program);
 
+void platform_shader_uniform_set(shader_program* program, shader_uniform* uniform);
+
 typedef struct shader_program {
     shader_stage** stages;
     int stage_count;
+
+    shader_uniform** uniforms;
+    int uniform_count;
 
     struct platform_shader_program* platform_shader_program;
 } shader_program;
@@ -56,8 +61,26 @@ HEADER_DEF void shader_program_delete(shader_program* program) {
         shader_stage_delete(program->stages[i]);
     }
 
+    for (int i = 0; i < program->uniform_count; i++) {
+        free(program->uniforms[i]->platform_shader_uniform);
+    }
+
     free(program->stages);
 
     platform_shader_program_delete(program);
     free(program->platform_shader_program);
+}
+
+HEADER_DEF void shader_program_set_uniform(shader_program* program, shader_uniform* uniform) { 
+    program->uniforms = realloc(program->uniforms, program->uniform_count + 1);
+    program->uniforms[program->uniform_count] = uniform;
+    program->uniform_count++;
+
+    platform_shader_uniform_set(program, uniform);
+}
+
+HEADER_DEF void shader_program_update_uniforms(shader_program* program, shader_uniform* uniform) {
+    for (int i = 0; i < program->uniform_count; i++) {
+        platform_shader_uniform_set(program, program->uniforms[i]);
+    }
 }
