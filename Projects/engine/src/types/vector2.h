@@ -15,7 +15,9 @@ typedef struct vector2f {
 } vector2f;
 
 typedef vector2f float2;
+#ifndef NO_DEF_CLGM_CONFLICT
 typedef vector2f vec2;
+#endif
 
 typedef vector2f vector2;
 
@@ -26,7 +28,10 @@ typedef vector2f Vec2;
 /////// -------------- //
 
 typedef vector2i int2;
+
+#ifndef NO_DEF_CLGM_CONFLICT
 typedef vector2i ivec2;
+#endif
 
 typedef vector2i vector2int;
 

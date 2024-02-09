@@ -178,10 +178,10 @@ int main(int argc, char** argv) {
 
     shader_program_build(&triangle_shader);
 
-// uniform int u_card_index;
-
-// uniform int mouse_over;
-// uniform int card_held;
+    camera game_camera = camera_create();
+    camera_set_bounds(&game_camera, -640.0f, 640.0f, 360.0f, -360.0f);
+    camera_set_position(&game_camera, (vector2){0.0f, 0.0f});
+    camera_set_rotation(&game_camera, 0.0f);
 
     int card_index = 10;
     int mouse_over = false;
