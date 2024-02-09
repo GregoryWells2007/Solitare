@@ -35,6 +35,6 @@ vec4 get_color_multiplier() {
 void main(void) {
     ivec2 card_index = calc_from_1d_index(u_card_index);
     
-    vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, ((v_uv.y - 1) - card_index.y) / card_texture_size.y);
-    color = texture(texure, uv) * get_color_multiplier();
+    vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, (v_uv.y - (card_index.y + 1)) / card_texture_size.y);
+    color = texture(texure, vec2(uv.x, uv.y));
 } 
