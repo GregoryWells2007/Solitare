@@ -26,4 +26,25 @@ void camera_gen_matrix(camera* cam) {
     cam->cameraMatrix.values[1][3] = ortho_matrix.m13;
     cam->cameraMatrix.values[2][3] = ortho_matrix.m23;
     cam->cameraMatrix.values[3][3] = ortho_matrix.m33;
+
+
+    // cam->cameraMatrix.values[0][0] = 1.0f;
+    // cam->cameraMatrix.values[1][0] = 0.0f;
+    // cam->cameraMatrix.values[2][0] = 0.0f;
+    // cam->cameraMatrix.values[3][0] = 0.0f;
+
+    // cam->cameraMatrix.values[0][1] = 0.0f;
+    // cam->cameraMatrix.values[1][1] = 1.0f;
+    // cam->cameraMatrix.values[2][1] = 0.0f;
+    // cam->cameraMatrix.values[3][1] = 0.0f;
+
+    // cam->cameraMatrix.values[0][2] = 0.0f;
+    // cam->cameraMatrix.values[1][2] = 0.0f;
+    // cam->cameraMatrix.values[2][2] = 1.0f;
+    // cam->cameraMatrix.values[3][2] = 0.0f;
+
+    // cam->cameraMatrix.values[0][3] = 0.0f;
+    // cam->cameraMatrix.values[1][3] = 0.0f;
+    // cam->cameraMatrix.values[2][3] = 0.0f;
+    // cam->cameraMatrix.values[3][3] = 1.0f;
 }

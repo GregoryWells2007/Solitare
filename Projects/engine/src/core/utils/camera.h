@@ -29,7 +29,6 @@ HEADER_DEF camera camera_create() {
     new_camera.rotation = 0;
 
     new_camera.cameraMatrix = (matrix4){};
-
     camera_gen_matrix(&new_camera);
 
     return new_camera;
