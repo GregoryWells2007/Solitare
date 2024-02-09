@@ -183,7 +183,7 @@ int main(int argc, char** argv) {
 // uniform int mouse_over;
 // uniform int card_held;
 
-    int card_index = 0;
+    int card_index = 10;
     int mouse_over = false;
     int card_held = false;
     shader_uniform card_index_uniform = (shader_uniform){ &card_index, "u_card_index", uniform_int1 };
@@ -201,7 +201,7 @@ int main(int argc, char** argv) {
     texture_2d_set_parameter(&cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
 
     texture_2d_set_parameter(&cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
-    texture_2d_set_parameter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_clamp);
+    texture_2d_set_parameter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
 
     texture_file cards_texture_file = texture_file_load_from_path("../res/images/Cards.png");
     texture_2d_set_width(&cards_image, cards_texture_file.width);
