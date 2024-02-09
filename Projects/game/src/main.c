@@ -190,6 +190,11 @@ int main(int argc, char** argv) {
     shader_uniform mouse_over_uniform = (shader_uniform){ &mouse_over, "mouse_over", uniform_int1 };
     shader_uniform card_held_uniform = (shader_uniform){ &card_held, "card_held", uniform_int1 };
 
+    shader_program_bind(&triangle_shader);
+    shader_program_set_uniform(&triangle_shader, &card_index_uniform);
+    shader_program_set_uniform(&triangle_shader, &mouse_over_uniform);
+    shader_program_set_uniform(&triangle_shader, &card_held_uniform);
+
     texture_2d cards_image = texture_2d_create();
     texture_2d_set_parameter(&cards_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
     texture_2d_set_parameter(&cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
