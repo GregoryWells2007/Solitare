@@ -13,6 +13,7 @@ struct platform_shader_stage {
     unsigned int rendererID;
 };
 
+
 void platform_shader_program_init(shader_program* program) {
     program->platform_shader_program = malloc(sizeof(struct platform_shader_program));
     program->platform_shader_program->rendererID = glCreateProgram();
@@ -38,6 +39,19 @@ void platform_shader_program_bind(shader_program* program) {
         glUseProgram(0);
     else    
         glUseProgram(program->platform_shader_program->rendererID);
+}
+
+struct platform_shader_uniform {
+    unsigned uniformID;
+};
+
+void platform_shader_uniform_set(shader_program* program, shader_uniform* uniform) {
+    if (uniform->platform_shader_uniform == NULL) {
+        uniform->platform_shader_uniform = malloc(sizeof(struct platform_shader_uniform));
+        uniform->platform_shader_uniform->uniformID = glGetUniformLocation(program->platform_shader_program->rendererID, uniform->name);
+    }
+
+    printf("setting uniform: %i\n");
 }
 
 #endif
