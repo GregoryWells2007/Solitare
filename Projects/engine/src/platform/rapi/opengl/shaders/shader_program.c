@@ -45,13 +45,73 @@ struct platform_shader_uniform {
     unsigned uniformID;
 };
 
+void platform_upload_uniform_matrix4(unsigned int uniformID, void* data) {
+    printf("MATRIX4 uploading not supported\n");
+}
+void platform_upload_uniform_matrix3(unsigned int uniformID, void* data) {
+    printf("MATRIX3 uploading not supported\n");
+} 
+void platform_upload_uniform_int1(unsigned int uniformID, void* data) {
+    printf("INT1 uploading not supported\n");
+}
+void platform_upload_uniform_int2(unsigned int uniformID, void* data) {
+    printf("INT2 uploading not supported\n");
+}
+void platform_upload_uniform_int3(unsigned int uniformID, void* data) {
+    printf("INT3 uploading not supported\n");
+}
+void platform_upload_uniform_int4(unsigned int uniformID, void* data) {
+    printf("INT4 uploading not supported\n");
+}
+void platform_upload_uniform_uint1(unsigned int uniformID, void* data) {
+    printf("UINT1 uploading not supported\n");
+}
+void platform_upload_uniform_uint2(unsigned int uniformID, void* data) {
+    printf("UINT2 uploading not supported\n");
+}
+void platform_upload_uniform_uint3(unsigned int uniformID, void* data) {
+    printf("UINT3 uploading not supported\n");
+}
+void platform_upload_uniform_uint4(unsigned int uniformID, void* data) {
+    printf("UINT4 uploading not supported\n");
+}
+void platform_upload_uniform_float1(unsigned int uniformID, void* data) {
+    printf("FLOAT1 uploading not supported\n");
+}
+void platform_upload_uniform_float2(unsigned int uniformID, void* data) {
+    printf("FLOAT2 uploading not supported\n");
+}
+void platform_upload_uniform_float3(unsigned int uniformID, void* data) {
+    printf("FLOAT3 uploading not supported\n");
+}
+void platform_upload_uniform_float4(unsigned int uniformID, void* data) {
+    printf("FLOAT4 uploading not supported\n");
+}
+
 void platform_shader_uniform_set(shader_program* program, shader_uniform* uniform) {
     if (uniform->platform_shader_uniform == NULL) {
         uniform->platform_shader_uniform = malloc(sizeof(struct platform_shader_uniform));
         uniform->platform_shader_uniform->uniformID = glGetUniformLocation(program->platform_shader_program->rendererID, uniform->name);
     }
 
-    printf("setting uniform: %i\n");
+    unsigned int uniformID = uniform->platform_shader_uniform->uniformID;
+
+    switch (uniform->type) {
+    case uniform_matrix4: platform_upload_uniform_matrix4(uniformID, uniform->data); return; 
+    case uniform_matrix3: platform_upload_uniform_matrix3(uniformID, uniform->data); return;  
+    case uniform_int1: platform_upload_uniform_int1(uniformID, uniform->data); return;  
+    case uniform_int2: platform_upload_uniform_int2(uniformID, uniform->data); return;  
+    case uniform_int3: platform_upload_uniform_int3(uniformID, uniform->data); return;  
+    case uniform_int4: platform_upload_uniform_int4(uniformID, uniform->data); return; 
+    case uniform_uint1: platform_upload_uniform_uint1(uniformID, uniform->data); return;  
+    case uniform_uint2: platform_upload_uniform_uint2(uniformID, uniform->data); return;  
+    case uniform_uint3: platform_upload_uniform_uint3(uniformID, uniform->data); return;  
+    case uniform_uint4: platform_upload_uniform_uint4(uniformID, uniform->data); return; 
+    case uniform_float1: platform_upload_uniform_float1(uniformID, uniform->data); return;  
+    case uniform_float2: platform_upload_uniform_float2(uniformID, uniform->data); return;  
+    case uniform_float3: platform_upload_uniform_float3(uniformID, uniform->data); return;  
+    case uniform_float4: platform_upload_uniform_float4(uniformID, uniform->data); return;     
+    }
 }
 
 #endif
