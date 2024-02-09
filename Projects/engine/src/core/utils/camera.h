@@ -1,8 +1,8 @@
 #pragma once
-#include "engine_api.h"
 
-#include "cglm/struct.h"
+#include "engine_api.h"
 #include "src/types/vector2.h"
+#include "src/types/matrix4.h"
 
 typedef struct camera {
     float left, right, top, bottom;
@@ -10,12 +10,10 @@ typedef struct camera {
     float rotation;
     vector2 position;
     
-    mat4s cameraMatrix;
+    matrix4 cameraMatrix;
 } camera;
 
-HEADER_DEF void camera_gen_matrix(camera* cam) {
-    cam->cameraMatrix = glms_ortho(cam->left, cam->right, cam->bottom, cam->top, cam->front, cam->back);
-}
+void camera_gen_matrix(camera* cam);
 
 HEADER_DEF camera camera_create() {
     camera new_camera = (camera){ };
@@ -27,8 +25,10 @@ HEADER_DEF camera camera_create() {
     new_camera.front = -0.1f;
     new_camera.back = 1000.0f;
 
-    new_camera.position = (vec2){ 0, 0 };
+    new_camera.position = (vector2){ 0, 0 };
     new_camera.rotation = 0;
+
+    new_camera.cameraMatrix = (matrix4){};
 
     camera_gen_matrix(&new_camera);
 
