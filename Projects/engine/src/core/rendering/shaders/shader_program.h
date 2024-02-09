@@ -2,6 +2,8 @@
 #include "engine_api.h"
 #include "shader_stage.h"
 
+#include "shader_uniform.h"
+
 typedef struct shader_program shader_program;
 struct platform_shader_program;
 void platform_shader_program_init(shader_program* program);

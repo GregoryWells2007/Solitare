@@ -178,6 +178,18 @@ int main(int argc, char** argv) {
 
     shader_program_build(&triangle_shader);
 
+// uniform int u_card_index;
+
+// uniform int mouse_over;
+// uniform int card_held;
+
+    int card_index = 0;
+    int mouse_over = false;
+    int card_held = false;
+    shader_uniform card_index_uniform = (shader_uniform){ &card_index, "u_card_index", uniform_int1 };
+    shader_uniform mouse_over_uniform = (shader_uniform){ &mouse_over, "mouse_over", uniform_int1 };
+    shader_uniform card_held_uniform = (shader_uniform){ &card_held, "card_held", uniform_int1 };
+
     texture_2d cards_image = texture_2d_create();
     texture_2d_set_parameter(&cards_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
     texture_2d_set_parameter(&cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
@@ -190,8 +202,6 @@ int main(int argc, char** argv) {
     texture_2d_set_height(&cards_image, cards_texture_file.height);
 
     texture_2d_set_color_mode(&cards_image, RGBA);
-
-
     texture_2d_set_data(&cards_image, cards_texture_file.pixel_data);
 
     texture_2d_build(&cards_image);
