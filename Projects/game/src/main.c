@@ -185,18 +185,14 @@ int main(int argc, char** argv) {
     texture_2d_set_parameter(&cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
     texture_2d_set_parameter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_clamp);
 
-    texture_2d_set_width(&cards_image, 2);
-    texture_2d_set_height(&cards_image, 2);
+    texture_file cards_texture_file = texture_file_load_from_path("../res/images/Cards.png");
+    texture_2d_set_width(&cards_image, cards_texture_file.width);
+    texture_2d_set_height(&cards_image, cards_texture_file.height);
 
     texture_2d_set_color_mode(&cards_image, RGBA);
 
-    unsigned int* pixels = malloc(sizeof(unsigned int) * 4);
-    pixels[0] = 0x0000ff;
-    pixels[1] = 0x00ff00;
-    pixels[2] = 0x00ff00;
-    pixels[3] = 0xff0000;
 
-    texture_2d_set_data(&cards_image, pixels);
+    texture_2d_set_data(&cards_image, cards_texture_file.pixel_data);
 
     texture_2d_build(&cards_image);
 
