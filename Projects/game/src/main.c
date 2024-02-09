@@ -96,11 +96,8 @@ int main(int argc, char** argv) {
         {  1.000f,  1.750f,     0.9444f, 1.0000f }
     };
     for (int i = 0; i < 24; i++) {
-        vertices[i].x = vertices[i].x / 4.0f;
-        vertices[i].y = vertices[i].y / 4.0f;
-
-        vertices[i].x *= 0.9;
-        vertices[i].y *= 1.6;
+        vertices[i].x = vertices[i].x * 60.0f;
+        vertices[i].y = vertices[i].y * 60.0f;
     }
     triangle triangles[22] = {
         { 0,  1, 22 },
@@ -190,10 +187,13 @@ int main(int argc, char** argv) {
     shader_uniform mouse_over_uniform = (shader_uniform){ &mouse_over, "mouse_over", uniform_int1 };
     shader_uniform card_held_uniform = (shader_uniform){ &card_held, "card_held", uniform_int1 };
 
+    shader_uniform camera_view_matrix = (shader_uniform){ &game_camera.cameraMatrix, "camera_matrix", uniform_matrix4 };
+
     shader_program_bind(&triangle_shader);
     shader_program_set_uniform(&triangle_shader, &card_index_uniform);
     shader_program_set_uniform(&triangle_shader, &mouse_over_uniform);
     shader_program_set_uniform(&triangle_shader, &card_held_uniform);
+    shader_program_set_uniform(&triangle_shader, &camera_view_matrix);
     shader_program_bind(NULL);
 
     texture_2d cards_image = texture_2d_create();
