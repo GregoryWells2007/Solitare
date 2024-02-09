@@ -3,6 +3,7 @@
 #if RAPI == RAPI_OPENGL
 #include "glad/glad.h"
 #include "src/core/rendering/shaders/shader_program.h"
+#include "src/types/matrix4.h"
 
 struct platform_shader_program {
     unsigned int rendererID;
@@ -46,7 +47,8 @@ struct platform_shader_uniform {
 };
 
 void platform_upload_uniform_matrix4(unsigned int uniformID, void* data) {
-    printf("MATRIX4 uploading not supported\n");
+    matrix4 value = *((matrix4*)data);
+    glUniformMatrix4fv(uniformID, 1, GL_FALSE, (const GLfloat *) &value.values);
 }
 void platform_upload_uniform_matrix3(unsigned int uniformID, void* data) {
     printf("MATRIX3 uploading not supported\n");
