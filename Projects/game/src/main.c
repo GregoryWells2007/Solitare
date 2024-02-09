@@ -194,6 +194,7 @@ int main(int argc, char** argv) {
     shader_program_set_uniform(&triangle_shader, &card_index_uniform);
     shader_program_set_uniform(&triangle_shader, &mouse_over_uniform);
     shader_program_set_uniform(&triangle_shader, &card_held_uniform);
+    shader_program_bind(NULL);
 
     texture_2d cards_image = texture_2d_create();
     texture_2d_set_parameter(&cards_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
