@@ -55,8 +55,15 @@ HEADER_DEF matrix4 matrix4_translate(vector3 amt) {
 
 }   
 
-HEADER_DEF matrix4 matrix4_rotate(vector3 direction, float amount) {
+HEADER_DEF matrix4 matrix4_rotate_x(float amount) {
+    matrix4 new_matrix4 = matrix4_identity();
+    
+    new_matrix4[1][1] = cos(amount);
+    new_matrix4[1][2] = -sin(amount);
+    new_matrix4[2][1] = sin(amount);
+    new_matrix4[2][2] = cos(amount);
 
+    return new_matrix4;
 }
 
 HEADER_DEF matrix4 matrix4_scale(vector3 amount) {
