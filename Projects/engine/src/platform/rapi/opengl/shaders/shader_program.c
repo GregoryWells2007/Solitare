@@ -90,6 +90,9 @@ void platform_upload_uniform_float3(unsigned int uniformID, void* data) {
 void platform_upload_uniform_float4(unsigned int uniformID, void* data) {
     printf("FLOAT4 uploading not supported\n");
 }
+void platform_upload_uniform_bool(unsigned int uniformID, void* data) {
+    printf("BOOL uploading not supported\n");
+}
 
 void platform_shader_uniform_set(shader_program* program, shader_uniform* uniform) {
     if (uniform->platform_shader_uniform == NULL) {
@@ -114,6 +117,7 @@ void platform_shader_uniform_set(shader_program* program, shader_uniform* unifor
     case uniform_float2: platform_upload_uniform_float2(uniformID, uniform->data); return;  
     case uniform_float3: platform_upload_uniform_float3(uniformID, uniform->data); return;  
     case uniform_float4: platform_upload_uniform_float4(uniformID, uniform->data); return;     
+    case uniform_bool: platform_upload_uniform_bool(uniformID, uniform->data); return;
     }
 }
 
