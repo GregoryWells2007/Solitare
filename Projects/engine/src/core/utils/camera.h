@@ -13,7 +13,9 @@ typedef struct camera {
     matrix4 cameraMatrix;
 } camera;
 
-void camera_gen_matrix(camera* cam);
+HEADER_DEF void camera_gen_matrix(camera* cam) {
+    cam->cameraMatrix = matrix4_orthographic(cam->left, cam->right, cam->top, cam->bottom, cam->front, cam->back);
+}
 
 HEADER_DEF camera camera_create() {
     camera new_camera = (camera){ };
