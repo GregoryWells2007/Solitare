@@ -43,3 +43,4 @@ void screen_renderer_delete(screen_renderer* renderer);
 
 void screen_renderer_enable_vignette(screen_renderer* renderer);
 void screen_renderer_disable_vignette(screen_renderer* renderer);
+void screen_renderer_set_vignette_power(screen_renderer* renderer, float power);

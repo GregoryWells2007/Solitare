@@ -72,7 +72,6 @@ void screen_renderer_init(screen_renderer* renderer) {
     screen_renderer_create_uniforms(renderer);
     screen_renderer_enable_vignette(renderer);
     screen_renderer_set_vignette_power(renderer, 0.25f);
-    screen_renderer_set_vignette_power_uniform(renderer);
 }
 
 void screen_renderer_draw(screen_renderer* renderer) {
