@@ -187,13 +187,17 @@ int main(int argc, char** argv) {
     shader_uniform mouse_over_uniform = (shader_uniform){ &mouse_over, "mouse_over", uniform_int1 };
     shader_uniform card_held_uniform = (shader_uniform){ &card_held, "card_held", uniform_int1 };
 
+    transform2d test_transform = transform2d_create();
+    
     shader_uniform camera_view_matrix = (shader_uniform){ &game_camera.cameraMatrix, "camera_matrix", uniform_matrix4 };
+    shader_uniform transform_matrix = (shader_uniform){ &test_transform.mat, "transform_matrix", uniform_matrix4 };
 
     shader_program_bind(&triangle_shader);
     shader_program_set_uniform(&triangle_shader, &card_index_uniform);
     shader_program_set_uniform(&triangle_shader, &mouse_over_uniform);
     shader_program_set_uniform(&triangle_shader, &card_held_uniform);
     shader_program_set_uniform(&triangle_shader, &camera_view_matrix);
+    shader_program_set_uniform(&triangle_shader, &transform_matrix);
     shader_program_bind(NULL);
 
     texture_2d cards_image = texture_2d_create();
