@@ -79,7 +79,8 @@ void platform_upload_uniform_uint4(unsigned int uniformID, void* data) {
     printf("UINT4 uploading not supported\n");
 }
 void platform_upload_uniform_float1(unsigned int uniformID, void* data) {
-    printf("FLOAT1 uploading not supported\n");
+    float value = *((float*)data);
+    glUniform1f(uniformID, value);
 }
 void platform_upload_uniform_float2(unsigned int uniformID, void* data) {
     printf("FLOAT2 uploading not supported\n");
@@ -91,7 +92,8 @@ void platform_upload_uniform_float4(unsigned int uniformID, void* data) {
     printf("FLOAT4 uploading not supported\n");
 }
 void platform_upload_uniform_bool(unsigned int uniformID, void* data) {
-    printf("BOOL uploading not supported\n");
+    bool value = *((bool*)data);
+    glUniform1i(uniformID, value);
 }
 
 void platform_shader_uniform_set(shader_program* program, shader_uniform* uniform) {
