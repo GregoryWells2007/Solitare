@@ -36,7 +36,7 @@ HEADER_DEF matrix4 matrix4_identity() {
     return new_matrix4;
 }
 
-HEADER_DEF matrix4 matrix4_orthographic(float left, float right, float top, float bottom, float front, float back) {
+HEADER_DEF matrix4 matrix4_orthographic(float left, float right, float top, float bottom, float front, float near) {
     matrix4 new_matrix4 = matrix4_identity();
 
     new_matrix4.values[0][0] = 2.0f / (right - left);
@@ -46,7 +46,7 @@ HEADER_DEF matrix4 matrix4_orthographic(float left, float right, float top, floa
     new_matrix4.values[1][3] = (top + bottom) / (top - bottom);
 
     new_matrix4.values[2][2] = -2.0f / (front - back);
-    new_matrix4.values[2][3] = -1 * ((front + back) / (front - back));
+    new_matrix4.values[2][3] = -1 * ((front + near) / (front - near));
 
     return new_matrix4;
 }
