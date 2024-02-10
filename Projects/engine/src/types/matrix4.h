@@ -81,6 +81,17 @@ HEADER_DEF matrix4 matrix4_rotate_y(float amount) {
     return new_matrix4;
 }
 
+HEADER_DEF matrix4 matrix4_rotate_z(float amount) {
+    matrix4 new_matrix4 = matrix4_identity();
+    
+    new_matrix4.values[0][0] = cos(amount);
+    new_matrix4.values[0][1] = -sin(amount);
+    new_matrix4.values[1][0] = sin(amount);
+    new_matrix4.values[1][1] = cos(amount);
+
+    return new_matrix4;
+}
+
 HEADER_DEF matrix4 matrix4_scale(vector3 amount) {
     matrix4 new_matrix4 = matrix4_identity();
     new_matrix4.values[0][0] = amount.x;
