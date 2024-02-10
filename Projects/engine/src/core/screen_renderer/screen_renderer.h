@@ -2,7 +2,7 @@
 #include "src/core/rendering/meshing/vertex_array.h"
 #include "src/core/rendering/shaders/shader_program.h"
 
-typedef struct screen_renderer {
+struct screen_mesh {
     vertex_array screen_vertex_array;
 
     vertex_attribute screen_positions_attribute;
@@ -10,9 +10,9 @@ typedef struct screen_renderer {
 
     array_buffer screen_array_buffer;
     index_buffer screen_index_buffer;
+};
 
-    // shader stuff
-
+struct screen_shader {
     shader_program screen_shader;
 
     shader_stage screen_renderder_vertex_shader;
@@ -20,6 +20,15 @@ typedef struct screen_renderer {
 
     char* vertex_shader_src;
     char* fragment_shader_src;
+};
+
+struct screen_data {
+    float vignette_power;
+};
+
+typedef struct screen_renderer {
+    struct screen_mesh screen_mesh;
+    struct screen_shader screen_shader;
 } screen_renderer;
 
 void screen_renderer_init(screen_renderer* renderer);
