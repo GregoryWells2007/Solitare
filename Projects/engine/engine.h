@@ -24,6 +24,7 @@
 #include "src/core/utils/file.h"
 #include "src/core/utils/texture_file.h"
 #include "src/core/utils/camera.h"
+#include "src/core/utils/transform.h"
 
 #include "engine_api.h"
 HEADER_DEF void engine_init() {
