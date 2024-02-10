@@ -1,5 +1,9 @@
 #pragma once
 #include "engine_api.h"
+#include "math.h"
+#include "vector2.h"
+#include "vector3.h"
+#include "vector4.h"
 
 typedef struct matrix4 {
     float values[4][4];
@@ -45,7 +49,7 @@ HEADER_DEF matrix4 matrix4_orthographic(float left, float right, float top, floa
     new_matrix4.values[1][1] = 2.0f / (top - bottom);
     new_matrix4.values[1][3] = (top + bottom) / (top - bottom);
 
-    new_matrix4.values[2][2] = -2.0f / (front - back);
+    new_matrix4.values[2][2] = -2.0f / (front - near);
     new_matrix4.values[2][3] = -1 * ((front + near) / (front - near));
 
     return new_matrix4;
@@ -58,18 +62,29 @@ HEADER_DEF matrix4 matrix4_translate(vector3 amt) {
 HEADER_DEF matrix4 matrix4_rotate_x(float amount) {
     matrix4 new_matrix4 = matrix4_identity();
     
-    new_matrix4[1][1] = cos(amount);
-    new_matrix4[1][2] = -sin(amount);
-    new_matrix4[2][1] = sin(amount);
-    new_matrix4[2][2] = cos(amount);
+    new_matrix4.values[1][1] = cos(amount);
+    new_matrix4.values[1][2] = -sin(amount);
+    new_matrix4.values[2][1] = sin(amount);
+    new_matrix4.values[2][2] = cos(amount);
+
+    return new_matrix4;
+}
+
+HEADER_DEF matrix4 matrix4_rotate_y(float amount) {
+    matrix4 new_matrix4 = matrix4_identity();
+    
+    new_matrix4.values[0][0] = cos(amount);
+    new_matrix4.values[0][2] = sin(amount);
+    new_matrix4.values[2][0] = -sin(amount);
+    new_matrix4.values[2][2] = cos(amount);
 
     return new_matrix4;
 }
 
 HEADER_DEF matrix4 matrix4_scale(vector3 amount) {
     matrix4 new_matrix4 = matrix4_identity();
-    new_matrix4->values[0][0] = amount.x;
-    new_matrix4->values[0][0] = amount.y;
-    new_matrix4->values[0][0] = amount.z;
+    new_matrix4.values[0][0] = amount.x;
+    new_matrix4.values[0][0] = amount.y;
+    new_matrix4.values[0][0] = amount.z;
     return new_matrix4;
 }
