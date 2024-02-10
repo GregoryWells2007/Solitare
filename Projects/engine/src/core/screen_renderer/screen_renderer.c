@@ -39,39 +39,39 @@ void screen_renderer_create_mesh(screen_renderer* renderer) {
 
     vertex_array_build(&renderer->screen_mesh.screen_vertex_array);
 }
-
-void screen_renderer_init(screen_renderer* renderer) {
-
-    
+void screen_renderer_create_shader(screen_renderer* renderer) {
     file vertex_shader_source = file_load_from_path("../Projects/engine/resources/shaders/screen_shader/screen_shader_vertex.glsl");
     file fragment_shader_source = file_load_from_path("../Projects/engine/resources/shaders/screen_shader/screen_shader_fragment.glsl");
 
-    renderer->screen_shader = shader_program_create();
+    renderer->screen_shader.screen_shader = shader_program_create();
 
-    renderer->screen_renderder_vertex_shader = shader_stage_create();
-    shader_stage_set_type(&renderer->screen_renderder_vertex_shader, vertex_shader);
-    shader_stage_set_source(&renderer->screen_renderder_vertex_shader, file_get_data(&vertex_shader_source));
+    renderer->screen_shader.screen_renderder_vertex_shader = shader_stage_create();
+    shader_stage_set_type(&renderer->screen_shader.screen_renderder_vertex_shader, vertex_shader);
+    shader_stage_set_source(&renderer->screen_shader.screen_renderder_vertex_shader, file_get_data(&vertex_shader_source));
     
-    renderer->screen_renderer_fragment_shader = shader_stage_create();
-    shader_stage_set_type(&renderer->screen_renderer_fragment_shader, fragment_shader);
-    shader_stage_set_source(&renderer->screen_renderer_fragment_shader, file_get_data(&fragment_shader_source));
+    renderer->screen_shader.screen_renderer_fragment_shader = shader_stage_create();
+    shader_stage_set_type(&renderer->screen_shader.screen_renderer_fragment_shader, fragment_shader);
+    shader_stage_set_source(&renderer->screen_shader.screen_renderer_fragment_shader, file_get_data(&fragment_shader_source));
     
-    shader_program_set_stage(&renderer->screen_shader, &renderer->screen_renderder_vertex_shader);
-    shader_program_set_stage(&renderer->screen_shader, &renderer->screen_renderer_fragment_shader);
+    shader_program_set_stage(&renderer->screen_shader.screen_shader, &renderer->screen_shader.screen_renderder_vertex_shader);
+    shader_program_set_stage(&renderer->screen_shader.screen_shader, &renderer->screen_shader.screen_renderer_fragment_shader);
 
-    shader_program_build(&renderer->screen_shader);
+    shader_program_build(&renderer->screen_shader.screen_shader);
+}
 
-    //-----------------
+void screen_renderer_init(screen_renderer* renderer) {
+    screen_renderer_create_mesh(renderer);
+    screen_renderer_create_shader(renderer);
 }
 
 void screen_renderer_draw(screen_renderer* renderer) {
-    shader_program_bind(&renderer->screen_shader);
+    shader_program_bind(&renderer->screen_shader.screen_shader);
 
-    vertex_array_bind(&renderer->screen_vertex_array);
-    vertex_array_draw(&renderer->screen_vertex_array);
+    vertex_array_bind(&renderer->screen_mesh.screen_vertex_array);
+    vertex_array_draw(&renderer->screen_mesh.screen_vertex_array);
 }
 
 void screen_renderer_delete(screen_renderer* renderer) {
-    vertex_array_delete(&renderer->screen_vertex_array);
-    shader_program_delete(&renderer->screen_shader);
+    vertex_array_delete(&renderer->screen_mesh.screen_vertex_array);
+    shader_program_delete(&renderer->screen_shader.screen_shader);
 }
