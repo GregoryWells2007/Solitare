@@ -59,12 +59,21 @@ void screen_renderer_create_shader(screen_renderer* renderer) {
     shader_program_build(&renderer->screen_shader.screen_shader);
 }
 
+void screen_renderer_create_uniforms(screen_renderer* renderer) {
+    renderer->screen_shader.vignette_power_uniform = (shader_uniform){ &renderer->screen_data.vignette_power, "vignette_power", uniform_float1 };
+    renderer->screen_shader.use_vignette_uniform = (shader_uniform){ &renderer->screen_data.use_vignette, "use_vignette", uniform_bool };
+
+    shader_program_bind(&renderer->screen_shader.screen_shader);
+    shader_program_set_uniform(&renderer->screen_shader.screen_shader, &renderer->screen_shader.vignette_power_uniform);
+    shader_program_set_uniform(&renderer->screen_shader.screen_shader, &renderer->screen_shader.use_vignette_uniform);
+    shader_program_bind(NULL);
+}
+
 void screen_renderer_init(screen_renderer* renderer) {
     screen_renderer_create_mesh(renderer);
     screen_renderer_create_shader(renderer);
 
-    shader_uniform vignette_power_uniform = (shader_uniform){ &renderer->screen_data.vignette_power, "vignette_power", uniform_float1 };
-    shader_uniform vignette_power_uniform = (shader_uniform){ &renderer->screen_data.use_vignette, "vignette_power", uniform_bool };
+    screen_renderer_create_uniforms(renderer);
 }
 
 void screen_renderer_draw(screen_renderer* renderer) {

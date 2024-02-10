@@ -20,6 +20,9 @@ struct screen_shader {
 
     char* vertex_shader_src;
     char* fragment_shader_src;
+
+    shader_uniform vignette_power_uniform;
+    shader_uniform use_vignette_uniform;
 };
 
 struct screen_data {
