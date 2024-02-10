@@ -24,11 +24,14 @@ struct screen_shader {
 
 struct screen_data {
     float vignette_power;
+    bool use_vignette;
 };
 
 typedef struct screen_renderer {
     struct screen_mesh screen_mesh;
     struct screen_shader screen_shader;
+
+    struct screen_data screen_data;
 } screen_renderer;
 
 void screen_renderer_init(screen_renderer* renderer);
