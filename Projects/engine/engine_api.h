@@ -5,6 +5,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "stdint.h"
+#include "stdbool.h"
 
 #define HEADER_DEF __attribute__((weak))
 HEADER_DEF int min (int v1, int v2) {
