@@ -3,11 +3,7 @@
 #include "stdio.h"
 #include "src/core/utils/file.h"
 
-struct quad_vertex {
-    float x, y;
-};
-
-void screen_renderer_init(screen_renderer* renderer) {
+void screen_renderer_create_mesh(screen_renderer* renderer) {
     float verts[16] = {
         -1.0,  1.0, 0.0, 1.0,
         -1.0, -1.0, 0.0, 0.0,
@@ -19,6 +15,33 @@ void screen_renderer_init(screen_renderer* renderer) {
         0, 1, 2,
         0, 3, 2
     };
+
+    renderer->screen_mesh.screen_vertex_array = vertex_array_create();
+
+    renderer->screen_mesh.screen_array_buffer = array_buffer_create(); 
+    array_buffer_set_data(&renderer->screen_mesh.screen_array_buffer, verts);
+    array_buffer_set_vertex_count(&renderer->screen_mesh.screen_array_buffer, 16);
+    array_buffer_set_draw_type(&renderer->screen_mesh.screen_array_buffer, static_draw);   
+
+    renderer->screen_mesh.screen_positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
+    array_buffer_add_attribute(&renderer->screen_mesh.screen_array_buffer, &renderer->screen_mesh.screen_positions_attribute);
+
+    renderer->screen_mesh.screen_uvs_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
+    array_buffer_add_attribute(&renderer->screen_mesh.screen_array_buffer, &renderer->screen_mesh.screen_uvs_attribute);
+
+    renderer->screen_mesh.screen_index_buffer = index_buffer_create();
+    index_buffer_set_data(&renderer->screen_mesh.screen_index_buffer, tris);
+    index_buffer_set_triangle_count(&renderer->screen_mesh.screen_index_buffer, 2);
+    index_buffer_set_draw_type(&renderer->screen_mesh.screen_index_buffer, static_draw); 
+
+    vertex_array_add_array_buffer(&renderer->screen_mesh.screen_vertex_array, &renderer->screen_mesh.screen_array_buffer);
+    vertex_array_set_index_buffer(&renderer->screen_mesh.screen_vertex_array, &renderer->screen_mesh.screen_index_buffer);
+
+    vertex_array_build(&renderer->screen_mesh.screen_vertex_array);
+}
+
+void screen_renderer_init(screen_renderer* renderer) {
+
     
     file vertex_shader_source = file_load_from_path("../Projects/engine/resources/shaders/screen_shader/screen_shader_vertex.glsl");
     file fragment_shader_source = file_load_from_path("../Projects/engine/resources/shaders/screen_shader/screen_shader_fragment.glsl");
@@ -39,29 +62,6 @@ void screen_renderer_init(screen_renderer* renderer) {
     shader_program_build(&renderer->screen_shader);
 
     //-----------------
-
-    renderer->screen_vertex_array = vertex_array_create();
-
-    renderer->screen_array_buffer = array_buffer_create(); 
-    array_buffer_set_data(&renderer->screen_array_buffer, verts);
-    array_buffer_set_vertex_count(&renderer->screen_array_buffer, 16);
-    array_buffer_set_draw_type(&renderer->screen_array_buffer, static_draw);   
-
-    renderer->screen_positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
-    array_buffer_add_attribute(&renderer->screen_array_buffer, &renderer->screen_positions_attribute);
-
-    renderer->screen_uvs_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
-    array_buffer_add_attribute(&renderer->screen_array_buffer, &renderer->screen_uvs_attribute);
-
-    renderer->screen_index_buffer = index_buffer_create();
-    index_buffer_set_data(&renderer->screen_index_buffer, tris);
-    index_buffer_set_triangle_count(&renderer->screen_index_buffer, 2);
-    index_buffer_set_draw_type(&renderer->screen_index_buffer, static_draw); 
-
-    vertex_array_add_array_buffer(&renderer->screen_vertex_array, &renderer->screen_array_buffer);
-    vertex_array_set_index_buffer(&renderer->screen_vertex_array, &renderer->screen_index_buffer);
-
-    vertex_array_build(&renderer->screen_vertex_array);
 }
 
 void screen_renderer_draw(screen_renderer* renderer) {
