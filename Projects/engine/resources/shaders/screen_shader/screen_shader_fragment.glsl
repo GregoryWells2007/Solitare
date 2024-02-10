@@ -11,7 +11,7 @@ uniform bool use_vignette;
 void main(void) {
 	vec2 uv = (1.0 - vUV) * vUV;
    float vignette_coverage = uv.x * uv.y * 15.0f;
-   float vignette_filter = pow(vignette_coverage, vignette_power);
+   float vignette_filter = pow(vignette_coverage, 0.25f);
 
    color = texture(texure, vUV); 
    if (use_vignette)

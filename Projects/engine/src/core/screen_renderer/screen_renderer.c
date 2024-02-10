@@ -62,18 +62,17 @@ void screen_renderer_create_shader(screen_renderer* renderer) {
 void screen_renderer_create_uniforms(screen_renderer* renderer) {
     renderer->screen_shader.vignette_power_uniform = (shader_uniform){ &renderer->screen_data.vignette_power, "vignette_power", uniform_float1 };
     renderer->screen_shader.use_vignette_uniform = (shader_uniform){ &renderer->screen_data.use_vignette, "use_vignette", uniform_bool };
-
-    shader_program_bind(&renderer->screen_shader.screen_shader);
-    shader_program_set_uniform(&renderer->screen_shader.screen_shader, &renderer->screen_shader.vignette_power_uniform);
-    shader_program_set_uniform(&renderer->screen_shader.screen_shader, &renderer->screen_shader.use_vignette_uniform);
-    shader_program_bind(NULL);
 }
 
 void screen_renderer_init(screen_renderer* renderer) {
+
     screen_renderer_create_mesh(renderer);
     screen_renderer_create_shader(renderer);
 
     screen_renderer_create_uniforms(renderer);
+    screen_renderer_enable_vignette(renderer);
+    screen_renderer_set_vignette_power(renderer, 0.25f);
+    screen_renderer_set_vignette_power_uniform(renderer);
 }
 
 void screen_renderer_draw(screen_renderer* renderer) {
@@ -86,4 +85,30 @@ void screen_renderer_draw(screen_renderer* renderer) {
 void screen_renderer_delete(screen_renderer* renderer) {
     vertex_array_delete(&renderer->screen_mesh.screen_vertex_array);
     shader_program_delete(&renderer->screen_shader.screen_shader);
+}
+
+void screen_renderer_set_vignette_power(screen_renderer* renderer, float power) {
+    renderer->screen_data.vignette_power = power;
+    renderer->screen_shader.vignette_power_uniform.data = &renderer->screen_data.vignette_power;
+
+    shader_program_bind(&renderer->screen_shader.screen_shader);
+    shader_program_update_uniform(&renderer->screen_shader.screen_shader, &renderer->screen_shader.vignette_power_uniform);
+    shader_program_bind(NULL);    
+}
+
+void screen_renderer_set_use_vignette_uniform(screen_renderer* renderer) {
+    renderer->screen_shader.use_vignette_uniform.data = &renderer->screen_data.use_vignette;
+
+    shader_program_bind(&renderer->screen_shader.screen_shader);
+    shader_program_update_uniform(&renderer->screen_shader.screen_shader, &renderer->screen_shader.use_vignette_uniform);
+    shader_program_bind(NULL);
+}
+
+void screen_renderer_enable_vignette(screen_renderer* renderer) {
+    renderer->screen_data.use_vignette = true;
+    screen_renderer_set_use_vignette_uniform(renderer);
+}
+void screen_renderer_disable_vignette(screen_renderer* renderer) {
+    renderer->screen_data.use_vignette = false;
+    screen_renderer_set_use_vignette_uniform(renderer);
 }

@@ -79,6 +79,10 @@ HEADER_DEF void shader_program_set_uniform(shader_program* program, shader_unifo
     platform_shader_uniform_set(program, uniform);
 }
 
+HEADER_DEF void shader_program_update_uniform(shader_program* program, shader_uniform* uniform) {
+    platform_shader_uniform_set(program, uniform);
+}
+
 HEADER_DEF void shader_program_update_uniforms(shader_program* program, shader_uniform* uniform) {
     for (int i = 0; i < program->uniform_count; i++) {
         platform_shader_uniform_set(program, program->uniforms[i]);

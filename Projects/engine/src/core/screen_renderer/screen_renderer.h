@@ -40,3 +40,6 @@ typedef struct screen_renderer {
 void screen_renderer_init(screen_renderer* renderer);
 void screen_renderer_draw(screen_renderer* renderer);
 void screen_renderer_delete(screen_renderer* renderer);
+
+void screen_renderer_enable_vignette(screen_renderer* renderer);
+void screen_renderer_disable_vignette(screen_renderer* renderer);
