@@ -10,11 +10,11 @@ typedef struct camera {
     float rotation;
     vector2 position;
     
-    matrix4 cameraMatrix;
+    matrix4 camera_matrix;
 } camera;
 
 HEADER_DEF void camera_gen_matrix(camera* cam) {
-    cam->cameraMatrix = matrix4_orthographic(cam->left, cam->right, cam->top, cam->bottom, cam->front, cam->back);
+    cam->camera_matrix = matrix4_orthographic(cam->left, cam->right, cam->top, cam->bottom, cam->front, cam->back);
 }
 
 HEADER_DEF camera camera_create() {
@@ -30,7 +30,7 @@ HEADER_DEF camera camera_create() {
     new_camera.position = (vector2){ 0, 0 };
     new_camera.rotation = 0;
 
-    new_camera.cameraMatrix = (matrix4){};
+    new_camera.camera_matrix = (matrix4){};
     camera_gen_matrix(&new_camera);
 
     return new_camera;
