@@ -62,6 +62,9 @@ void screen_renderer_create_shader(screen_renderer* renderer) {
 void screen_renderer_init(screen_renderer* renderer) {
     screen_renderer_create_mesh(renderer);
     screen_renderer_create_shader(renderer);
+
+    shader_uniform vignette_power_uniform = (shader_uniform){ &renderer->screen_data.vignette_power, "vignette_power", uniform_float1 };
+    shader_uniform vignette_power_uniform = (shader_uniform){ &renderer->screen_data.use_vignette, "vignette_power", uniform_bool };
 }
 
 void screen_renderer_draw(screen_renderer* renderer) {
