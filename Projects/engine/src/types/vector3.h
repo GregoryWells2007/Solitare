@@ -15,9 +15,7 @@ typedef struct vector3f {
 } vector3f;
 
 typedef vector3f float3;
-#ifndef NO_DEF_CLGM_CONFLICT
 typedef vector3f vec3;
-#endif
 
 typedef vector3f vector3;
 
@@ -30,9 +28,7 @@ typedef vector3f Vec3;
 typedef vector3i triangle;
 
 typedef vector3i int3;
-#ifndef NO_DEF_CLGM_CONFLICT
 typedef vector3i ivec3;
-#endif
 
 typedef vector3i vector3int;
 

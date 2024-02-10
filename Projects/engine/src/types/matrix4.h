@@ -8,9 +8,7 @@ typedef struct matrix4 {
 typedef matrix4 matrix4x4;
 
 typedef matrix4 mat4x4;
-#ifndef NO_DEF_CLGM_CONFLICT
 typedef matrix4 mat4;
-#endif
 
 HEADER_DEF matrix4 matrix4_identity() {
     matrix4 new_matrix4 = (matrix4) { };
