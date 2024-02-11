@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     window_manager_set_main_window(&win_manager, &main_window);
 
     window_data* main_window_data = window_get_data(&main_window); 
-    window_data_set_name(main_window_data, "Main Window\0");
+    window_data_set_name(main_window_data, "Solitare\0");
     window_data_set_size(main_window_data, (int2){ 1280, 720 });
     window_update_data(&main_window);
 

@@ -113,6 +113,9 @@ void platform_window_create(window* window) {
     if (window->main_window)
         main_window = window->main_window->platform_window->window;
 
+    glfwWindowHint(GLFW_RESIZABLE, window->properties.is_resizable);
+    if (window->properties.is_maximized)
+        glfw_maximize_window(window);
     window->platform_window->window = glfwCreateWindow(window->data.size.x, window->data.size.y, window->data.title, NULL, main_window);
     glfwMakeContextCurrent(window->platform_window->window);
 
@@ -163,7 +166,9 @@ void platform_window_set_title(window* window, char* title) { glfwSetWindowTitle
 void platform_window_set_resizable(window* window, bool resizable) {
     if (resizable || window->properties.is_maximized)
         return;
-    
+
+    glfwSetWindowAttrib(window->platform_window->window, GLFW_RESIZABLE, window->properties.is_resizable);
+
     glfwSetWindowSizeLimits(window->platform_window->window, window->data.size.x, window->data.size.y, window->data.size.x, window->data.size.y);
     glfwSetWindowSize(window->platform_window->window, window->data.size.x, window->data.size.y);
 }
