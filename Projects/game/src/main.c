@@ -1,6 +1,9 @@
 #include "stdio.h"
 #include "engine.h"
 
+#include "board/board_renderer.h"
+#include "card/card_renderer/card_renderer.h"
+
 struct triangle_vertex {
     float x, y;
     float u, v;
@@ -153,52 +156,6 @@ int main(int argc, char** argv) {
 
     vertex_array_build(&triangle);
 
-    file vertex_shader_file = file_load_from_path("../res/shaders/card_shader/card_shader_vertex.glsl");
-    file fragment_shader_file = file_load_from_path("../res/shaders/card_shader/card_shader_fragment.glsl");
-
-    shader_program triangle_shader = shader_program_create();
-
-    shader_stage triangle_vertex_shader = shader_stage_create();
-    shader_stage_set_type(&triangle_vertex_shader, vertex_shader);
-    shader_stage_set_source(&triangle_vertex_shader, file_get_data(&vertex_shader_file));
-    
-    shader_stage triangle_fragment_shader = shader_stage_create();
-    shader_stage_set_type(&triangle_fragment_shader, fragment_shader);
-    shader_stage_set_source(&triangle_fragment_shader, file_get_data(&fragment_shader_file));
-    
-    shader_program_set_stage(&triangle_shader, &triangle_vertex_shader);
-    shader_program_set_stage(&triangle_shader, &triangle_fragment_shader);
-
-    shader_program_build(&triangle_shader);
-
-    camera game_camera = camera_create();
-    camera_set_bounds(&game_camera, -640.0f, 640.0f, 360.0f, -360.0f);
-    camera_set_position(&game_camera, (vector2){0.0f, 0.0f});
-    camera_set_rotation(&game_camera, 0.0f);
-
-    int card_index = 10;
-    int mouse_over = false;
-    int card_held = false;
-    shader_uniform card_index_uniform = (shader_uniform){ &card_index, "u_card_index", uniform_int1 };
-    shader_uniform mouse_over_uniform = (shader_uniform){ &mouse_over, "mouse_over", uniform_int1 };
-    shader_uniform card_held_uniform = (shader_uniform){ &card_held, "card_held", uniform_int1 };
-
-    transform2d test_transform = transform2d_create();
-    transform2d_set_position(&test_transform, (vector2){ 100, 0 });
-    transform2d_set_rotation(&test_transform, 30.5f);
-    transform2d_set_scale(&test_transform, (vector2){ 60.0, 60.0 });
-
-    shader_uniform camera_view_matrix = (shader_uniform){ &game_camera.camera_matrix, "camera_matrix", uniform_matrix4 };
-    shader_uniform transform_matrix = (shader_uniform){ &test_transform.mat, "transform_matrix", uniform_matrix4 };
-
-    shader_program_bind(&triangle_shader);
-    shader_program_set_uniform(&triangle_shader, &card_index_uniform);
-    shader_program_set_uniform(&triangle_shader, &mouse_over_uniform);
-    shader_program_set_uniform(&triangle_shader, &card_held_uniform);
-    shader_program_set_uniform(&triangle_shader, &camera_view_matrix);
-    shader_program_set_uniform(&triangle_shader, &transform_matrix);
-    shader_program_bind(NULL);
-
     texture_2d cards_image = texture_2d_create();
     texture_2d_set_parameter(&cards_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
     texture_2d_set_parameter(&cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
@@ -219,12 +176,15 @@ int main(int argc, char** argv) {
     clear_screen_data_enable_layer(&screen_clear, color_layer);
     clear_screen_data_set_screen_color(&screen_clear, (color){ 150, 150, 150, 1.0f });
 
+    card_renderer card_renderer = {};
+    card_renderer_init(&card_renderer);
+
     while (window_is_open(&main_window)) {      
         framebuffer_bind(&screen_framebuffer);
         clear_screen(&screen_clear);
 
         texture_2d_bind(&cards_image, 0);
-        shader_program_bind(&triangle_shader);
+        card_renderer_draw_card(&card_renderer, (vector2){}, 0);
 
         vertex_array_bind(&triangle);
         vertex_array_draw(&triangle);
@@ -241,8 +201,8 @@ int main(int argc, char** argv) {
     renderbuffer_delete(&depth_stencil_texture);
     framebuffer_delete(&screen_framebuffer);
     
+    card_renderer_cleanup(&card_renderer);
     vertex_array_delete(&triangle);
-    shader_program_delete(&triangle_shader);
     texture_2d_delete(&cards_image);
 
     window_manager_delete(&win_manager);
