@@ -14,8 +14,15 @@
     shader_uniform camera_view_matrix;      \
     shader_uniform transform_matrix;        \
 
+#define card_vertex_data                    \
+    vertex_array card_vertex_array;         \
+                                            \
+    array_buffer card_positions_buffer;     \
+    index_buffer card_index_buffer;         
+    
 typedef struct card_renderer {
     card_shader_data;
+    card_vertex_data;
 
     camera game_camera;
 } card_renderer;
