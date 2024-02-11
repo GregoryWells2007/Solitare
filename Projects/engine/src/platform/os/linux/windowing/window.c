@@ -181,11 +181,13 @@ void platform_window_set_resizable(window* window, bool resizable) {
 }
 void platform_window_set_maximized(window* window, bool maximized) { 
     glfwSetWindowAttrib(window->platform_window->window, GLFW_MAXIMIZED, maximized); 
-    glfwSetWindowMonitor(window, glfwGetPrimaryMonitor());
+    
 
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
     window->data.size.x = mode->width;
     window->data.size.y = mode->height;
+
+    glfwSetWindowMonitor(window->platform_window->window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
 
     glfwSetWindowSize(window->platform_window->window, window->data.size.x, window->data.size.y);
     // if (maximized)
