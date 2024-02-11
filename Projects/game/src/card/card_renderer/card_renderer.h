@@ -20,9 +20,13 @@
     array_buffer card_positions_buffer;     \
     index_buffer card_index_buffer;         
     
+#define card_texture_data                   \
+    texture_2d cards_image
+
 typedef struct card_renderer {
     card_shader_data;
     card_vertex_data;
+    card_texture_data;
 
     camera game_camera;
 } card_renderer;

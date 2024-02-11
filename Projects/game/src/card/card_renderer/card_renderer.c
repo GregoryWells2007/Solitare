@@ -142,6 +142,24 @@ void card_renderer_create_vertex_array(card_renderer* renderer) {
     vertex_array_build(&renderer->card_vertex_array);
 }
 
+void card_renderer_create_texture(card_renderer* renderer) {
+    renderer->cards_image = texture_2d_create();
+    texture_2d_set_parameter(&renderer->cards_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
+    texture_2d_set_parameter(&renderer->cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
+
+    texture_2d_set_parameter(&renderer->cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
+    texture_2d_set_parameter(&renderer->cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
+
+    texture_file cards_texture_file = texture_file_load_from_path("../res/images/Cards.png");
+    texture_2d_set_width(&renderer->cards_image, cards_texture_file.width);
+    texture_2d_set_height(&renderer->cards_image, cards_texture_file.height);
+
+    texture_2d_set_color_mode(&renderer->cards_image, RGBA);
+    texture_2d_set_data(&renderer->cards_image, cards_texture_file.pixel_data);
+
+    texture_2d_build(&renderer->cards_image);
+}
+
 void card_renderer_init(card_renderer* renderer) {
     card_renderer_create_camera(renderer);
 
@@ -149,6 +167,8 @@ void card_renderer_init(card_renderer* renderer) {
     card_renderer_create_uniforms(renderer);
 
     card_renderer_create_vertex_array(renderer);
+
+    card_renderer_create_texture(renderer);
 }
 void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card_index) {
     shader_program_bind(&renderer->card_shader);
@@ -164,10 +184,12 @@ void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card
     shader_program_update_uniform(&renderer->card_shader, &renderer->card_index_uniform);
     shader_program_update_uniform(&renderer->card_shader, &renderer->transform_matrix);
 
+    texture_2d_bind(&renderer->cards_image, 0);
     vertex_array_bind(&renderer->card_vertex_array);
     vertex_array_draw(&renderer->card_vertex_array);
 }
 void card_renderer_cleanup(card_renderer* renderer) {
     shader_program_delete(&renderer->card_shader);
     vertex_array_delete(&renderer->card_vertex_array);
+    texture_2d_delete(&renderer->cards_image);
 }
