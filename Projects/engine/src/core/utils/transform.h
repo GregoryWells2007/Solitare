@@ -13,8 +13,8 @@ typedef struct transform2d {
     float rotation;
     vector2 scale;
 
-    matrix4 position_mat;
-    matrix4 rotaion_mat;
+    matrix4 translation_mat;
+    matrix4 rotation_mat;
     matrix4 scale_mat;
 
     matrix4 mat;
@@ -25,7 +25,8 @@ HEADER_DEF void transform2d_gen_matrix(transform2d* transform) {
     bool changed = false;
 
     if (!vector2f_equals(transform->position, transform->last_position)) {
-        // regen translation mat
+        vector3 pos = { transform->position.x, transform->position.y, 0.0f };
+        transform->translation_mat = matrix4_translate(pos);
         changed = true;
     }
 
@@ -40,12 +41,17 @@ HEADER_DEF void transform2d_gen_matrix(transform2d* transform) {
     }
 
     if (changed) {
-        transform->mat = transform->position_mat;
+        transform->mat = transform->translation_mat;
     }
 
     transform->last_position = transform->position;
     transform->last_rotation = transform->rotation;
     transform->last_scale = transform->scale;
+}
+
+HEADER_DEF transform2d transform2d_set_position(transform2d* transform, vector2f position) {
+    transform->position = position;
+    transform2d_gen_matrix(transform);
 }
 
 HEADER_DEF transform2d transform2d_create() {
@@ -55,8 +61,8 @@ HEADER_DEF transform2d transform2d_create() {
     new_transform2d.rotation = 0.0f;
     new_transform2d.scale = (vector2){ 1, 1 };
 
-    new_transform2d.position_mat = matrix4_identity();
-    new_transform2d.rotaion_mat = matrix4_identity();
+    new_transform2d.translation_mat = matrix4_identity();
+    new_transform2d.rotation_mat = matrix4_identity();
     new_transform2d.scale_mat = matrix4_identity();
     new_transform2d.mat = matrix4_identity();
 

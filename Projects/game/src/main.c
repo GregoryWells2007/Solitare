@@ -188,8 +188,9 @@ int main(int argc, char** argv) {
     shader_uniform card_held_uniform = (shader_uniform){ &card_held, "card_held", uniform_int1 };
 
     transform2d test_transform = transform2d_create();
-    
-    shader_uniform camera_view_matrix = (shader_uniform){ &game_camera.cameraMatrix, "camera_matrix", uniform_matrix4 };
+    transform2d_set_position(&test_transform, (vector2){ 100, 0 });
+
+    shader_uniform camera_view_matrix = (shader_uniform){ &game_camera.camera_matrix, "camera_matrix", uniform_matrix4 };
     shader_uniform transform_matrix = (shader_uniform){ &test_transform.mat, "transform_matrix", uniform_matrix4 };
 
     shader_program_bind(&triangle_shader);
