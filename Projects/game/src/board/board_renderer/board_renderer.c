@@ -75,10 +75,25 @@ void board_renderer_init(board_renderer* renderer) {
 }
 
 void board_renderer_init_board(board_renderer* renderer, board* board) {
-    printf("initlizing board\n");
+    board->board_rendering_data.board_background_image = texture_2d_create();
+    texture_2d_set_parameter(&board->board_rendering_data.board_background_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
+    texture_2d_set_parameter(&board->board_rendering_data.board_background_image, texture_2d_minification_filter, texture_2d_filter_nearest);
+
+    texture_2d_set_parameter(&board->board_rendering_data.board_background_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
+    texture_2d_set_parameter(&board->board_rendering_data.board_background_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
+
+    texture_file cards_texture_file = texture_file_load_from_path(board->background_image);
+    texture_2d_set_width(&board->board_rendering_data.board_background_image, cards_texture_file.width);
+    texture_2d_set_height(&board->board_rendering_data.board_background_image, cards_texture_file.height);
+
+    texture_2d_set_color_mode(&board->board_rendering_data.board_background_image, RGBA);
+    texture_2d_set_data(&board->board_rendering_data.board_background_image, cards_texture_file.pixel_data);
+
+    texture_2d_build(&board->board_rendering_data.board_background_image);
 }
 
 void board_renderer_draw_board(board_renderer* renderer, board* board) {
+    texture_2d_bind(&board->board_rendering_data.board_background_image, 1);
     shader_program_bind(&renderer->board_shader);
 
     vertex_array_bind(&renderer->board_vertex_array);
