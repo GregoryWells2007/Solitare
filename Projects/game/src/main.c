@@ -82,6 +82,14 @@ int main(int argc, char** argv) {
     array_list_add(&new_board.areas, &((board_area){ (ivec2){ -365, 260 }, 2 }));
     array_list_add(&new_board.areas, &((board_area){ (ivec2){ -265, 260 }, 3 }));
 
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -565, 50 }, 5 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -430, 50 }, 5 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -290, 50 }, 5 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -150, 50 }, 5 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){  -15, 50 }, 5 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){  125, 50 }, 5 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){  260, 50 }, 5 }));
+
     array_list_add(&new_board.areas, &((board_area){ (ivec2){  565, 260 }, 4 }));
     
     board_renderer_init_board(&board_renderer, &new_board);
