@@ -152,6 +152,17 @@ void card_renderer_init(card_renderer* renderer) {
 }
 void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card_index) {
     shader_program_bind(&renderer->card_shader);
+    
+
+    matrix4 transform_matrix = matrix4_multiply(
+        matrix4_translate((vector3){ position.x, position.y, 0.0 }), 
+        matrix4_scale((vector3){ 60, 60, 1.0 })
+    );
+
+    renderer->card_index_uniform = (shader_uniform){ &card_index, "u_card_index", uniform_int1 };
+    renderer->transform_matrix = (shader_uniform){ &transform_matrix, "transform_matrix", uniform_matrix4 };
+    shader_program_set_uniform(&renderer->card_shader, &renderer->card_index_uniform);
+    shader_program_set_uniform(&renderer->card_shader, &renderer->transform_matrix);
 
     vertex_array_bind(&renderer->card_vertex_array);
     vertex_array_draw(&renderer->card_vertex_array);
