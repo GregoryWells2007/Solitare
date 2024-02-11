@@ -32,17 +32,19 @@ HEADER_DEF void transform2d_gen_matrix(transform2d* transform) {
     }
 
     if (transform->rotation != transform->last_rotation) {
-        transform->rotation_mat = matrix4_rotate_z(radians(transform->rotation););
+        if (transform->rotation != 0.0f)
+            transform->rotation_mat = matrix4_rotate_z(radians(transform->rotation));
         changed = true;
     }
 
     if (!vector2f_equals(transform->scale, transform->last_scale)) {
-        // regen scale mat
+        vector3 scl = { transform->scale.x, transform->scale.y, 1.0f };
+        transform->scale_mat = matrix4_scale(scl);
         changed = true;
     }
 
     if (changed) {
-        transform->mat = transform->rotation_mat;
+        transform->mat = transform->scale_mat;
     }
 
     transform->last_position = transform->position;
@@ -60,6 +62,11 @@ HEADER_DEF transform2d transform2d_set_rotation(transform2d* transform, float ro
     transform2d_gen_matrix(transform);
 }
 
+HEADER_DEF transform2d transform2d_set_scale(transform2d* transform, vector2f scale) {
+    transform->scale = scale;
+    transform2d_gen_matrix(transform);
+}
+
 HEADER_DEF transform2d transform2d_create() {
     transform2d new_transform2d = (transform2d){ };
     
@@ -69,7 +76,7 @@ HEADER_DEF transform2d transform2d_create() {
 
     new_transform2d.translation_mat = matrix4_identity();
     new_transform2d.rotation_mat = matrix4_identity();
-    new_transform2d.scale_mat = matrix4_identity();
+    new_transform2d.scale_mat =  matrix4_identity();
     new_transform2d.mat = matrix4_identity();
 
     transform2d_gen_matrix(&new_transform2d);
