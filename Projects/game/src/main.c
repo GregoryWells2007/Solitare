@@ -74,6 +74,7 @@ int main(int argc, char** argv) {
 
     board new_board = {};
     new_board.background_image = "../res/images/background.png";
+    new_board.areas_image = "../res/images/card_bases.png";
     board_renderer_init_board(&board_renderer, &new_board);
 
     while (window_is_open(&main_window)) {      
