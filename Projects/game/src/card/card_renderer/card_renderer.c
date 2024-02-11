@@ -175,7 +175,7 @@ void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card
     
 
     matrix4 transform_matrix = matrix4_multiply(
-        matrix4_scale((vector3){ 60, 60, 1.0 }),
+        matrix4_scale((vector3){ 40, 40, 1.0 }),
         matrix4_translate((vector3){ position.x, position.y, 0.0 })
     );
 
