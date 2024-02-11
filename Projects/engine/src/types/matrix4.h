@@ -101,7 +101,7 @@ HEADER_DEF matrix4 matrix4_rotate_z(float amount) {
 HEADER_DEF matrix4 matrix4_scale(vector3 amount) {
     matrix4 new_matrix4 = matrix4_identity();
     new_matrix4.values[0][0] = amount.x;
-    new_matrix4.values[0][0] = amount.y;
-    new_matrix4.values[0][0] = amount.z;
+    new_matrix4.values[1][1] = amount.y;
+    new_matrix4.values[2][2] = amount.z;
     return new_matrix4;
 }
