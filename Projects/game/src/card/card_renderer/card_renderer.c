@@ -161,8 +161,8 @@ void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card
 
     renderer->card_index_uniform = (shader_uniform){ &card_index, "u_card_index", uniform_int1 };
     renderer->transform_matrix = (shader_uniform){ &transform_matrix, "transform_matrix", uniform_matrix4 };
-    shader_program_set_uniform(&renderer->card_shader, &renderer->card_index_uniform);
-    shader_program_set_uniform(&renderer->card_shader, &renderer->transform_matrix);
+    shader_program_update_uniform(&renderer->card_shader, &renderer->card_index_uniform);
+    shader_program_update_uniform(&renderer->card_shader, &renderer->transform_matrix);
 
     vertex_array_bind(&renderer->card_vertex_array);
     vertex_array_draw(&renderer->card_vertex_array);
