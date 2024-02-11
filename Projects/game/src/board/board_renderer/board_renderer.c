@@ -136,13 +136,15 @@ void board_renderer_draw_board(board_renderer* renderer, board* board) {
     renderer->board_mesh_uniform = (shader_uniform){ &is_board, "is_background", uniform_bool };
     shader_program_update_uniform(&renderer->board_shader, &renderer->board_mesh_uniform);
 
-    for (int i = 0; i < sizeof(board->areas) / sizeof(board->areas[0]); i++) {
+    for (int i = 0; i < array_list_size(&board->areas); i++) {
+        board_area* current_board_area = array_list_get(&board->areas, i);
+
         matrix4 transform_matrix = matrix4_multiply(
             matrix4_scale((vec3){ 40, 40, 1 }),
-            matrix4_translate((vec3){ board->areas[i].position.x, board->areas[1].position.y, 0 })
+            matrix4_translate((vec3){ current_board_area->position.x, current_board_area->position.y, 0 })
         );
         renderer->transform_uniform = (shader_uniform){ &transform_matrix, "transform_matrix", uniform_matrix4 };
-        renderer->area_index = (shader_uniform){ &board->areas[i].card_index, "area_index", uniform_int1 };
+        renderer->area_index = (shader_uniform){ &current_board_area->card_index, "area_index", uniform_int1 };
         shader_program_update_uniform(&renderer->board_shader, &renderer->transform_uniform);
         shader_program_update_uniform(&renderer->board_shader, &renderer->area_index);
 

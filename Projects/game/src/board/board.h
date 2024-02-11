@@ -15,7 +15,7 @@ typedef struct board {
     char* background_image;
     char* areas_image;
 
-    board_area* areas;
+    array_list areas;
 
     struct board_rendering_data board_rendering_data;
 } board;
