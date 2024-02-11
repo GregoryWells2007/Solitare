@@ -76,6 +76,14 @@ int main(int argc, char** argv) {
     board new_board = {};
     new_board.background_image = "../res/images/background.png";
     new_board.areas_image = "../res/images/card_bases.png";
+    new_board.areas = array_list_create();
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -565, 260 }, 0 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -465, 260 }, 1 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -365, 260 }, 2 }));
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -265, 260 }, 3 }));
+
+    array_list_add(&new_board.areas, &((board_area){ (ivec2){  565, 260 }, 4 }));
+    
     board_renderer_init_board(&board_renderer, &new_board);
 
     while (window_is_open(&main_window)) {      
