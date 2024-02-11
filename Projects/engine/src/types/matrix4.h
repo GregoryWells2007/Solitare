@@ -105,3 +105,18 @@ HEADER_DEF matrix4 matrix4_scale(vector3 amount) {
     new_matrix4.values[2][2] = amount.z;
     return new_matrix4;
 }
+
+HEADER_DEF matrix4 matrix4_multiply(matrix4 m1, matrix4 m2) {
+    matrix4 new_matrix = {};
+
+    for (int c = 0; c < 4; c++) {
+        for (int r = 0; r < 4; r++) {
+            new_matrix.values[r][c] = 0;
+
+            for (int k = 0; k < 4; k++)
+                new_matrix.values[r][c] += m1.values[r][k] * m2.values[k][c];
+        }
+    }
+
+    return new_matrix;
+}
