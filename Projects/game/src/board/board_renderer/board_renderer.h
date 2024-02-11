@@ -14,9 +14,13 @@
     array_buffer board_positions_buffer;    \
     index_buffer board_index_buffer;         
 
+#define board_uniforms                      \
+    shader_uniform texture_index_uniform
+
 typedef struct board_renderer {
     board_vertex_data;
     board_shader_data;
+    board_uniforms;
 } board_renderer;
 
 void board_renderer_init(board_renderer* renderer);

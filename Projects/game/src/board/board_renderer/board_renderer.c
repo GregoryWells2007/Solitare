@@ -8,10 +8,10 @@ struct board_vertex {
 
 void board_renderer_create_mesh(board_renderer* renderer) {
     struct board_vertex vertices[4] = {
-        { -1.0f,  1.0f, 0.0f, 0.0f },
+        { -1.0f,  1.0f, 0.0f, 1.0f },
         { -1.0f, -1.0f, 0.0f, 0.0f },
-        {  1.0f, -1.0f, 0.0f, 0.0f },
-        {  1.0f,  1.0f, 0.0f, 0.0f },
+        {  1.0f, -1.0f, 1.0f, 0.0f },
+        {  1.0f,  1.0f, 1.0f, 1.0f },
     };
     triangle triangles[2] = {
         { 0, 1, 2 },
@@ -58,8 +58,15 @@ void board_renderer_create_shader(board_renderer* renderer) {
     
     shader_program_set_stage(&renderer->board_shader, &renderer->board_vertex_shader);
     shader_program_set_stage(&renderer->board_shader, &renderer->board_fragment_shader);
+    
+    int texture_index = 1;
+    renderer->texture_index_uniform = (shader_uniform){ &texture_index, "texture_index", uniform_int1  };
 
     shader_program_build(&renderer->board_shader);
+
+    shader_program_bind(&renderer->board_shader);
+    shader_program_set_uniform(&renderer->board_shader, &renderer->texture_index_uniform);
+    shader_program_bind(NULL);
 }
 
 void board_renderer_init(board_renderer* renderer) {

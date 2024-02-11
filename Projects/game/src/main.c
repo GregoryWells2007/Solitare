@@ -82,8 +82,8 @@ int main(int argc, char** argv) {
 
         board_renderer_draw_board(&board_renderer, &new_board);
 
-        // card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
-        // card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
+        card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
+        card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
 
         framebuffer_bind(NULL);
         texture_2d_bind(&color_texture, 0);
