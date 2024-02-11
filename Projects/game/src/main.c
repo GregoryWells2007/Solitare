@@ -4,11 +4,6 @@
 #include "board/board_renderer.h"
 #include "card/card_renderer/card_renderer.h"
 
-struct triangle_vertex {
-    float x, y;
-    float u, v;
-};
-
 int main(int argc, char** argv) {
     engine_init();
 
@@ -69,109 +64,6 @@ int main(int argc, char** argv) {
 
     framebuffer_build(&screen_framebuffer);
 
-    struct triangle_vertex vertices[24] = {
-        { -1.000f,  1.750f,     0.0556f, 1.0000f },
-        { -1.045f,  1.745f,     0.0356f, 0.9986f },
-        { -1.075f,  1.735f,     0.0222f, 0.9957f },
-        { -1.110f,  1.700f,     0.0067f, 0.9857f },
-        { -1.120f,  1.670f,     0.0022f, 0.9771f },
-        { -1.125f,  1.625f,     0.0000f, 0.9643f },
-        
-        { -1.125f, -1.625f,     0.0000f, 0.0357f },
-        { -1.120f, -1.670f,     0.0022f, 0.0223f },
-        { -1.110f, -1.700f,     0.0067f, 0.0143f },
-        { -1.075f, -1.735f,     0.0222f, 0.0043f },
-        { -1.045f, -1.745f,     0.0356f, 0.0014f },
-        { -1.009f, -1.750f,     0.0556f, 0.0000f },
-
-        {  1.000f, -1.750f,     0.9444f, 0.0000f },
-        {  1.045f, -1.745f,     0.9644f, 0.0014f },
-        {  1.075f, -1.735f,     0.9778f, 0.0043f },
-        {  1.110f, -1.700f,     0.9933f, 0.0143f },
-        {  1.120f, -1.670f,     0.9978f, 0.0223f },
-        {  1.125f, -1.625f,     1.0000f, 0.0357f },
-
-        {  1.125f,  1.625f,     1.0000f, 0.9643f },
-        {  1.120f,  1.670f,     0.9978f, 0.9771f },
-        {  1.110f,  1.700f,     0.9933f, 0.9857f },
-        {  1.075f,  1.735f,     0.9778f, 0.9957f },
-        {  1.045f,  1.745f,     0.9644f, 0.9986f },
-        {  1.000f,  1.750f,     0.9444f, 1.0000f }
-    };
-    triangle triangles[22] = {
-        { 0,  1, 22 },
-        { 0, 23, 22 },
-
-        { 1, 2, 21 },
-        { 1, 22, 21 },
-
-        { 2, 3, 20 },
-        { 2, 21, 20 },
-
-        { 3, 4, 19 },
-        { 3, 20, 19 },
-
-        { 4, 5, 18 },
-        { 4, 19, 18 },
-
-        { 5, 6, 17 },
-        { 5, 18, 17 },
-
-        { 6, 7, 16 },
-        { 6, 17, 16 },
-
-        { 7, 8, 15 },
-        { 7, 16, 15 },
-
-        { 8, 9, 14 },
-        { 8, 15, 14 },
-
-        { 9, 10, 13 },
-        { 9, 14, 13 },
-
-        { 10, 11, 12 },
-        { 10, 13, 12 },
-    };
-
-    vertex_array triangle = vertex_array_create();
-
-    array_buffer triangle_positions_buffer = array_buffer_create(); 
-    array_buffer_set_data(&triangle_positions_buffer, vertices);
-    array_buffer_set_vertex_count(&triangle_positions_buffer, 24);
-    array_buffer_set_draw_type(&triangle_positions_buffer, static_draw);   
-
-    vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
-    array_buffer_add_attribute(&triangle_positions_buffer, &positions_attribute);
-
-    vertex_attribute uv_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
-    array_buffer_add_attribute(&triangle_positions_buffer, &uv_attribute);
-
-    index_buffer triangle_index_buffer = index_buffer_create();
-    index_buffer_set_data(&triangle_index_buffer, triangles);
-    index_buffer_set_triangle_count(&triangle_index_buffer, 22);
-    index_buffer_set_draw_type(&triangle_index_buffer, static_draw); 
-
-    vertex_array_add_array_buffer(&triangle, &triangle_positions_buffer);
-    vertex_array_set_index_buffer(&triangle, &triangle_index_buffer);
-
-    vertex_array_build(&triangle);
-
-    texture_2d cards_image = texture_2d_create();
-    texture_2d_set_parameter(&cards_image, texture_2d_magnification_filter, texture_2d_filter_nearest);
-    texture_2d_set_parameter(&cards_image, texture_2d_minification_filter, texture_2d_filter_nearest);
-
-    texture_2d_set_parameter(&cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
-    texture_2d_set_parameter(&cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
-
-    texture_file cards_texture_file = texture_file_load_from_path("../res/images/Cards.png");
-    texture_2d_set_width(&cards_image, cards_texture_file.width);
-    texture_2d_set_height(&cards_image, cards_texture_file.height);
-
-    texture_2d_set_color_mode(&cards_image, RGBA);
-    texture_2d_set_data(&cards_image, cards_texture_file.pixel_data);
-
-    texture_2d_build(&cards_image);
-
     clear_screen_data screen_clear = clear_screen_data_create(); 
     clear_screen_data_enable_layer(&screen_clear, color_layer);
     clear_screen_data_set_screen_color(&screen_clear, (color){ 150, 150, 150, 1.0f });
@@ -183,11 +75,8 @@ int main(int argc, char** argv) {
         framebuffer_bind(&screen_framebuffer);
         clear_screen(&screen_clear);
 
-        texture_2d_bind(&cards_image, 0);
-        card_renderer_draw_card(&card_renderer, (vector2){}, 0);
-
-        vertex_array_bind(&triangle);
-        vertex_array_draw(&triangle);
+        card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
+        card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 2);
 
         framebuffer_bind(NULL);
         texture_2d_bind(&color_texture, 0);
@@ -202,8 +91,6 @@ int main(int argc, char** argv) {
     framebuffer_delete(&screen_framebuffer);
     
     card_renderer_cleanup(&card_renderer);
-    vertex_array_delete(&triangle);
-    texture_2d_delete(&cards_image);
 
     window_manager_delete(&win_manager);
     return 0;
