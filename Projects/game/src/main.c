@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
 
     window_properties* main_window_properties = window_get_properties(&main_window); // imma add some properties later
     window_properties_set_resizable(main_window_properties, false);
-    window_properties_set_maximized(main_window_properties, true);
+    window_properties_set_maximized(main_window_properties, false);
     window_properties_set_decorated(main_window_properties, true);
     window_update_properties(&main_window);
 

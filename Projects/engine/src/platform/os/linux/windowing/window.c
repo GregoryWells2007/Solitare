@@ -177,10 +177,17 @@ void platform_window_set_resizable(window* window, bool resizable) {
     glfwSetWindowAttrib(window->platform_window->window, GLFW_RESIZABLE, window->properties.is_resizable);
 
     glfwSetWindowSizeLimits(window->platform_window->window, window->data.size.x, window->data.size.y, window->data.size.x, window->data.size.y);
-    glfwSetWindowSize(window->platform_window->window, window->data.size.x, window->data.size.y);
+    
 }
 void platform_window_set_maximized(window* window, bool maximized) { 
-    // glfwSetWindowAttrib(window->platform_window->window, GLFW_MAXIMIZED, maximized); 
+    glfwSetWindowAttrib(window->platform_window->window, GLFW_MAXIMIZED, maximized); 
+    glfwSetWindowMonitor(window, glfwGetPrimaryMonitor());
+
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    window->data.size.x = mode->width;
+    window->data.size.y = mode->height;
+
+    glfwSetWindowSize(window->platform_window->window, window->data.size.x, window->data.size.y);
     // if (maximized)
     //     glfw_maximize_window(window);
     // else {
