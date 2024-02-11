@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "engine.h"
 
-#include "board/board_renderer.h"
+#include "board/board_renderer/board_renderer.h"
 #include "card/card_renderer/card_renderer.h"
 
 int main(int argc, char** argv) {
@@ -69,15 +69,21 @@ int main(int argc, char** argv) {
     card_renderer card_renderer = {};
     card_renderer_init(&card_renderer);
 
+    board_renderer board_renderer = {};
+    board_renderer_init(&board_renderer);
+
     board new_board = {};
-    new_board.background_image = "../res/images/background.png"
+    new_board.background_image = "../res/images/background.png";
+    board_renderer_init_board(&board_renderer, &new_board);
 
     while (window_is_open(&main_window)) {      
         framebuffer_bind(&screen_framebuffer);
         clear_screen(&screen_clear);
 
-        card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
-        card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
+        board_renderer_draw_board(&board_renderer, &new_board);
+
+        // card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
+        // card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
 
         framebuffer_bind(NULL);
         texture_2d_bind(&color_texture, 0);
@@ -91,6 +97,7 @@ int main(int argc, char** argv) {
     renderbuffer_delete(&depth_stencil_texture);
     framebuffer_delete(&screen_framebuffer);
     
+    board_renderer_cleanup(&board_renderer);
     card_renderer_cleanup(&card_renderer);
 
     window_manager_delete(&win_manager);
