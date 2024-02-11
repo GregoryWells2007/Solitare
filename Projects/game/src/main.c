@@ -95,10 +95,6 @@ int main(int argc, char** argv) {
         {  1.045f,  1.745f,     0.9644f, 0.9986f },
         {  1.000f,  1.750f,     0.9444f, 1.0000f }
     };
-    for (int i = 0; i < 24; i++) {
-        vertices[i].x = vertices[i].x * 60.0f;
-        vertices[i].y = vertices[i].y * 60.0f;
-    }
     triangle triangles[22] = {
         { 0,  1, 22 },
         { 0, 23, 22 },
