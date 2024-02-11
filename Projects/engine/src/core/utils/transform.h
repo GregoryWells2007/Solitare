@@ -44,7 +44,7 @@ HEADER_DEF void transform2d_gen_matrix(transform2d* transform) {
     }
 
     if (changed) {
-        transform->mat = transform->scale_mat;
+        transform->mat = matrix4_multiply(matrix4_multiply(transform->scale_mat, transform->translation_mat), transform->rotation_mat);
     }
 
     transform->last_position = transform->position;
