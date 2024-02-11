@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
 
     window_properties* main_window_properties = window_get_properties(&main_window); // imma add some properties later
     window_properties_set_resizable(main_window_properties, false);
-    window_properties_set_maximized(main_window_properties, false);
+    window_properties_set_maximized(main_window_properties, true);
     window_properties_set_decorated(main_window_properties, true);
     window_update_properties(&main_window);
 
@@ -34,8 +34,8 @@ int main(int argc, char** argv) {
     texture_2d_set_parameter(&color_texture, texture_2d_wrap_x, texture_2d_wrap_repeat);
     texture_2d_set_parameter(&color_texture, texture_2d_wrap_y, texture_2d_wrap_repeat);
 
-    texture_2d_set_width(&color_texture, 1280);
-    texture_2d_set_height(&color_texture, 720);
+    texture_2d_set_width(&color_texture, main_window.data.size.x);
+    texture_2d_set_height(&color_texture, main_window.data.size.y);
 
     texture_2d_set_color_mode(&color_texture, RGBA);
 
@@ -48,8 +48,8 @@ int main(int argc, char** argv) {
     framebuffer_add_attachment(&screen_framebuffer, &framebuffer_color_attachment);
 
     renderbuffer depth_stencil_texture = renderbuffer_create();
-    renderbuffer_set_width(&depth_stencil_texture, 1280);
-    renderbuffer_set_height(&depth_stencil_texture, 720);
+    renderbuffer_set_width(&depth_stencil_texture, main_window.data.size.x);
+    renderbuffer_set_height(&depth_stencil_texture, main_window.data.size.y);
     renderbuffer_set_color_mode(&depth_stencil_texture, DEPTHSTENCIL);   
 
     renderbuffer_build(&depth_stencil_texture);

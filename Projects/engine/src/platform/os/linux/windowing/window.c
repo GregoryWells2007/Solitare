@@ -114,9 +114,16 @@ void platform_window_create(window* window) {
         main_window = window->main_window->platform_window->window;
 
     glfwWindowHint(GLFW_RESIZABLE, window->properties.is_resizable);
-    if (window->properties.is_maximized)
-        glfw_maximize_window(window);
-    window->platform_window->window = glfwCreateWindow(window->data.size.x, window->data.size.y, window->data.title, NULL, main_window);
+    glfwWindowHint(GLFW_MAXIMIZED, window->properties.is_maximized);
+    GLFWmonitor* monitor = NULL;
+    if (window->properties.is_maximized) {
+        int monitor_count = 0;
+        monitor = glfwGetMonitors(&monitor_count)[0];
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        window->data.size.x = mode->width;
+        window->data.size.y = mode->height;
+    }
+    window->platform_window->window = glfwCreateWindow(window->data.size.x, window->data.size.y, window->data.title, monitor, main_window);
     glfwMakeContextCurrent(window->platform_window->window);
 
     if (!window->platform_window->window)
@@ -173,12 +180,12 @@ void platform_window_set_resizable(window* window, bool resizable) {
     glfwSetWindowSize(window->platform_window->window, window->data.size.x, window->data.size.y);
 }
 void platform_window_set_maximized(window* window, bool maximized) { 
-    glfwSetWindowAttrib(window->platform_window->window, GLFW_MAXIMIZED, maximized); 
-    if (maximized)
-        glfw_maximize_window(window);
-    else {
-        glfw_unmaximize_window(window);
-    }
+    // glfwSetWindowAttrib(window->platform_window->window, GLFW_MAXIMIZED, maximized); 
+    // if (maximized)
+    //     glfw_maximize_window(window);
+    // else {
+    //     glfw_unmaximize_window(window);
+    // }
 }
 void platform_window_set_decorated(window* window, bool decorated) {
     if (window->properties.is_maximized)
