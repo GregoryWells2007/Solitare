@@ -56,7 +56,13 @@ HEADER_DEF matrix4 matrix4_orthographic(float left, float right, float top, floa
 }
 
 HEADER_DEF matrix4 matrix4_translate(vector3 amt) {
+    matrix4 new_matrix4 = matrix4_identity();
 
+    new_matrix4.values[3][0] = amt.x;
+    new_matrix4.values[3][1] = amt.y;
+    new_matrix4.values[3][2] = amt.z;
+
+    return new_matrix4;
 }   
 
 HEADER_DEF matrix4 matrix4_rotate_x(float amount) {
