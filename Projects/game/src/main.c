@@ -185,6 +185,8 @@ int main(int argc, char** argv) {
 
     transform2d test_transform = transform2d_create();
     transform2d_set_position(&test_transform, (vector2){ 100, 0 });
+    transform2d_set_rotation(&test_transform, 30.5f);
+    transform2d_set_scale(&test_transform, (vector2){ 60.0, 60.0 });
 
     shader_uniform camera_view_matrix = (shader_uniform){ &game_camera.camera_matrix, "camera_matrix", uniform_matrix4 };
     shader_uniform transform_matrix = (shader_uniform){ &test_transform.mat, "transform_matrix", uniform_matrix4 };
