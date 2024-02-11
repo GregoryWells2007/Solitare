@@ -27,8 +27,6 @@ int main(int argc, char** argv) {
 
     framebuffer screen_framebuffer = framebuffer_create();
 
-    // create a screen texture
-
     texture_2d color_texture = texture_2d_create();
     texture_2d_set_parameter(&color_texture, texture_2d_magnification_filter, texture_2d_filter_linear);
     texture_2d_set_parameter(&color_texture, texture_2d_minification_filter, texture_2d_filter_linear);
@@ -71,12 +69,15 @@ int main(int argc, char** argv) {
     card_renderer card_renderer = {};
     card_renderer_init(&card_renderer);
 
+    board new_board = {};
+    new_board.background_image = "../res/images/background.png"
+
     while (window_is_open(&main_window)) {      
         framebuffer_bind(&screen_framebuffer);
         clear_screen(&screen_clear);
 
         card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
-        card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 2);
+        card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
 
         framebuffer_bind(NULL);
         texture_2d_bind(&color_texture, 0);
