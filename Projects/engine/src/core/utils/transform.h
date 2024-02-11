@@ -1,5 +1,6 @@
 #pragma once
 #include "engine_api.h"
+#include "mathf.h"
 #include "src/types/vector2.h"
 #include "src/types/vector3.h"
 #include "src/types/matrix4.h"
@@ -31,7 +32,7 @@ HEADER_DEF void transform2d_gen_matrix(transform2d* transform) {
     }
 
     if (transform->rotation != transform->last_rotation) {
-        // regen rotation mat
+        transform->rotation_mat = matrix4_rotate_z(radians(transform->rotation););
         changed = true;
     }
 
@@ -41,7 +42,7 @@ HEADER_DEF void transform2d_gen_matrix(transform2d* transform) {
     }
 
     if (changed) {
-        transform->mat = transform->translation_mat;
+        transform->mat = transform->rotation_mat;
     }
 
     transform->last_position = transform->position;
@@ -51,6 +52,11 @@ HEADER_DEF void transform2d_gen_matrix(transform2d* transform) {
 
 HEADER_DEF transform2d transform2d_set_position(transform2d* transform, vector2f position) {
     transform->position = position;
+    transform2d_gen_matrix(transform);
+}
+
+HEADER_DEF transform2d transform2d_set_rotation(transform2d* transform, float rotation) {
+    transform->rotation = rotation;
     transform2d_gen_matrix(transform);
 }
 
