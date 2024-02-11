@@ -60,12 +60,20 @@ void board_renderer_create_shader(board_renderer* renderer) {
     shader_program_set_stage(&renderer->board_shader, &renderer->board_fragment_shader);
     
     int texture_index = 1;
+    bool is_board = true;
+    matrix4 identity_matrix = matrix4_identity();
     renderer->texture_index_uniform = (shader_uniform){ &texture_index, "texture_index", uniform_int1  };
+    renderer->board_mesh_uniform = (shader_uniform){ &is_board, "is_background", uniform_bool };
+    renderer->transform_uniform = (shader_uniform){ &identity_matrix, "transform_matrix", uniform_matrix4 };
+    renderer->camera_uniform = (shader_uniform){ &renderer->card_renderer->game_camera.camera_matrix, "camera_matrix", uniform_matrix4 };
 
     shader_program_build(&renderer->board_shader);
 
     shader_program_bind(&renderer->board_shader);
     shader_program_set_uniform(&renderer->board_shader, &renderer->texture_index_uniform);
+    shader_program_set_uniform(&renderer->board_shader, &renderer->board_mesh_uniform);
+    shader_program_set_uniform(&renderer->board_shader, &renderer->transform_uniform);
+    shader_program_set_uniform(&renderer->board_shader, &renderer->camera_uniform);
     shader_program_bind(NULL);
 }
 
@@ -111,11 +119,26 @@ void board_renderer_init_board(board_renderer* renderer, board* board) {
 
 void board_renderer_draw_board(board_renderer* renderer, board* board) {
     texture_2d_bind(&board->board_rendering_data.board_background_image, 1);
-    texture_2d_bind(&board->board_rendering_data.board_areas_image, 2);
     shader_program_bind(&renderer->board_shader);
+
+    bool is_board = true;
+    renderer->board_mesh_uniform = (shader_uniform){ &is_board, "is_background", uniform_bool };
+    shader_program_update_uniform(&renderer->board_shader, &renderer->board_mesh_uniform);
 
     vertex_array_bind(&renderer->board_vertex_array);
     vertex_array_draw(&renderer->board_vertex_array);
+
+    texture_2d_bind(&board->board_rendering_data.board_areas_image, 1);
+    matrix4 transform_matrix = matrix4_multiply(
+        matrix4_scale((vec3){ 40, 40, 1 }),
+        matrix4_translate((vec3){ 0, 0, 0 })
+    );
+    is_board = false;
+    renderer->transform_uniform = (shader_uniform){ &transform_matrix, "transform_matrix", uniform_matrix4 };
+    renderer->board_mesh_uniform = (shader_uniform){ &is_board, "is_background", uniform_bool };
+    shader_program_update_uniform(&renderer->board_shader, &renderer->board_mesh_uniform);
+    shader_program_update_uniform(&renderer->board_shader, &renderer->transform_uniform);
+    card_renderer_draw_blank_card(renderer->card_renderer);
 }
 
 void board_renderer_cleanup(board_renderer* renderer) {

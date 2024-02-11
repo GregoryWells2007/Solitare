@@ -188,6 +188,10 @@ void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card
     vertex_array_bind(&renderer->card_vertex_array);
     vertex_array_draw(&renderer->card_vertex_array);
 }
+void card_renderer_draw_blank_card(card_renderer* renderer) {
+    vertex_array_bind(&renderer->card_vertex_array);
+    vertex_array_draw(&renderer->card_vertex_array);   
+}
 void card_renderer_cleanup(card_renderer* renderer) {
     shader_program_delete(&renderer->card_shader);
     vertex_array_delete(&renderer->card_vertex_array);

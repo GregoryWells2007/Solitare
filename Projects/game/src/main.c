@@ -70,6 +70,7 @@ int main(int argc, char** argv) {
     card_renderer_init(&card_renderer);
 
     board_renderer board_renderer = {};
+    board_renderer.card_renderer = &card_renderer;
     board_renderer_init(&board_renderer);
 
     board new_board = {};
