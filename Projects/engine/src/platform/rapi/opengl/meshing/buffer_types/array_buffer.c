@@ -25,7 +25,7 @@ void platform_array_buffer_build(array_buffer* buffer) {
 
     glCreateBuffers(1, &rendererID);
     glBindBuffer(GL_ARRAY_BUFFER, rendererID);
-    glBufferData(GL_ARRAY_BUFFER, size_of_vertex * buffer->vertex_count, buffer->data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size_of_vertex * buffer->vertex_count, buffer->data, (buffer->draw_type == static_draw) ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 
     size_t current_offset = 0;
 
