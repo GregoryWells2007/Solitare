@@ -24,6 +24,7 @@ typedef struct card_renderer {
     card_texture_data;
 
     camera game_camera;
+    int current_card_count;
 } card_renderer;
 
 void card_renderer_init(card_renderer* renderer);
