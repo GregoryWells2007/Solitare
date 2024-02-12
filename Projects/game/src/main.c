@@ -77,20 +77,20 @@ int main(int argc, char** argv) {
     new_board.background_image = "../res/images/background.png";
     new_board.areas_image = "../res/images/card_bases.png";
     new_board.areas = array_list_create();
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -565, 260 }, 0 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -465, 260 }, 1 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -365, 260 }, 2 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -265, 260 }, 3 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -565, 260 }, 0 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -465, 260 }, 1 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -365, 260 }, 2 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -265, 260 }, 3 }));
 
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -565, 50 }, 5 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -430, 50 }, 5 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -290, 50 }, 5 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){ -150, 50 }, 5 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){  -15, 50 }, 5 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){  125, 50 }, 5 }));
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){  260, 50 }, 5 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -565, 50 }, 5 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -430, 50 }, 5 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -290, 50 }, 5 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){ -150, 50 }, 5 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){  -15, 50 }, 5 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){  125, 50 }, 5 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){  260, 50 }, 5 }));
 
-    array_list_add(&new_board.areas, &((board_area){ (ivec2){  565, 260 }, 4 }));
+    // array_list_add(&new_board.areas, &((board_area){ (ivec2){  565, 260 }, 4 }));
     
     board_renderer_init_board(&board_renderer, &new_board);
 
@@ -102,6 +102,8 @@ int main(int argc, char** argv) {
 
         card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
         card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
+
+        card_renderer_draw(&card_renderer);
 
         framebuffer_bind(NULL);
         texture_2d_bind(&color_texture, 0);
