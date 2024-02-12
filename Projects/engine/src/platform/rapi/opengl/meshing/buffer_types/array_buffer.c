@@ -69,7 +69,7 @@ void platform_array_buffer_set_sub_data(array_buffer* buffer, size_t offset, voi
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, buffer->platform_array_buffer->rendererID);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
