@@ -19,9 +19,7 @@
 #define board_uniforms                      \
     shader_uniform texture_index_uniform;   \
     shader_uniform board_mesh_uniform;      \
-    shader_uniform transform_uniform;       \
-    shader_uniform camera_uniform;          \
-    shader_uniform area_index;             
+    shader_uniform camera_uniform;
 
 typedef struct board_renderer {
     board_vertex_data;

@@ -65,18 +65,14 @@ void board_renderer_create_shader(board_renderer* renderer) {
     matrix4 identity_matrix = matrix4_identity();
     renderer->texture_index_uniform = (shader_uniform){ &texture_index, "texture_index", uniform_int1  };
     renderer->board_mesh_uniform = (shader_uniform){ &is_board, "is_background", uniform_bool };
-    renderer->transform_uniform = (shader_uniform){ &identity_matrix, "transform_matrix", uniform_matrix4 };
     renderer->camera_uniform = (shader_uniform){ &renderer->card_renderer->game_camera.camera_matrix, "camera_matrix", uniform_matrix4 };
-    renderer->area_index = (shader_uniform){ &area_index, "area_index", uniform_int1 };
 
     shader_program_build(&renderer->board_shader);
 
     shader_program_bind(&renderer->board_shader);
     shader_program_set_uniform(&renderer->board_shader, &renderer->texture_index_uniform);
     shader_program_set_uniform(&renderer->board_shader, &renderer->board_mesh_uniform);
-    shader_program_set_uniform(&renderer->board_shader, &renderer->transform_uniform);
     shader_program_set_uniform(&renderer->board_shader, &renderer->camera_uniform);
-    shader_program_set_uniform(&renderer->board_shader, &renderer->area_index);
     shader_program_bind(NULL);
 }
 
@@ -131,25 +127,16 @@ void board_renderer_draw_board(board_renderer* renderer, board* board) {
     vertex_array_bind(&renderer->board_vertex_array);
     vertex_array_draw(&renderer->board_vertex_array);
 
-    texture_2d_bind(&board->board_rendering_data.board_areas_image, 1);
     is_board = false;
     renderer->board_mesh_uniform = (shader_uniform){ &is_board, "is_background", uniform_bool };
     shader_program_update_uniform(&renderer->board_shader, &renderer->board_mesh_uniform);
 
     for (int i = 0; i < array_list_size(&board->areas); i++) {
         board_area* current_board_area = array_list_get(&board->areas, i);
-
-        matrix4 transform_matrix = matrix4_multiply(
-            matrix4_scale((vec3){ 40, 40, 1 }),
-            matrix4_translate((vec3){ current_board_area->position.x, current_board_area->position.y, 0 })
-        );
-        renderer->transform_uniform = (shader_uniform){ &transform_matrix, "transform_matrix", uniform_matrix4 };
-        renderer->area_index = (shader_uniform){ &current_board_area->card_index, "area_index", uniform_int1 };
-        shader_program_update_uniform(&renderer->board_shader, &renderer->transform_uniform);
-        shader_program_update_uniform(&renderer->board_shader, &renderer->area_index);
-
-        card_renderer_draw_blank_card(renderer->card_renderer);
+        card_renderer_draw_card(renderer->card_renderer, (vector2f){current_board_area->position.x, current_board_area->position.y}, current_board_area->card_index);
     }
+    texture_2d_bind(&board->board_rendering_data.board_areas_image, 1);
+    card_renderer_draw_plain(renderer->card_renderer);
 }
 
 void board_renderer_cleanup(board_renderer* renderer) {

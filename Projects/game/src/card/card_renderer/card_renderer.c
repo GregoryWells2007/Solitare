@@ -180,10 +180,16 @@ void card_renderer_draw(card_renderer* renderer) {
     vertex_array_draw(&renderer->card_vertex_array);   
 
     renderer->current_card_count = 0;
+
+    array_buffer_reset_data(&renderer->card_positions_buffer, 0, NULL, sizeof(struct card_vertex) * 24 * 100);
 }
-void card_renderer_draw_blank_card(card_renderer* renderer) {
-    // vertex_array_bind(&renderer->card_vertex_array);
-    // vertex_array_draw(&renderer->card_vertex_array);   
+void card_renderer_draw_plain(card_renderer* renderer) {
+    vertex_array_bind(&renderer->card_vertex_array);
+    vertex_array_draw(&renderer->card_vertex_array);   
+
+    renderer->current_card_count = 0;
+
+    array_buffer_reset_data(&renderer->card_positions_buffer, 0, NULL, sizeof(struct card_vertex) * 24 * 100);
 }
 void card_renderer_cleanup(card_renderer* renderer) {
     shader_program_delete(&renderer->card_shader);
