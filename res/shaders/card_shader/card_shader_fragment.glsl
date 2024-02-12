@@ -4,10 +4,10 @@ out vec4 color;
 in vec2 v_uv;
 
 uniform sampler2D texure;
-in vec3 v_card_data;
+in vec3 card_draw_data;
 
-uniform int mouse_over;
-uniform int card_held;
+int mouse_over = 0;
+int card_held = 0;
 
 ivec2 card_texture_size = ivec2(13, 5);
 ivec2 calc_from_1d_index(float index) {
@@ -33,7 +33,10 @@ vec4 get_color_multiplier() {
 } 
 
 void main(void) {
-    ivec2 card_index = calc_from_1d_index(v_card_data.x);
+    ivec2 card_index = calc_from_1d_index(card_draw_data.x);
+    
+    mouse_over = int(card_draw_data.y);
+    card_held = int(card_draw_data.z);
     
     vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, (v_uv.y - (card_index.y + 1)) / card_texture_size.y);
     color = texture(texure, vec2(uv.x, uv.y));
