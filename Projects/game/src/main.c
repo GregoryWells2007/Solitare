@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
 
         board_renderer_draw_board(&board_renderer, &new_board);
 
-        card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 0);
+        card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 1);
         card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
 
         card_renderer_draw(&card_renderer);
