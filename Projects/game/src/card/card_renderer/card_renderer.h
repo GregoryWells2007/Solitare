@@ -34,4 +34,5 @@ typedef struct card_renderer {
 void card_renderer_init(card_renderer* renderer);
 void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card_index);
 void card_renderer_draw_blank_card(card_renderer* renderer);
+void card_renderer_draw(card_renderer* renderer);
 void card_renderer_cleanup(card_renderer* renderer);

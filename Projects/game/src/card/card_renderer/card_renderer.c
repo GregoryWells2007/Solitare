@@ -54,35 +54,6 @@ struct card_vertex {
 };
 
 void card_renderer_create_vertex_array(card_renderer* renderer) {
-    struct card_vertex vertices[24] = {
-        { -1.000f,  1.750f,     0.0556f, 1.0000f },
-        { -1.045f,  1.745f,     0.0356f, 0.9986f },
-        { -1.075f,  1.735f,     0.0222f, 0.9957f },
-        { -1.110f,  1.700f,     0.0067f, 0.9857f },
-        { -1.120f,  1.670f,     0.0022f, 0.9771f },
-        { -1.125f,  1.625f,     0.0000f, 0.9643f },
-        
-        { -1.125f, -1.625f,     0.0000f, 0.0357f },
-        { -1.120f, -1.670f,     0.0022f, 0.0223f },
-        { -1.110f, -1.700f,     0.0067f, 0.0143f },
-        { -1.075f, -1.735f,     0.0222f, 0.0043f },
-        { -1.045f, -1.745f,     0.0356f, 0.0014f },
-        { -1.009f, -1.750f,     0.0556f, 0.0000f },
-
-        {  1.000f, -1.750f,     0.9444f, 0.0000f },
-        {  1.045f, -1.745f,     0.9644f, 0.0014f },
-        {  1.075f, -1.735f,     0.9778f, 0.0043f },
-        {  1.110f, -1.700f,     0.9933f, 0.0143f },
-        {  1.120f, -1.670f,     0.9978f, 0.0223f },
-        {  1.125f, -1.625f,     1.0000f, 0.0357f },
-
-        {  1.125f,  1.625f,     1.0000f, 0.9643f },
-        {  1.120f,  1.670f,     0.9978f, 0.9771f },
-        {  1.110f,  1.700f,     0.9933f, 0.9857f },
-        {  1.075f,  1.735f,     0.9778f, 0.9957f },
-        {  1.045f,  1.745f,     0.9644f, 0.9986f },
-        {  1.000f,  1.750f,     0.9444f, 1.0000f }
-    };
     triangle triangles[22] = {
         { 0,  1, 22 },
         { 0, 23, 22 },
@@ -121,9 +92,9 @@ void card_renderer_create_vertex_array(card_renderer* renderer) {
     renderer->card_vertex_array = vertex_array_create();
 
     renderer->card_positions_buffer = array_buffer_create(); 
-    array_buffer_set_data(&renderer->card_positions_buffer, vertices);
+    array_buffer_set_data(&renderer->card_positions_buffer, NULL);
     array_buffer_set_vertex_count(&renderer->card_positions_buffer, 24);
-    array_buffer_set_draw_type(&renderer->card_positions_buffer, static_draw);   
+    array_buffer_set_draw_type(&renderer->card_positions_buffer, dynamic_draw);   
 
     vertex_attribute positions_attribute = (vertex_attribute){ vertex_attribute_type_float, 2 };
     array_buffer_add_attribute(&renderer->card_positions_buffer, &positions_attribute);
@@ -171,14 +142,47 @@ void card_renderer_init(card_renderer* renderer) {
     card_renderer_create_texture(renderer);
 }
 void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card_index) {
+    struct card_vertex vertices[24] = {
+        { -1.000f,  1.750f,     0.0556f, 1.0000f },
+        { -1.045f,  1.745f,     0.0356f, 0.9986f },
+        { -1.075f,  1.735f,     0.0222f, 0.9957f },
+        { -1.110f,  1.700f,     0.0067f, 0.9857f },
+        { -1.120f,  1.670f,     0.0022f, 0.9771f },
+        { -1.125f,  1.625f,     0.0000f, 0.9643f },
+        
+        { -1.125f, -1.625f,     0.0000f, 0.0357f },
+        { -1.120f, -1.670f,     0.0022f, 0.0223f },
+        { -1.110f, -1.700f,     0.0067f, 0.0143f },
+        { -1.075f, -1.735f,     0.0222f, 0.0043f },
+        { -1.045f, -1.745f,     0.0356f, 0.0014f },
+        { -1.009f, -1.750f,     0.0556f, 0.0000f },
+
+        {  1.000f, -1.750f,     0.9444f, 0.0000f },
+        {  1.045f, -1.745f,     0.9644f, 0.0014f },
+        {  1.075f, -1.735f,     0.9778f, 0.0043f },
+        {  1.110f, -1.700f,     0.9933f, 0.0143f },
+        {  1.120f, -1.670f,     0.9978f, 0.0223f },
+        {  1.125f, -1.625f,     1.0000f, 0.0357f },
+
+        {  1.125f,  1.625f,     1.0000f, 0.9643f },
+        {  1.120f,  1.670f,     0.9978f, 0.9771f },
+        {  1.110f,  1.700f,     0.9933f, 0.9857f },
+        {  1.075f,  1.735f,     0.9778f, 0.9957f },
+        {  1.045f,  1.745f,     0.9644f, 0.9986f },
+        {  1.000f,  1.750f,     0.9444f, 1.0000f }
+    };
+    array_buffer_reset_data(&renderer->card_positions_buffer, 0, vertices, sizeof(vertices));
+}
+void card_renderer_draw(card_renderer* renderer) {
     shader_program_bind(&renderer->card_shader);
     
-
     matrix4 transform_matrix = matrix4_multiply(
         matrix4_scale((vector3){ 40, 40, 1.0 }),
-        matrix4_translate((vector3){ position.x, position.y, 0.0 })
+        matrix4_translate((vector3){ 0, 0, 0.0 })
     );
 
+
+    int card_index = 0;
     renderer->card_index_uniform = (shader_uniform){ &card_index, "u_card_index", uniform_int1 };
     renderer->transform_matrix = (shader_uniform){ &transform_matrix, "transform_matrix", uniform_matrix4 };
     shader_program_update_uniform(&renderer->card_shader, &renderer->card_index_uniform);
@@ -186,11 +190,11 @@ void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card
 
     texture_2d_bind(&renderer->cards_image, 0);
     vertex_array_bind(&renderer->card_vertex_array);
-    vertex_array_draw(&renderer->card_vertex_array);
+    vertex_array_draw(&renderer->card_vertex_array);   
 }
 void card_renderer_draw_blank_card(card_renderer* renderer) {
-    vertex_array_bind(&renderer->card_vertex_array);
-    vertex_array_draw(&renderer->card_vertex_array);   
+    // vertex_array_bind(&renderer->card_vertex_array);
+    // vertex_array_draw(&renderer->card_vertex_array);   
 }
 void card_renderer_cleanup(card_renderer* renderer) {
     shader_program_delete(&renderer->card_shader);
