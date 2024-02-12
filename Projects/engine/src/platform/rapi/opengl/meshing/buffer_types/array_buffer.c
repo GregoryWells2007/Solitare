@@ -60,4 +60,17 @@ void platform_array_buffer_delete(array_buffer* buffer) {
     glDeleteBuffers(1, &buffer->platform_array_buffer->rendererID);
 }
 
+void platform_array_buffer_set_sub_data(array_buffer* buffer, size_t offset, void* data, size_t size) {
+
+    size_t size_of_vertex = 0;
+    for (int i = 0; i < buffer->attribute_count; i++) {
+        vertex_attribute* attribure = buffer->attributes[i];
+        size_of_vertex += get_size_of_type(attribure->attribute_type) * attribure->count;
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffer->platform_array_buffer->rendererID);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 #endif
