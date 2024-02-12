@@ -11,6 +11,7 @@ struct platform_array_buffer {
 GLenum platform_get_type(vertex_attribute_type type) {
     switch (type) {
     case vertex_attribute_type_float: return GL_FLOAT;
+    case vertex_attribute_type_int: return GL_INT;
     }
 }
 
