@@ -7,12 +7,7 @@
     shader_stage triangle_vertex_shader;    \
     shader_stage triangle_fragment_shader;  \
                                             \
-    shader_uniform card_index_uniform;      \
-    shader_uniform mouse_over_uniform;      \
-    shader_uniform card_held_uniform;       \
-                                            \
-    shader_uniform camera_view_matrix;      \
-    shader_uniform transform_matrix;        \
+    shader_uniform camera_view_matrix;      
 
 #define card_vertex_data                    \
     vertex_array card_vertex_array;         \
