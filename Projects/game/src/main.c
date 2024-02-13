@@ -100,9 +100,17 @@ int main(int argc, char** argv) {
 
         board_renderer_draw_board(&board_renderer, &new_board);
 
-        card_renderer_draw_card(&card_renderer, (vector2){ -100, 0    }, 1);
-        card_renderer_draw_card(&card_renderer, (vector2){  100, 0    }, 52);
-        card_renderer_draw_card(&card_renderer, (vector2){  0,   -100 }, 10);
+        int x = 0, y = 0;
+
+        for (int i = 0; i < 53; i++) {
+            card_renderer_draw_card(&card_renderer, (vector2){ -565 + x, 260 + y }, i);
+
+            x += 95;
+            if (x == (95 * 13)) {
+                x = 0;
+                y -= 130;
+            }
+        }
 
         card_renderer_draw(&card_renderer);
 
