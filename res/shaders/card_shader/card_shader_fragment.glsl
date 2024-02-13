@@ -39,5 +39,5 @@ void main(void) {
     card_held = int(card_draw_data.z);
     
     vec2 uv = vec2((v_uv.x + card_index.x) / card_texture_size.x, (v_uv.y - (card_index.y + 1)) / card_texture_size.y);
-    color = texture(texure, vec2(uv.x, uv.y));
+    color = texture(texure, vec2(uv.x, uv.y)) * get_color_multiplier();
 } 
