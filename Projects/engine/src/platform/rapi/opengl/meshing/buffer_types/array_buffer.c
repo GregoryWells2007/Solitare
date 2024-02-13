@@ -61,9 +61,7 @@ void platform_array_buffer_delete(array_buffer* buffer) {
     glDeleteBuffers(1, &buffer->platform_array_buffer->rendererID);
 }
 
-void platform_array_buffer_reallocate(array_buffer* buffer, size_t new_size, void* new_data) {
-    printf("allocating new buffer\n");
-
+void platform_array_buffer_reallocate(array_buffer* buffer, size_t new_size, void* new_data) {\
     glBindBuffer(GL_ARRAY_BUFFER, buffer->platform_array_buffer->rendererID);
     glBufferData(GL_ARRAY_BUFFER, new_size, NULL, (buffer->draw_type == static_draw) ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
     glBufferData(GL_ARRAY_BUFFER, new_size, NULL, (buffer->draw_type == static_draw) ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW); // dont ask why i call it twice

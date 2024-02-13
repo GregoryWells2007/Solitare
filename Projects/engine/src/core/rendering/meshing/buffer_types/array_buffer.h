@@ -51,7 +51,7 @@ HEADER_DEF void array_buffer_reallocate(array_buffer* buffer, size_t new_size, v
 }
 
 HEADER_DEF void array_buffer_add_attribute(array_buffer* buffer, vertex_attribute* attribute) {
-    buffer->attributes = realloc(buffer->attributes, buffer->attribute_count + 1);
+    buffer->attributes = realloc(buffer->attributes, (sizeof(vertex_attribute)) * (buffer->attribute_count + 1));
     buffer->attributes[buffer->attribute_count] = attribute;
     buffer->attribute_count++;
 }
