@@ -178,18 +178,20 @@ void card_renderer_draw(card_renderer* renderer) {
     texture_2d_bind(&renderer->cards_image, 0);
     vertex_array_bind(&renderer->card_vertex_array);
     vertex_array_draw(&renderer->card_vertex_array);   
+    texture_2d_bind(NULL, 0);
 
     renderer->current_card_count = 0;
 
-    array_buffer_reset_data(&renderer->card_positions_buffer, 0, NULL, sizeof(struct card_vertex) * 24 * 100);
+    array_buffer_reallocate(&renderer->card_positions_buffer, (sizeof(struct card_vertex) * 24) * 100, NULL);
 }
 void card_renderer_draw_plain(card_renderer* renderer) {
     vertex_array_bind(&renderer->card_vertex_array);
     vertex_array_draw(&renderer->card_vertex_array);   
+    
+    array_buffer_reallocate(&renderer->card_positions_buffer, (sizeof(struct card_vertex) * 24) * 100, NULL);
 
     renderer->current_card_count = 0;
 
-    array_buffer_reset_data(&renderer->card_positions_buffer, 0, NULL, sizeof(struct card_vertex) * 24 * 100);
 }
 void card_renderer_cleanup(card_renderer* renderer) {
     shader_program_delete(&renderer->card_shader);

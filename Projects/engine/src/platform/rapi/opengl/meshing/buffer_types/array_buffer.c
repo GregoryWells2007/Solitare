@@ -35,7 +35,7 @@ void platform_array_buffer_build(array_buffer* buffer) {
         glVertexAttribPointer(i, attribure->count, platform_get_type(attribure->attribute_type), GL_FALSE, size_of_vertex, (const void*)current_offset);
 
         size_t type_size = get_size_of_type(attribure->attribute_type); 
-        current_offset += sizeof(float) * 2;
+        current_offset += type_size * attribure->count;
     }
 
     
@@ -61,14 +61,16 @@ void platform_array_buffer_delete(array_buffer* buffer) {
     glDeleteBuffers(1, &buffer->platform_array_buffer->rendererID);
 }
 
+void platform_array_buffer_reallocate(array_buffer* buffer, size_t new_size, void* new_data) {
+    printf("allocating new buffer\n");
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffer->platform_array_buffer->rendererID);
+    glBufferData(GL_ARRAY_BUFFER, new_size, NULL, (buffer->draw_type == static_draw) ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, new_size, NULL, (buffer->draw_type == static_draw) ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW); // dont ask why i call it twice
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void platform_array_buffer_set_sub_data(array_buffer* buffer, size_t offset, void* data, size_t size) {
-
-    size_t size_of_vertex = 0;
-    for (int i = 0; i < buffer->attribute_count; i++) {
-        vertex_attribute* attribure = buffer->attributes[i];
-        size_of_vertex += get_size_of_type(attribure->attribute_type) * attribure->count;
-    }
-
     glBindBuffer(GL_ARRAY_BUFFER, buffer->platform_array_buffer->rendererID);
     glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

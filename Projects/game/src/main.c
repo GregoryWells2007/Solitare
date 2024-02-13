@@ -100,10 +100,11 @@ int main(int argc, char** argv) {
 
         board_renderer_draw_board(&board_renderer, &new_board);
 
-        // card_renderer_draw_card(&card_renderer, (vector2){ -100, 0 }, 1);
-        // card_renderer_draw_card(&card_renderer, (vector2){  100, 0 }, 52);
+        card_renderer_draw_card(&card_renderer, (vector2){ -100, 0    }, 1);
+        card_renderer_draw_card(&card_renderer, (vector2){  100, 0    }, 52);
+        card_renderer_draw_card(&card_renderer, (vector2){  0,   -100 }, 10);
 
-        // card_renderer_draw(&card_renderer);
+        card_renderer_draw(&card_renderer);
 
         framebuffer_bind(NULL);
         texture_2d_bind(&color_texture, 0);
