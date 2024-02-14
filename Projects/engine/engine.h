@@ -7,6 +7,7 @@
 #include "src/types/vector4.h"
 #include "src/types/color.h"
 #include "src/types/array_list.h"
+#include "src/types/linked_list.h"
 
 // window includes
 #include "src/core/windowing/window_manager.h"
