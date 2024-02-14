@@ -3,6 +3,7 @@
 
 #include "board/board_renderer/board_renderer.h"
 #include "card/card_renderer/card_renderer.h"
+#include "card/card_manager/card_manager.h"
 
 int main(int argc, char** argv) {
     engine_init();
@@ -94,23 +95,18 @@ int main(int argc, char** argv) {
     
     board_renderer_init_board(&board_renderer, &new_board);
 
+    card_manager card_manager = {};
+    card_manager_init(&card_manager);
+    card_manager.card_renderer = &card_renderer;
+    card_manager.board = &new_board;
+
     while (window_is_open(&main_window)) {      
         framebuffer_bind(&screen_framebuffer);
         clear_screen(&screen_clear);
 
         board_renderer_draw_board(&board_renderer, &new_board);
 
-        int x = 0, y = 0;
-
-        for (int i = 0; i < 53; i++) {
-            card_renderer_draw_card(&card_renderer, (vector2){ -565 + x, 260 + y }, i);
-
-            x += 95;
-            if (x == (95 * 13)) {
-                x = 0;
-                y -= 130;
-            }
-        }
+        card_manager_draw_cards(&card_manager);
 
         card_renderer_draw(&card_renderer);
 
