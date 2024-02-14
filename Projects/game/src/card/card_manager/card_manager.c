@@ -19,14 +19,19 @@ void card_manager_init(card_manager* manager) {
         numbers[i1] = n2;
     }
 
+
     int index = 0;
     for (int i = 0; i < 7; i++) {
         for (int k = 0; k < i + 1; k++) {
             struct card_data* new_data = malloc(sizeof(struct card_data));
             new_data->flipped = false;
             new_data->number = numbers[index];
-            linked_list_add(&manager->card_rows[i], &new_data);     
 
+            if ((k + 1) < (i + 1)) {
+                new_data->flipped = true;
+            }
+
+            linked_list_add(&manager->card_rows[i], new_data);     
             index++;
         }
     }
