@@ -14,9 +14,11 @@ HEADER_DEF linked_list linked_list_create() {
 }
 
 HEADER_DEF void linked_list_add(linked_list* list, void* data) {
+    while (list->data != NULL)
+        list = list->next_node;
+
+    list->data = data;
     list->next_node = malloc(sizeof(linked_list));
-    list->next_node->next_node = NULL;
-    list->next_node->data = NULL;
 }
 HEADER_DEF void linked_list_insert(linked_list* list, int index, void* data) {
     if (index == 0) {
@@ -65,6 +67,7 @@ HEADER_DEF void* linked_list_get(linked_list* list, int index) {
 }
 HEADER_DEF int linked_list_size(linked_list* list) { 
     int size = (list->data != NULL);
+    
     list = list->next_node;
     while (list != NULL) {
         list = list->next_node;
