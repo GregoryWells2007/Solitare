@@ -9,7 +9,7 @@ typedef struct linked_list {
 HEADER_DEF linked_list linked_list_create() {
     linked_list new_linked_list = (linked_list) { };
     new_linked_list.data = NULL;
-    new_linked_list.next_node = NULL;
+    new_linked_list.next_node = malloc(sizeof(linked_list));
     return new_linked_list;
 }
 
@@ -19,6 +19,8 @@ HEADER_DEF void linked_list_add(linked_list* list, void* data) {
 
     list->data = data;
     list->next_node = malloc(sizeof(linked_list));
+    list->next_node->data = NULL;
+    list->next_node->next_node = NULL;
 }
 HEADER_DEF void linked_list_insert(linked_list* list, int index, void* data) {
     if (index == 0) {
@@ -66,12 +68,12 @@ HEADER_DEF void* linked_list_get(linked_list* list, int index) {
     return list->data;
 }
 HEADER_DEF int linked_list_size(linked_list* list) { 
-    int size = (list->data != NULL);
-    
-    list = list->next_node;
-    while (list != NULL) {
+    int size = 0;
+
+    while (list->data != NULL) {
         list = list->next_node;
         size++;
     }
+
     return size;
 }
