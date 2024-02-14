@@ -141,33 +141,33 @@ void card_renderer_draw_card(card_renderer* renderer, vector2 position, int card
     int CARD_SIZE = 40;
 
     struct card_vertex vertices[24] = {
-        { (-1.000f * CARD_SIZE) + position.x,  (1.750f * CARD_SIZE) + position.y,     0.0556f, 1.0000f, (ivec3){ card_index, 1, 0 } },
-        { (-1.045f * CARD_SIZE) + position.x,  (1.745f * CARD_SIZE) + position.y,     0.0356f, 0.9986f, (ivec3){ card_index, 1, 0 } },
-        { (-1.075f * CARD_SIZE) + position.x,  (1.735f * CARD_SIZE) + position.y,     0.0222f, 0.9957f, (ivec3){ card_index, 1, 0 } },
-        { (-1.110f * CARD_SIZE) + position.x,  (1.700f * CARD_SIZE) + position.y,     0.0067f, 0.9857f, (ivec3){ card_index, 1, 0 } },
-        { (-1.120f * CARD_SIZE) + position.x,  (1.670f * CARD_SIZE) + position.y,     0.0022f, 0.9771f, (ivec3){ card_index, 1, 0 } },
-        { (-1.125f * CARD_SIZE) + position.x,  (1.625f * CARD_SIZE) + position.y,     0.0000f, 0.9643f, (ivec3){ card_index, 1, 0 } },
+        { (-1.000f * CARD_SIZE) + position.x,  (1.750f * CARD_SIZE) + position.y,     0.0556f, 1.0000f, (ivec3){ card_index, 0, 0 } },
+        { (-1.045f * CARD_SIZE) + position.x,  (1.745f * CARD_SIZE) + position.y,     0.0356f, 0.9986f, (ivec3){ card_index, 0, 0 } },
+        { (-1.075f * CARD_SIZE) + position.x,  (1.735f * CARD_SIZE) + position.y,     0.0222f, 0.9957f, (ivec3){ card_index, 0, 0 } },
+        { (-1.110f * CARD_SIZE) + position.x,  (1.700f * CARD_SIZE) + position.y,     0.0067f, 0.9857f, (ivec3){ card_index, 0, 0 } },
+        { (-1.120f * CARD_SIZE) + position.x,  (1.670f * CARD_SIZE) + position.y,     0.0022f, 0.9771f, (ivec3){ card_index, 0, 0 } },
+        { (-1.125f * CARD_SIZE) + position.x,  (1.625f * CARD_SIZE) + position.y,     0.0000f, 0.9643f, (ivec3){ card_index, 0, 0 } },
         
-        { (-1.125f * CARD_SIZE) + position.x, (-1.625f * CARD_SIZE) + position.y,     0.0000f, 0.0357f, (ivec3){ card_index, 1, 0 } },
-        { (-1.120f * CARD_SIZE) + position.x, (-1.670f * CARD_SIZE) + position.y,     0.0022f, 0.0223f, (ivec3){ card_index, 1, 0 } },
-        { (-1.110f * CARD_SIZE) + position.x, (-1.700f * CARD_SIZE) + position.y,     0.0067f, 0.0143f, (ivec3){ card_index, 1, 0 } },
-        { (-1.075f * CARD_SIZE) + position.x, (-1.735f * CARD_SIZE) + position.y,     0.0222f, 0.0043f, (ivec3){ card_index, 1, 0 } },
-        { (-1.045f * CARD_SIZE) + position.x, (-1.745f * CARD_SIZE) + position.y,     0.0356f, 0.0014f, (ivec3){ card_index, 1, 0 } },
-        { (-1.009f * CARD_SIZE) + position.x, (-1.750f * CARD_SIZE) + position.y,     0.0556f, 0.0000f, (ivec3){ card_index, 1, 0 } },
+        { (-1.125f * CARD_SIZE) + position.x, (-1.625f * CARD_SIZE) + position.y,     0.0000f, 0.0357f, (ivec3){ card_index, 0, 0 } },
+        { (-1.120f * CARD_SIZE) + position.x, (-1.670f * CARD_SIZE) + position.y,     0.0022f, 0.0223f, (ivec3){ card_index, 0, 0 } },
+        { (-1.110f * CARD_SIZE) + position.x, (-1.700f * CARD_SIZE) + position.y,     0.0067f, 0.0143f, (ivec3){ card_index, 0, 0 } },
+        { (-1.075f * CARD_SIZE) + position.x, (-1.735f * CARD_SIZE) + position.y,     0.0222f, 0.0043f, (ivec3){ card_index, 0, 0 } },
+        { (-1.045f * CARD_SIZE) + position.x, (-1.745f * CARD_SIZE) + position.y,     0.0356f, 0.0014f, (ivec3){ card_index, 0, 0 } },
+        { (-1.009f * CARD_SIZE) + position.x, (-1.750f * CARD_SIZE) + position.y,     0.0556f, 0.0000f, (ivec3){ card_index, 0, 0 } },
 
-        {  (1.000f * CARD_SIZE) + position.x, (-1.750f * CARD_SIZE) + position.y,     0.9444f, 0.0000f, (ivec3){ card_index, 1, 0}  },
-        {  (1.045f * CARD_SIZE) + position.x, (-1.745f * CARD_SIZE) + position.y,     0.9644f, 0.0014f, (ivec3){ card_index, 1, 0}  },
-        {  (1.075f * CARD_SIZE) + position.x, (-1.735f * CARD_SIZE) + position.y,     0.9778f, 0.0043f, (ivec3){ card_index, 1, 0}  },
-        {  (1.110f * CARD_SIZE) + position.x, (-1.700f * CARD_SIZE) + position.y,     0.9933f, 0.0143f, (ivec3){ card_index, 1, 0}  },
-        {  (1.120f * CARD_SIZE) + position.x, (-1.670f * CARD_SIZE) + position.y,     0.9978f, 0.0223f, (ivec3){ card_index, 1, 0}  },
-        {  (1.125f * CARD_SIZE) + position.x, (-1.625f * CARD_SIZE) + position.y,     1.0000f, 0.0357f, (ivec3){ card_index, 1, 0}  },
+        {  (1.000f * CARD_SIZE) + position.x, (-1.750f * CARD_SIZE) + position.y,     0.9444f, 0.0000f, (ivec3){ card_index, 0, 0 }  },
+        {  (1.045f * CARD_SIZE) + position.x, (-1.745f * CARD_SIZE) + position.y,     0.9644f, 0.0014f, (ivec3){ card_index, 0, 0 }  },
+        {  (1.075f * CARD_SIZE) + position.x, (-1.735f * CARD_SIZE) + position.y,     0.9778f, 0.0043f, (ivec3){ card_index, 0, 0 }  },
+        {  (1.110f * CARD_SIZE) + position.x, (-1.700f * CARD_SIZE) + position.y,     0.9933f, 0.0143f, (ivec3){ card_index, 0, 0 }  },
+        {  (1.120f * CARD_SIZE) + position.x, (-1.670f * CARD_SIZE) + position.y,     0.9978f, 0.0223f, (ivec3){ card_index, 0, 0 }  },
+        {  (1.125f * CARD_SIZE) + position.x, (-1.625f * CARD_SIZE) + position.y,     1.0000f, 0.0357f, (ivec3){ card_index, 0, 0 }  },
 
-        {  (1.125f * CARD_SIZE) + position.x,  (1.625f * CARD_SIZE) + position.y,     1.0000f, 0.9643f, (ivec3){ card_index, 1, 0 } },
-        {  (1.120f * CARD_SIZE) + position.x,  (1.670f * CARD_SIZE) + position.y,     0.9978f, 0.9771f, (ivec3){ card_index, 1, 0 } },
-        {  (1.110f * CARD_SIZE) + position.x,  (1.700f * CARD_SIZE) + position.y,     0.9933f, 0.9857f, (ivec3){ card_index, 1, 0 } },
-        {  (1.075f * CARD_SIZE) + position.x,  (1.735f * CARD_SIZE) + position.y,     0.9778f, 0.9957f, (ivec3){ card_index, 1, 0 } },
-        {  (1.045f * CARD_SIZE) + position.x,  (1.745f * CARD_SIZE) + position.y,     0.9644f, 0.9986f, (ivec3){ card_index, 1, 0 } },
-        {  (1.000f * CARD_SIZE) + position.x,  (1.750f * CARD_SIZE) + position.y,     0.9444f, 1.0000f, (ivec3){ card_index, 1, 0 } }
+        {  (1.125f * CARD_SIZE) + position.x,  (1.625f * CARD_SIZE) + position.y,     1.0000f, 0.9643f, (ivec3){ card_index, 0, 0 } },
+        {  (1.120f * CARD_SIZE) + position.x,  (1.670f * CARD_SIZE) + position.y,     0.9978f, 0.9771f, (ivec3){ card_index, 0, 0 } },
+        {  (1.110f * CARD_SIZE) + position.x,  (1.700f * CARD_SIZE) + position.y,     0.9933f, 0.9857f, (ivec3){ card_index, 0, 0 } },
+        {  (1.075f * CARD_SIZE) + position.x,  (1.735f * CARD_SIZE) + position.y,     0.9778f, 0.9957f, (ivec3){ card_index, 0, 0 } },
+        {  (1.045f * CARD_SIZE) + position.x,  (1.745f * CARD_SIZE) + position.y,     0.9644f, 0.9986f, (ivec3){ card_index, 0, 0 } },
+        {  (1.000f * CARD_SIZE) + position.x,  (1.750f * CARD_SIZE) + position.y,     0.9444f, 1.0000f, (ivec3){ card_index, 0, 0 } }
     };
     array_buffer_reset_data(&renderer->card_positions_buffer, sizeof(vertices) * renderer->current_card_count, &vertices, sizeof(vertices));
     renderer->current_card_count++;
