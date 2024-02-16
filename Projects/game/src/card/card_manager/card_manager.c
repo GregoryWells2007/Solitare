@@ -48,11 +48,15 @@ void card_manager_init(card_manager* manager) {
 
 void card_manager_draw_cards(card_manager* manager) {
     // draw cards in stack
-    for (int i = manager->stack_flip_position; i < linked_list_size(&manager->cards_in_stack); i++) {
-        struct card_data* current_card_data = (struct card_data*)linked_list_get(&manager->cards_in_stack, i);
+    if (manager->stack_flip_position < linked_list_size(&manager->cards_in_stack)) {
         board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
-        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, (ivec3){ 52, 0, 0 } );
+        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, (ivec3){ 52, 0, 0 } );   
     }
+    // for (int i = manager->stack_flip_position; i < linked_list_size(&manager->cards_in_stack); i++) {
+    //     struct card_data* current_card_data = (struct card_data*)linked_list_get(&manager->cards_in_stack, i);
+    //     board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
+    //     card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, (ivec3){ 52, 0, 0 } );
+    // }
 
     int k = 0;
     for (int i = 0; i < manager->stack_flip_position; i++) {
