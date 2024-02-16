@@ -35,6 +35,18 @@ void card_manager_init(card_manager* manager) {
             index++;
         }
     }
+
+    while (index < 52) {
+        struct card_data* new_data = malloc(sizeof(struct card_data));
+        new_data->flipped = true;
+        new_data->number = numbers[index];
+
+
+        linked_list_add(&manager->cards_in_stack, new_data);     
+        index++;
+
+        index++;
+    }
     // struct card_data* new_data = malloc(sizeof(struct card_data));
     // new_data->flipped = true;
     // new_data->number = 10;
