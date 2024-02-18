@@ -101,3 +101,8 @@ void card_manager_flip_stack(card_manager* manager) {
         manager->stack_flip_position = 0;
     }
 }
+
+void card_manager_remove_from_stack(card_manager* manager) {
+    manager->stack_flip_position--;
+    linked_list_remove(&manager->cards_in_stack, manager->stack_flip_position);
+}

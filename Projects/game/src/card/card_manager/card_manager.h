@@ -22,3 +22,4 @@ typedef struct card_manager {
 void card_manager_init(card_manager* manager);
 void card_manager_draw_cards(card_manager* manager);
 void card_manager_flip_stack(card_manager* manager);
+void card_manager_remove_from_stack(card_manager* manager);
