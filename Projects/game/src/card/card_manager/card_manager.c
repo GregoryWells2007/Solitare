@@ -36,31 +36,14 @@ void card_manager_init(card_manager* manager) {
         }
     }
 
-<<<<<<< HEAD
     for (int i = 0; i < 24; i++) {
-=======
-    while (index < 52) {
->>>>>>> 2e5ffdcd7806143dfb6f516a8790a48c601d9d73
         struct card_data* new_data = malloc(sizeof(struct card_data));
         new_data->flipped = true;
         new_data->number = numbers[index];
 
-<<<<<<< HEAD
         linked_list_add(&manager->cards_in_stack, new_data);     
         index++;       
     }
-=======
-
-        linked_list_add(&manager->cards_in_stack, new_data);     
-        index++;
-
-        index++;
-    }
-    // struct card_data* new_data = malloc(sizeof(struct card_data));
-    // new_data->flipped = true;
-    // new_data->number = 10;
-    // linked_list_add(&manager->cards_in_stack, new_data);
->>>>>>> 2e5ffdcd7806143dfb6f516a8790a48c601d9d73
 }
 
 void card_manager_draw_cards(card_manager* manager) {
