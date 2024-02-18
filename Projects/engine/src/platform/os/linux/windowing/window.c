@@ -115,6 +115,7 @@ void platform_window_create(window* window) {
 
     glfwWindowHint(GLFW_RESIZABLE, window->properties.is_resizable);
     glfwWindowHint(GLFW_MAXIMIZED, window->properties.is_maximized);
+    glfwWindowHint(GLFW_VISIBLE, window->properties.is_shown);
     GLFWmonitor* monitor = NULL;
     if (window->properties.is_maximized) {
         int monitor_count = 0;
@@ -128,7 +129,6 @@ void platform_window_create(window* window) {
 
     if (!window->platform_window->window)
         printf("Window failed to open\n");
-    glfwHideWindow(window->platform_window->window);
 
     window_update_data(window);
     window_update_properties(window);
@@ -141,8 +141,6 @@ void platform_window_open(window* window) {
         printf("GLAD initilization failed\n");
     
     #endif
-
-    glfwShowWindow(window->platform_window->window);
 }
 
 void platform_window_update(window* window) {
@@ -201,6 +199,13 @@ void platform_window_set_decorated(window* window, bool decorated) {
         return;
     
     glfwSetWindowAttrib(window->platform_window->window, GLFW_DECORATED, decorated); 
+}
+
+void platform_window_hide(window* window) {
+    glfwHideWindow(window->platform_window->window);
+}
+void platform_window_show(window* window) {
+    glfwShowWindow(window->platform_window->window);
 }
 
 #endif

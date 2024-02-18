@@ -24,6 +24,8 @@ void platform_window_set_maximized(window* window, bool maximized);
 void platform_window_set_decorated(window* window, bool decorated);
 
 void platform_window_prep_for_draw(window* window);
+void platform_window_hide(window* window);
+void platform_window_show(window* window);
 
 typedef struct window {
     // idfk man
@@ -79,6 +81,12 @@ HEADER_DEF void window_update_properties(window* win) {
     platform_window_set_resizable(win, win->properties.is_resizable);
     platform_window_set_maximized(win, win->properties.is_maximized);
     platform_window_set_decorated(win, win->properties.is_decorated);
+}
+HEADER_DEF void window_hide(window* win) {
+    platform_window_hide(win);
+}
+HEADER_DEF void window_show(window* win) {
+    platform_window_show(win);
 }
 
 HEADER_DEF bool window_is_open(window* win) { return win->is_open; }
