@@ -4,6 +4,7 @@
 #include "window_items/window_properties.h"
 
 #include "src/core/screen_renderer/screen_renderer.h"
+#include "src/core/input_manager/input_manager.h"
 
 #include "src/types/boolean.h"
 
@@ -36,6 +37,7 @@ typedef struct window {
     window_properties properties;
 
     screen_renderer* renderer;
+    input_manager* input;
 
     bool is_open;
 

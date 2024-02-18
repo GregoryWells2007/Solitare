@@ -9,6 +9,8 @@ typedef struct window_manager {
     int window_count;
 
     screen_renderer* screen_renderer;
+    input_manager input_manager;
+
     bool screen_renderer_initilized;
 } window_manager;
 
@@ -22,6 +24,8 @@ HEADER_DEF window_manager window_manager_create() {
     new_window_manager.screen_renderer = malloc(sizeof(screen_renderer));
     new_window_manager.screen_renderer_initilized = false;
 
+    new_window_manager.input_manager = input_manager_create();
+
     return new_window_manager;
 }
 
@@ -32,6 +36,7 @@ HEADER_DEF void window_manager_set_main_window(window_manager* win_manager, wind
     }
 
     win_manager->main_window = window;
+    win_manager->main_window->input = &win_manager->input_manager;
 }
 
 HEADER_DEF void window_manager_add_window(window_manager* win_manager, window* window) {
@@ -39,6 +44,8 @@ HEADER_DEF void window_manager_add_window(window_manager* win_manager, window* w
         printf("You need to create the main window first\n");
         return;
     }
+
+    window->input = &win_manager->input_manager;
 
     win_manager->windows = realloc(win_manager->windows, win_manager->window_count + 1);
     win_manager->windows[win_manager->window_count] = window;
