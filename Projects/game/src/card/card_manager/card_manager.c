@@ -50,12 +50,33 @@ void card_manager_draw_cards(card_manager* manager) {
     // draw cards in stack
     for (int i = manager->stack_flip_position; i < linked_list_size(&manager->cards_in_stack); i++) {
         struct card_data* current_card_data = (struct card_data*)linked_list_get(&manager->cards_in_stack, i);
-        int number = current_card_data->number;
-        if (current_card_data->flipped)
-            number = 52;
+        board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
+        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, 52);
+    }
+
+    int k = 0;
+    for (int i = 0; i < manager->stack_flip_position; i++) {
+        if (manager->stack_flip_position == 1) {
+            k = 2;
+        } else if (manager->stack_flip_position == 2) {
+            k = 1 + i;
+        } else {
+            int i2 = i + 1;
+            if (i2 == manager->stack_flip_position)
+                k = 2;
+            else if (i2 == manager->stack_flip_position - 1) {
+                k = 1;
+            } else {
+                k = 0;
+            }
+        }
+
+        struct card_data* current_card_data = (struct card_data*)linked_list_get(&manager->cards_in_stack, i);
+
+        int offset = 160 - (30 * k);
 
         board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
-        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, number);
+        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x - offset, position->position.y }, current_card_data->number);
     }
 
     // draw card rows
@@ -76,7 +97,7 @@ void card_manager_draw_cards(card_manager* manager) {
 void card_manager_flip_stack(card_manager* manager) {
     manager->stack_flip_position++;
 
-    if (manager->stack_flip_position > linked_list_size(manager->cards_in_stack)) {
+    if (manager->stack_flip_position > linked_list_size(&manager->cards_in_stack)) {
         manager->stack_flip_position = 0;
     }
 }
