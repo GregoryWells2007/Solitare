@@ -131,8 +131,10 @@ int main(int argc, char** argv) {
         total_elapsed_time += elapsed_time;
 
         if (total_elapsed_time >= 1000) {
-            printf("FPS: %i\n", frame_count);
+            //printf("FPS: %i\n", frame_count);
             total_elapsed_time = 0;
+
+            card_manager_flip_stack(&card_manager);
 
             frame_count = 0;
         }
