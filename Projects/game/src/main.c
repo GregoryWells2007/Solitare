@@ -103,7 +103,14 @@ int main(int argc, char** argv) {
 
     window_show(&main_window);
 
-    while (window_is_open(&main_window)) {      
+    int frame_count = 0;
+
+    struct timeval t1, t2;
+    double elapsed_time, total_elapsed_time;
+
+    while (window_is_open(&main_window)) {   
+        gettimeofday(&t1, NULL);
+
         framebuffer_bind(&screen_framebuffer);
         clear_screen(&screen_clear);
 
@@ -117,6 +124,20 @@ int main(int argc, char** argv) {
         texture_2d_bind(&color_texture, 0);
 
         window_manager_update(&win_manager);
+
+        gettimeofday(&t2, NULL);
+
+        elapsed_time = (t2.tv_sec - t1.tv_sec) * 1000.0;      // sec to ms
+        total_elapsed_time += elapsed_time;
+
+        if (total_elapsed_time >= 1000) {
+            printf("FPS: %i\n", frame_count);
+            total_elapsed_time = 0;
+
+            frame_count = 0;
+        }
+
+        frame_count++;
     }
     
     clear_screen_data_delete(&screen_clear);
