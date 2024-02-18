@@ -147,6 +147,10 @@ void platform_window_update(window* window) {
     glfwSwapBuffers(window->platform_window->window);
     glfwPollEvents();
     
+    double xpos, ypos;
+    glfwGetCursorPos(window->platform_window->window, &xpos, &ypos);
+    input_manager_set_mouse_pos(window->input, (ivec2){ xpos, ypos });
+
     if (glfwWindowShouldClose(window->platform_window->window)) window->is_open = false;
 }
 
