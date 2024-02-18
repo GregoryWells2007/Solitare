@@ -133,7 +133,7 @@ void board_renderer_draw_board(board_renderer* renderer, board* board) {
 
     for (int i = 0; i < array_list_size(&board->areas); i++) {
         board_area* current_board_area = array_list_get(&board->areas, i);
-        card_renderer_draw_card(renderer->card_renderer, (vector2f){current_board_area->position.x, current_board_area->position.y}, current_board_area->card_index);
+        card_renderer_draw_card(renderer->card_renderer, (vector2f){current_board_area->position.x, current_board_area->position.y}, (ivec3) { current_board_area->card_index, 0, 0 });
     }
     texture_2d_bind(&board->board_rendering_data.board_areas_image, 1);
     card_renderer_draw_plain(renderer->card_renderer);

@@ -51,7 +51,7 @@ void card_manager_draw_cards(card_manager* manager) {
     for (int i = manager->stack_flip_position; i < linked_list_size(&manager->cards_in_stack); i++) {
         struct card_data* current_card_data = (struct card_data*)linked_list_get(&manager->cards_in_stack, i);
         board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
-        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, 52);
+        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, (ivec3){ 52, 0, 0 } );
     }
 
     int k = 0;
@@ -76,7 +76,7 @@ void card_manager_draw_cards(card_manager* manager) {
         int offset = 160 - (30 * k);
 
         board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
-        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x - offset, position->position.y }, current_card_data->number);
+        card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x - offset, position->position.y }, (ivec3) { current_card_data->number, 0, 0 });
     }
 
     // draw card rows
@@ -89,7 +89,7 @@ void card_manager_draw_cards(card_manager* manager) {
                 number = 52;
 
             board_area* position = (board_area*)array_list_get(&manager->board->areas, 4 + k);
-            card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y - (i * 20) }, number);
+            card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y - (i * 20) }, (ivec3){ number, 0, 0 });
         }
     }
 }

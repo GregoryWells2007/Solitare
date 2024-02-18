@@ -115,9 +115,7 @@ int main(int argc, char** argv) {
         clear_screen(&screen_clear);
 
         board_renderer_draw_board(&board_renderer, &new_board);
-
         card_manager_draw_cards(&card_manager);
-
         card_renderer_draw(&card_renderer);
 
         framebuffer_bind(NULL);
@@ -131,11 +129,8 @@ int main(int argc, char** argv) {
         total_elapsed_time += elapsed_time;
 
         if (total_elapsed_time >= 1000) {
-            //printf("FPS: %i\n", frame_count);
+            printf("FPS: %i\n", frame_count);
             total_elapsed_time = 0;
-
-            card_manager_flip_stack(&card_manager);
-
             frame_count = 0;
         }
 
