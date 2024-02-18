@@ -117,7 +117,7 @@ void card_renderer_create_texture(card_renderer* renderer) {
     texture_2d_set_parameter(&renderer->cards_image, texture_2d_wrap_x, texture_2d_wrap_repeat);
     texture_2d_set_parameter(&renderer->cards_image, texture_2d_wrap_y, texture_2d_wrap_repeat);
 
-    texture_file cards_texture_file = texture_file_load_from_path("../res/images/Cards.png");
+    texture_file cards_texture_file = texture_file_load_from_path("../res/images/cards.png");
     texture_2d_set_width(&renderer->cards_image, cards_texture_file.width);
     texture_2d_set_height(&renderer->cards_image, cards_texture_file.height);
 
