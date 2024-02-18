@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
     window_properties* main_window_properties = window_get_properties(&main_window); // imma add some properties later
     window_properties_set_resizable(main_window_properties, false);
     window_properties_set_maximized(main_window_properties, false);
+    window_properties_set_shown(main_window_properties, false);
     window_properties_set_decorated(main_window_properties, true);
     window_update_properties(&main_window);
 
@@ -99,6 +100,8 @@ int main(int argc, char** argv) {
     card_manager_init(&card_manager);
     card_manager.card_renderer = &card_renderer;
     card_manager.board = &new_board;
+
+    window_show(&main_window);
 
     while (window_is_open(&main_window)) {      
         framebuffer_bind(&screen_framebuffer);
