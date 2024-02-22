@@ -19,6 +19,8 @@ typedef struct card_manager {
 
     board* board;
     card_renderer* card_renderer;
+
+    array_list cards_to_render;
 } card_manager;
 
 void card_manager_init(card_manager* manager);

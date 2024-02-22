@@ -11,15 +11,33 @@ bool mouse_in_bounds(ivec2 card_position, ivec2 mouse_positon) {
 
 static bool card_already_hovered = false;
 
-void card_manager_draw_card(card_manager* manager, ivec2 position, int card_id) {
-    bool hoverd = mouse_in_bounds(position, input_manager_get_mouse_pos(manager->input));
+typedef struct card_render {
+    ivec2 position;
+    ivec3 card_data;
+} card_render;
 
-    card_renderer_draw_card(
-        manager->card_renderer, 
-        (vec2){ position.x, position.y }, 
-        (ivec3){ card_id, hoverd && !card_already_hovered, 0 }
-    );   
+void card_manager_draw_card(card_manager* manager, ivec2 position, int card_id) {
+    bool hoverd = mouse_in_bounds(position, input_manager_get_mouse_pos(manager->input)) && !card_already_hovered;
+
+    card_render* new_card_render = malloc(sizeof(card_render));
+    new_card_render->card_data = (ivec3){ card_id, hoverd, 0 };
+    new_card_render->position = position;
+    array_list_add(&manager->cards_to_render, new_card_render);
+
     if (hoverd) card_already_hovered = true;
+}
+
+void render_cards(card_manager* manager) {
+    for (int i = array_list_size(&manager->cards_to_render) - 1; i >= 0; i--) {
+        card_render* rn = array_list_get(&manager->cards_to_render, i);
+
+        card_renderer_draw_card(
+            manager->card_renderer, 
+            (vec2){ rn->position.x, rn->position.y }, 
+            rn->card_data
+        );     
+    }
+
 }
 
 void card_manager_init(card_manager* manager) {
@@ -65,9 +83,13 @@ void card_manager_init(card_manager* manager) {
         linked_list_add(&manager->cards_in_stack, new_data);     
         index++;       
     }
+
+    manager->cards_to_render = array_list_create();
 }
 
 void card_manager_draw_cards(card_manager* manager) {
+    manager->cards_to_render = array_list_create();
+
     card_already_hovered = false;
     // draw cards in stack
 
@@ -115,6 +137,8 @@ void card_manager_draw_cards(card_manager* manager) {
             card_manager_draw_card(manager, (ivec2){ position->position.x, position->position.y - (i * 20) }, number);
         }
     }
+
+    render_cards(manager);
 }
 
 void card_manager_flip_stack(card_manager* manager) {
