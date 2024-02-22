@@ -9,12 +9,17 @@ bool mouse_in_bounds(ivec2 card_position, ivec2 mouse_positon) {
             (((-1.750f) * 40.0f) + card_position.y) < mouse_positon.y;
 }
 
+static bool card_already_hovered = false;
+
 void card_manager_draw_card(card_manager* manager, ivec2 position, int card_id) {
+    bool hoverd = mouse_in_bounds(position, input_manager_get_mouse_pos(manager->input));
+
     card_renderer_draw_card(
         manager->card_renderer, 
         (vec2){ position.x, position.y }, 
-        (ivec3){ card_id, mouse_in_bounds(position, input_manager_get_mouse_pos(manager->input)), 0 }
+        (ivec3){ card_id, hoverd && !card_already_hovered, 0 }
     );   
+    if (hoverd) card_already_hovered = true;
 }
 
 void card_manager_init(card_manager* manager) {
@@ -63,6 +68,7 @@ void card_manager_init(card_manager* manager) {
 }
 
 void card_manager_draw_cards(card_manager* manager) {
+    card_already_hovered = false;
     // draw cards in stack
 
     if (manager->stack_flip_position < linked_list_size(&manager->cards_in_stack)) {
