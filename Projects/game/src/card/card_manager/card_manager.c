@@ -105,7 +105,7 @@ void card_manager_draw_cards(card_manager* manager) {
     // draw card rows
 
     for (int k = 0; k < 7; k++) {
-        for (int i = 0; i < linked_list_size(&manager->card_rows[k]); i++) {
+        for (int i = linked_list_size(&manager->card_rows[k]) - 1; i >= 0; i--) {
             struct card_data* current_card_data = (struct card_data*)linked_list_get(&manager->card_rows[k], i);
             int number = current_card_data->number;
             if (current_card_data->flipped)
