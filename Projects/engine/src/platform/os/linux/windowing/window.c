@@ -149,6 +149,9 @@ void platform_window_update(window* window) {
     
     double xpos, ypos;
     glfwGetCursorPos(window->platform_window->window, &xpos, &ypos);
+    xpos = -(window->data.size.x / 2) + xpos;
+    ypos = -(window->data.size.y / 2) + ypos;
+
     input_manager_set_mouse_pos(window->input, (ivec2){ xpos, ypos });
 
     if (glfwWindowShouldClose(window->platform_window->window)) window->is_open = false;
@@ -167,8 +170,8 @@ void platform_window_set_size(window* window, int width, int height) {
         return;
 
     glfwSetWindowSize(window->platform_window->window, width, height);
-    window->current_size.x = width;
-    window->current_size.y = width;
+    window->data.size.x = width;
+    window->data.size.y = width;
 }
 void platform_window_set_title(window* window, char* title) { glfwSetWindowTitle(window->platform_window->window, title); }
 
