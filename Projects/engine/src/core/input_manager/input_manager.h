@@ -15,3 +15,6 @@ ivec2 input_manager_get_mouse_pos(input_manager* manager);
 
 void input_manager_click_mouse(input_manager* manager);
 void input_manager_release_mouse(input_manager* manager);
+HEADER_DEF bool input_manager_get_mouse_clicked(input_manager* manager) { return manager->mouse_clicked; }
+HEADER_DEF bool input_manager_get_mouse_down(input_manager* manager) { return manager->mouse_down; }
+HEADER_DEF bool input_manager_get_mouse_up(input_manager* manager) { return manager->mouse_up; }
