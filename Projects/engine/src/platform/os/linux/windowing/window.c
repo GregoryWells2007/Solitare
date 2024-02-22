@@ -152,6 +152,14 @@ void platform_window_update(window* window) {
     xpos = -(window->data.size.x / 2) + xpos;
     ypos = -(-(window->data.size.y / 2) + ypos);
 
+    window->input->mouse_clicked = false;
+
+    int id = glfwGetMouseButton(window->platform_window->window, GLFW_MOUSE_BUTTON_LEFT);
+    if (id == GLFW_PRESS)
+        input_manager_click_mouse(window->input);
+    else if (id == GLFW_RELEASE)
+        input_manager_release_mouse(window->input);
+
     input_manager_set_mouse_pos(window->input, (ivec2){ xpos, ypos });
 
     if (glfwWindowShouldClose(window->platform_window->window)) window->is_open = false;
