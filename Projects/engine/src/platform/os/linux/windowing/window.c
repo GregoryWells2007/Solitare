@@ -150,7 +150,7 @@ void platform_window_update(window* window) {
     double xpos, ypos;
     glfwGetCursorPos(window->platform_window->window, &xpos, &ypos);
     xpos = -(window->data.size.x / 2) + xpos;
-    ypos = -(window->data.size.y / 2) + ypos;
+    ypos = -(-(window->data.size.y / 2) + ypos);
 
     input_manager_set_mouse_pos(window->input, (ivec2){ xpos, ypos });
 
