@@ -1,8 +1,20 @@
 #include "card_manager.h"
 #include "time.h"
 
+bool mouse_in_bounds(ivec2 card_position, ivec2 mouse_positon) {
+    return  (((-1.125f) * 40.0f) + card_position.x) < mouse_positon.x && 
+            ((( 1.125f) * 40.0f) + card_position.x) > mouse_positon.x &&
+
+            ((( 1.750f) * 40.0f) + card_position.y) > mouse_positon.y &&
+            (((-1.750f) * 40.0f) + card_position.y) < mouse_positon.y;
+}
+
 void card_manager_draw_card(card_manager* manager, ivec2 position, int card_id) {
-    card_renderer_draw_card(manager->card_renderer, (vec2){ position.x, position.y }, (ivec3){ card_id, 0, 0 } );   
+    card_renderer_draw_card(
+        manager->card_renderer, 
+        (vec2){ position.x, position.y }, 
+        (ivec3){ card_id, mouse_in_bounds(position, input_manager_get_mouse_pos(manager->input)), 0 }
+    );   
 }
 
 void card_manager_init(card_manager* manager) {
@@ -52,15 +64,12 @@ void card_manager_init(card_manager* manager) {
 
 void card_manager_draw_cards(card_manager* manager) {
     // draw cards in stack
+
     if (manager->stack_flip_position < linked_list_size(&manager->cards_in_stack)) {
         board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
         card_manager_draw_card(manager, position->position, 52);
     }
-    // for (int i = manager->stack_flip_position; i < linked_list_size(&manager->cards_in_stack); i++) {
-    //     struct card_data* current_card_data = (struct card_data*)linked_list_get(&manager->cards_in_stack, i);
-    //     board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
-    //     card_renderer_draw_card(manager->card_renderer, (vec2){ position->position.x, position->position.y }, (ivec3){ 52, 0, 0 } );
-    // }
+
 
     int k = 0;
     for (int i = 0; i < manager->stack_flip_position; i++) {
