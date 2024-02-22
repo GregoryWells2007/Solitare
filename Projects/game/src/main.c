@@ -98,6 +98,7 @@ int main(int argc, char** argv) {
 
     card_manager card_manager = {};
     card_manager_init(&card_manager);
+    card_manager.input = &win_manager.input_manager;
     card_manager.card_renderer = &card_renderer;
     card_manager.board = &new_board;
 

@@ -15,6 +15,8 @@ typedef struct card_manager {
 
     linked_list card_rows[7];
 
+    input_manager* input; 
+
     board* board;
     card_renderer* card_renderer;
 } card_manager;
