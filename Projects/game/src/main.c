@@ -112,6 +112,10 @@ int main(int argc, char** argv) {
     while (window_is_open(&main_window)) {   
         gettimeofday(&t1, NULL);
 
+        if (input_manager_get_mouse_clicked(&win_manager.input_manager) && mouse_in_bounds(((board_area*)array_list_get(&new_board.areas, 11))->position, input_manager_get_mouse_pos(&win_manager.input_manager))) {
+            card_manager_flip_stack(&card_manager);
+        }
+
         framebuffer_bind(&screen_framebuffer);
         clear_screen(&screen_clear);
 
