@@ -20,7 +20,7 @@ void card_manager_draw_card(card_manager* manager, ivec2 position, int card_id) 
     bool hoverd = mouse_in_bounds(position, input_manager_get_mouse_pos(manager->input)) && !card_already_hovered;
 
     card_render* new_card_render = malloc(sizeof(card_render));
-    new_card_render->card_data = (ivec3){ card_id, hoverd, 0 };
+    new_card_render->card_data = (ivec3){ card_id, hoverd, hoverd && input_manager_get_mouse_down(manager->input) };
     new_card_render->position = position;
     array_list_add(&manager->cards_to_render, new_card_render);
 
