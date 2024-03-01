@@ -30,6 +30,15 @@ HEADER_DEF void array_list_add(array_list* list, void* data) {
     if (list->size == list->max_item_count)
         array_list_resize(list); 
 }
+
+HEADER_DEF void array_list_set(array_list* list, int index, void* data) {
+    while (list->max_item_count < index) {
+        array_list_resize(list);
+        list->size = index + 1;
+    }
+    list->data[index] = data;
+}
+
 HEADER_DEF void array_list_insert(array_list* list, int index, void* data) {
 
     for (int i = list->size; i > index; i--) {
