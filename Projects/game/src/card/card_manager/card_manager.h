@@ -11,7 +11,7 @@ struct card_data {
 
 typedef struct card_manager {
     linked_list cards_in_stack;
-    int stack_flip_position;
+    int stack_flip_position, card_draw_count;
 
     linked_list card_rows[7];
 
