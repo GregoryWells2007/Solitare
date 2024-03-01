@@ -96,11 +96,6 @@ void card_manager_draw_cards(card_manager* manager) {
     card_already_hovered = false;
     // draw cards in stack
 
-    if (manager->stack_flip_position < linked_list_size(&manager->cards_in_stack)) {
-        board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
-        card_manager_draw_card(manager, position->position, 52);
-    }
-
     // draw card rows
 
     for (int k = 0; k < 7; k++) {
@@ -141,6 +136,11 @@ void card_manager_draw_cards(card_manager* manager) {
 
         board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
         card_manager_draw_card(manager, (ivec2){ position->position.x - offset, position->position.y }, current_card_data->number);
+    }
+
+    if (manager->stack_flip_position < linked_list_size(&manager->cards_in_stack)) {
+        board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
+        card_manager_draw_card(manager, position->position, 52);
     }
 
     //card_manager_draw_card(manager, (ivec2){ manager->input->mouse_position.x, manager->input->mouse_position.y }, 52 );
