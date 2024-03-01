@@ -40,8 +40,6 @@ void render_cards(card_manager* manager) {
         );     
     }
 
-    printf("Card draw count: %i\n", manager->card_draw_count);
-
     manager->card_draw_count = 0;
 }
 
@@ -144,6 +142,8 @@ void card_manager_draw_cards(card_manager* manager) {
         board_area* position = (board_area*)array_list_get(&manager->board->areas, 11);
         card_manager_draw_card(manager, (ivec2){ position->position.x - offset, position->position.y }, current_card_data->number);
     }
+
+    //card_manager_draw_card(manager, (ivec2){ manager->input->mouse_position.x, manager->input->mouse_position.y }, 52 );
 
     render_cards(manager);
 }
