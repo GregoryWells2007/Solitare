@@ -120,6 +120,8 @@ void card_manager_draw_cards(card_manager* manager) {
 
     int k = 0;
     for (int i = manager->stack_flip_position - 1; i >= 0; i--) {
+        if ((manager->stack_flip_position - 1) - i > 3) continue;
+
         if (manager->stack_flip_position == 1) {
             k = 2;
         } else if (manager->stack_flip_position == 2) {
